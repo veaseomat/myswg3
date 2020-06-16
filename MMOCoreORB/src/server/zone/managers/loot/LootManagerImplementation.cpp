@@ -607,18 +607,17 @@ bool LootManagerImplementation::createLootFromCollection(SceneObject* container,
 		const LootGroupCollectionEntry* entry = lootCollection->get(i);
 		int lootChance = (entry->getLootChance() * 5);
 
-		if(level < 1)
-			level = 1;
+		int delevel = System::random(level) + System::random(300);
 
-		if(level > 300)
-			level = 300;
+		if(delevel > 300)
+			delevel = 300;
 
 		int hroll = System::random(100000);
 
-		int holochance = hroll + ((level * level) / 13);
+		int holochance = hroll + ((delevel * level) / 20);
 
 		if (holochance >= 100000){
-			createLoot(container, "holocron_nd", level);
+			createLoot(container, "holocron_nd", delevel);
 		}
 
 		if (lootChance <= 0)
@@ -646,7 +645,7 @@ bool LootManagerImplementation::createLootFromCollection(SceneObject* container,
 			if (tempChance < roll)
 				continue;
 
-			createLoot(container, entry->getLootGroupName(), level);
+			createLoot(container, entry->getLootGroupName(), delevel);
 
 			break;
 		}
