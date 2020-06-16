@@ -1550,7 +1550,7 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 
 	// EVP Damage Reduction.
 	if (!attacker->isPlayerCreature() && defender->isPlayerCreature())
-		damage *= 0.33;
+		damage *= 0.5;
 
 	// PvE Damage increase for non jedi.
 //	if (attacker->isPlayerCreature() && !defender->isPlayerCreature()) {
