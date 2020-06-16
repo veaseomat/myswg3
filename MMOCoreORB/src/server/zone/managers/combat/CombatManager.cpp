@@ -852,9 +852,9 @@ float CombatManager::getDefenderToughnessModifier(CreatureObject* defender, int 
 		}
 	}
 
-//	int jediToughness = defender->getSkillMod("jedi_toughness");
-//	if (damType != SharedWeaponObjectTemplate::LIGHTSABER && jediToughness > 0)
-//		damage *= 1.f - (jediToughness / 100.f);
+	int jediToughness = defender->getSkillMod("jedi_toughness");
+	if (damType != SharedWeaponObjectTemplate::LIGHTSABER && jediToughness > 0)
+		damage *= 1.f - (jediToughness / 100.f);
 
 	return damage < 0 ? 0 : damage;
 }
@@ -1672,19 +1672,19 @@ int CombatManager::getHitChance(TangibleObject* attacker, CreatureObject* target
 		const String& def = defenseAccMods->get(0); // FIXME: this is hacky, but a lot faster than using contains()
 
 		//jeditoughdodge
-		int jeditoughdodge = targetCreature->getSkillMod("jedi_toughness");
-
-		if ((!weapon->isJediWeapon()) && jeditoughdodge > 0) {
-			if (jeditoughdodge > System::random(100))
-				return MISS;
-
-		}
+//		int jeditoughdodge = targetCreature->getSkillMod("jedi_toughness");
+//
+//		if ((!weapon->isJediWeapon()) && jeditoughdodge > 0) {
+//			if (jeditoughdodge > System::random(100))
+//				return MISS;
+//
+//		}
 
 		//FRS DODGE SYSTEM
 		int frsdodge = (targetCreature->getSkillMod("force_manipulation_light") + targetCreature->getSkillMod("force_manipulation_dark")) / 4;
 
 		if (frsdodge > 0) {
-			frsdodge += 5;
+			frsdodge += 10;
 			if (frsdodge > System::random(100))
 				return MISS;
 
