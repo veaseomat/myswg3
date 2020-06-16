@@ -43,6 +43,13 @@ dark_adept = Creature:new {
 				{group = "carbines", chance = 1300000},
 				{group = "wearables_rare", chance = 800000}
 			}
+		},
+		{
+			groups = {
+
+				{group = "color_crystals", chance = 10000000},
+
+			}
 		}
 	},
 	weapons = {"dark_jedi_weapons_gen2"},

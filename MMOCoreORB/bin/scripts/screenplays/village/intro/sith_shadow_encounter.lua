@@ -12,15 +12,14 @@ SithShadowEncounter = Encounter:new {
 	-- Task properties
 	taskName = "SithShadowEncounter",
 	-- Encounter properties
-	encounterDespawnTime = 2 * 60 * 1000, -- 2 minutes
+	encounterDespawnTime = 1 * 60 * 1000, -- 1 minutes
 	spawnObjectList = {
-		{ template = "sith_shadow_outlaw_mission", minimumDistance = 64, maximumDistance = 96, referencePoint = 0, followPlayer = true, setNotAttackable = false, runOnDespawn = true },
-		{ template = "sith_shadow_outlaw_mission", minimumDistance = 4, maximumDistance = 8, referencePoint = 1, followPlayer = true, setNotAttackable = false, runOnDespawn = true }
+		{ template = "boba_fett2", minimumDistance = 64, maximumDistance = 96, referencePoint = 0, followPlayer = true, setNotAttackable = false, runOnDespawn = true },
 	},
 	onEncounterSpawned = nil,
 	isEncounterFinished = nil,
 	onEncounterInRange = nil,
-	inRangeValue = 26,
+	inRangeValue = 32,
 }
 
 -- Check if the sith shadow is the first one spawned for the player.
@@ -40,14 +39,14 @@ end
 -- @return 1 if the correct player looted the creature to remove the observer, 0 otherwise to keep the observer.
 function SithShadowEncounter:onLoot(pLootedCreature, pLooter, nothing)
 	if (pLootedCreature == nil or pLooter == nil) then
+	
 		return 0
 	end
 
 	Logger:log("Looting the sith shadow.", LT_INFO)
 	if QuestManager.hasActiveQuest(pLooter, QuestManager.quests.TWO_MILITARY) then
 		if self:isTheFirstSithShadowOfThePlayer(pLootedCreature, pLooter) then
-			QuestManager.completeQuest(pLooter, QuestManager.quests.TWO_MILITARY)
-			QuestManager.completeQuest(pLooter, QuestManager.quests.GOT_DATAPAD)
+
 			return 1
 		end
 	end
@@ -67,12 +66,10 @@ function SithShadowEncounter:onPlayerKilled(pPlayer, pKiller, nothing)
 
 	Logger:log("Player was killed.", LT_INFO)
 	if SpawnMobiles.isFromSpawn(pPlayer, SithShadowEncounter.taskName, pKiller) then
-		spatialChat(pKiller, SITH_SHADOW_MILITARY_TAKE_CRYSTAL)
-		QuestManager.resetQuest(pPlayer, QuestManager.quests.TWO_MILITARY)
-		QuestManager.resetQuest(pPlayer, QuestManager.quests.LOOT_DATAPAD_1)
-		QuestManager.resetQuest(pPlayer, QuestManager.quests.GOT_DATAPAD)
-		OldManIntroEncounter:removeForceCrystalFromPlayer(pPlayer)
-		createEvent(10 * 1000, "SithShadowEncounter", "handleDespawnEvent", pPlayer, "")
+		spatialChat(pKiller, "Not so tough now, are you?")
+
+		QuestManager.completeQuest(pPlayer, QuestManager.quests.TWO_MILITARY)
+		
 		return 1
 	end
 
@@ -96,13 +93,16 @@ function SithShadowEncounter:onEncounterSpawned(pPlayer, spawnedObjects)
 		return
 	end
 
+	CreatureObject(pPlayer):sendSystemMessage("You sense a disturbance in the force...")
+
 	SceneObject(pInventory):setContainerOwnerID(playerID)
-	createLoot(pInventory, "sith_shadow_encounter_datapad", 0, true)
+
 
 	createObserver(LOOTCREATURE, self.taskName, "onLoot", spawnedObjects[1])
 	createObserver(OBJECTDESTRUCTION, self.taskName, "onPlayerKilled", pPlayer)
-	FsIntro:setCurrentStep(pPlayer, 4)
+	
 	QuestManager.activateQuest(pPlayer, QuestManager.quests.TWO_MILITARY)
+
 end
 
 -- Handling of the encounter in range event.
@@ -117,12 +117,13 @@ function SithShadowEncounter:onEncounterInRange(pPlayer, spawnedObjects)
 	Logger:log("Sending threaten string.", LT_INFO)
 	local threatenString = LuaStringIdChatParameter(SITH_SHADOW_THREATEN_STRING)
 	threatenString:setTT(CreatureObject(pPlayer):getFirstName())
-	spatialChat(spawnedObjects[1], threatenString:_getObject())
-	QuestManager.activateQuest(pPlayer, QuestManager.quests.LOOT_DATAPAD_1)
+	spatialChat(spawnedObjects[1], "Fight me Jedi!")
+
 
 	foreach(spawnedObjects, function(pMobile)
 		if (pMobile ~= nil) then
 			AiAgent(pMobile):setDefender(pPlayer)
+			AiAgent(pMobile):enqueAttack(pPlayer)
 		end
 	end)
 end
@@ -135,7 +136,6 @@ function SithShadowEncounter:isEncounterFinished(pPlayer)
 		return false
 	end
 
-	return not OldManIntroEncounter:hasForceCrystal(pPlayer) or QuestManager.hasCompletedQuest(pPlayer, QuestManager.quests.GOT_DATAPAD)
 end
 
 -- Handling of the activation of the looted datapad.
@@ -143,19 +143,8 @@ end
 -- @param pPlayer pointer to the creature object who activated the datapad.
 function SithShadowEncounter:useWaypointDatapad(pSceneObject, pPlayer)
 	Logger:log("Player used the looted waypoint datapad.", LT_INFO)
-	if QuestManager.hasCompletedQuest(pPlayer, QuestManager.quests.GOT_DATAPAD) then
+	
 
-		SithShadowIntroTheater:start(pPlayer)
-
-		CreatureObject(pPlayer):sendSystemMessage(READ_DISK_1_STRING)
-
-		SceneObject(pSceneObject):destroyObjectFromWorld()
-		SceneObject(pSceneObject):destroyObjectFromDatabase()
-		QuestManager.completeQuest(pPlayer, QuestManager.quests.LOOT_DATAPAD_1)
-		FsIntro:setCurrentStep(pPlayer, 6)
-	else
-		CreatureObject(pPlayer):sendSystemMessage(READ_DISK_ERROR_STRING)
-	end
 end
 
 function SithShadowEncounter:taskFinish(pPlayer)
@@ -163,11 +152,7 @@ function SithShadowEncounter:taskFinish(pPlayer)
 		return true
 	end
 
-	if (QuestManager.hasCompletedQuest(pPlayer, QuestManager.quests.GOT_DATAPAD) and FsIntro:getCurrentStep(pPlayer) == 4) then
-		FsIntro:setCurrentStep(pPlayer, 5)
-	elseif not OldManIntroEncounter:hasForceCrystal(pPlayer) then
-		FsIntro:startStepDelay(pPlayer, 1)
-	end
+		FsIntro:startStepDelay(pPlayer, 3)
 
 	return true
 end

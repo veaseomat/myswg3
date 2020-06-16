@@ -53,5 +53,5 @@ lightsabermaster = { {"saber1hheadhit1",""},{"saber1hhit1",""},{"saber1hcombohit
 forcepowermaster = { {"forcelightningsingle2",""},{"forcelightningcone2",""},{"mindblast2",""},{"forceknockdown2",""},{"forceweaken2",""},{"forcethrow2",""},{"forcechoke",""} }
 
 -- npc force wielders use standard profession mastery with the addition of this command
-forcewielder ={ {"forcelightningsingle1",""},{"mindblast1",""},{"forcechoke",""},{"forceweaken1",""},{"forceknockdown1",""},{"forcelightningcone1",""} }
+forcewielder ={ {"forcelightningsingle1",""},{"mindblast1",""},{"forceknockdown1",""},{"forcelightningcone1",""} }
 --Server Administrator NPC skill trees place below

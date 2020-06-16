@@ -75,25 +75,17 @@ function OldManIntroEncounter:giveForceCrystalToPlayer(pPlayer)
 		return
 	end
 
-	local pCrystal = giveItem(pInventory, OLD_MAN_FORCE_CRYSTAL_STRING, -1)
-
-	if (pCrystal ~= nil) then
-		CreatureObject(pPlayer):removeScreenPlayState(0xFFFFFFFFFFFFFFFF, self.taskName .. OLD_MAN_FORCE_CRYSTAL_ID_STRING)
-		CreatureObject(pPlayer):setScreenPlayState(SceneObject(pCrystal):getObjectID(), self.taskName .. OLD_MAN_FORCE_CRYSTAL_ID_STRING)
 
 		VillageJediManagerCommon.setJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_HAS_CRYSTAL)
-		QuestManager.completeQuest(pPlayer, QuestManager.quests.OLD_MAN_INITIAL)
-		QuestManager.completeQuest(pPlayer, QuestManager.quests.OLD_MAN_FORCE_CRYSTAL)
-		CreatureObject(pPlayer):sendSystemMessage("@quest/force_sensitive/intro:crystal_message")
 		writeScreenPlayData(pPlayer, "VillageJediProgression", "FsIntroOldManVisits", 0)
-	end
+
 end
 
 function OldManIntroEncounter:hasForceCrystal(pPlayer)
 	local forceCrystalId = CreatureObject(pPlayer):getScreenPlayState(self.taskName .. OLD_MAN_FORCE_CRYSTAL_ID_STRING)
 	local pForceCrystal = getSceneObject(forceCrystalId)
-
-	return pForceCrystal ~= nil
+--always true for bh----------------------------------------------------------
+	return true
 end
 
 -- Remove the force crystal from the player.

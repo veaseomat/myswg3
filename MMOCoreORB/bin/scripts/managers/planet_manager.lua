@@ -41,8 +41,8 @@
 --which carries forward this exception.
 
 --Time, in seconds, that a shuttle is away for
-shuttleportAwayTime = 300
-starportAwayTime = 60
+shuttleportAwayTime = 30
+starportAwayTime = 30
 
 --Time, in seconds, that a shuttle takes to land
 shuttleportLandingTime = 11
@@ -54,7 +54,7 @@ starportLandedTime = 120
 
 
 corellia = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = { },
@@ -101,7 +101,7 @@ corellia = {
 }
 
 dantooine = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = {
@@ -141,7 +141,7 @@ dantooine = {
 }
 
 dathomir = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = { },
@@ -202,7 +202,7 @@ dathomir = {
 }
 
 endor = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = {
@@ -244,7 +244,7 @@ endor = {
 }
 
 lok = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = {
@@ -282,7 +282,7 @@ lok = {
 }
 
 naboo = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = { },
@@ -342,7 +342,7 @@ naboo = {
 }
 
 rori = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = {
@@ -421,7 +421,7 @@ rori = {
 }
 
 talus = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = {
@@ -505,7 +505,7 @@ talus = {
 }
 
 tatooine = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = { },
@@ -570,7 +570,7 @@ tatooine = {
 }
 
 yavin4 = {
-	weatherEnabled = 1,
+	weatherEnabled = 0,
 	gcwEnabled = 1,
 
 	outpostRegionNames = {

@@ -2131,11 +2131,11 @@ void CreatureObjectImplementation::notifyLoadFromDatabase() {
 		totalSkillPointsWasted -= skill->getSkillPointsRequired();
 	}
 
-	if (ghost->getSkillPoints() != totalSkillPointsWasted) {
-		error() << "skill points on load mismatch calculated: " << totalSkillPointsWasted
-		       << " found: " << ghost->getSkillPoints();
-		ghost->setSkillPoints(totalSkillPointsWasted);
-	}
+//	if (ghost->getSkillPoints() != totalSkillPointsWasted) {
+//		error() << "skill points on load mismatch calculated: " << totalSkillPointsWasted
+//		       << " found: " << ghost->getSkillPoints();
+//		ghost->setSkillPoints(totalSkillPointsWasted);
+//	}
 
 	ghost->getSchematics()->addRewardedSchematics(ghost);
 
@@ -2444,15 +2444,6 @@ void CreatureObjectImplementation::setStunnedState(int durationSeconds) {
 		state->setSkillModifier("private_ranged_defense", -50);
 
 		addBuff(state);
-
-		Reference<PrivateSkillMultiplierBuff*> multBuff = new PrivateSkillMultiplierBuff(asCreatureObject(), STRING_HASHCODE("private_stun_multiplier"), durationSeconds, BuffType::STATE);
-
-		Locker blocker(multBuff);
-
-		multBuff->setSkillModifier("private_damage_divisor", 5);
-		multBuff->setSkillModifier("private_damage_multiplier", 4);
-
-		addBuff(multBuff);
 	}
 }
 
@@ -2500,14 +2491,6 @@ void CreatureObjectImplementation::setIntimidatedState(int durationSeconds) {
 		state->setSkillModifier("private_ranged_defense", -20);
 
 		addBuff(state);
-
-		Reference<PrivateSkillMultiplierBuff*> multBuff = new PrivateSkillMultiplierBuff(asCreatureObject(), STRING_HASHCODE("private_intimidate_multiplier"), durationSeconds, BuffType::STATE);
-
-		Locker blocker(multBuff);
-
-		multBuff->setSkillModifier("private_damage_divisor", 2);
-
-		addBuff(multBuff);
 	}
 }
 
@@ -2571,7 +2554,7 @@ void CreatureObjectImplementation::queueDizzyFallEvent() {
 		return;
 
 	dizzyFallDownEvent = new DizzyFallDownEvent(asCreatureObject());
-	dizzyFallDownEvent->schedule(200);
+	dizzyFallDownEvent->schedule(100);
 }
 
 void CreatureObjectImplementation::activateStateRecovery() {
@@ -2784,7 +2767,7 @@ void CreatureObjectImplementation::activateHAMRegeneration(int latency) {
 	if (isKneeling())
 		modifier *= 1.25f;
 	else if (isSitting())
-		modifier *= 1.75f;
+		modifier *= 3.5f;
 
 	// this formula gives the amount of regen per second
 	uint32 healthTick = (uint32) ceil((float) Math::max(0, getHAM(

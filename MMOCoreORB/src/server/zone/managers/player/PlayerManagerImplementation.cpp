@@ -1486,12 +1486,12 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 	uint64 preDesignatedFacilityOid = ghost->getCloningFacility();
 	ManagedReference<SceneObject*> preDesignatedFacility = server->getObject(preDesignatedFacilityOid);
 
-	if (preDesignatedFacility == nullptr || preDesignatedFacility != cloner) {
-		player->addWounds(CreatureAttribute::HEALTH, 100, true, false);
-		player->addWounds(CreatureAttribute::ACTION, 100, true, false);
-		player->addWounds(CreatureAttribute::MIND, 100, true, false);
-		player->addShockWounds(100, true);
-	}
+//	if (preDesignatedFacility == nullptr || preDesignatedFacility != cloner) {
+//		player->addWounds(CreatureAttribute::HEALTH, 100, true, false);
+//		player->addWounds(CreatureAttribute::ACTION, 100, true, false);
+//		player->addWounds(CreatureAttribute::MIND, 100, true, false);
+//		player->addShockWounds(100, true);
+//	}
 
 	if (player->getFactionStatus() != FactionStatus::ONLEAVE && cbot->getFacilityType() != CloningBuildingObjectTemplate::FACTION_IMPERIAL && cbot->getFacilityType() != CloningBuildingObjectTemplate::FACTION_REBEL && !player->hasSkill("force_title_jedi_rank_03"))
 		player->setFactionStatus(FactionStatus::ONLEAVE);
@@ -1551,7 +1551,7 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 	// Jedi experience loss.
 	if (ghost->getJediState() >= 2) {
 		int jediXpCap = ghost->getXpCap("jedi_general");
-		int xpLoss = (int)(jediXpCap * -0.05);
+		int xpLoss = (int)(jediXpCap * -0.005);
 		int curExp = ghost->getExperience("jedi_general");
 
 		int negXpCap = -10000000; // Cap on negative jedi experience
@@ -1564,6 +1564,59 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 		message.setDI(xpLoss * -1);
 		message.setTO("exp_n", "jedi_general");
 		player->sendSystemMessage(message);
+	}
+
+	if (player->hasSkill("force_rank_dark_master") or player->hasSkill("force_rank_light_master")) {
+
+		SkillManager::instance()->surrenderSkill("force_rank_dark_master", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_10", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_09", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_08", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_07", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_06", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_05", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_04", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_03", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_01", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_novice", player, true, true);
+
+		SkillManager::instance()->surrenderSkill("force_rank_light_master", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_10", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_09", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_08", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_07", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_05", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_04", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_01", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_novice", player, true, true);
+
+		SkillManager::instance()->surrenderSkill("force_title_jedi_rank_03", player, true, true);
+
+		SkillManager::instance()->surrenderAllSkills(player, true, true);
+
+		SkillManager::instance()->surrenderSkill("force_title_jedi_master", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_title_jedi_rank_04", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_title_jedi_rank_03", player, true, true);
+
+		ghost->setJediState(2);
+
+		player->addSkillMod(SkillModManager::PERMANENTMOD, "jedi_force_power_max", 250, true);
+		player->addSkillMod(SkillModManager::PERMANENTMOD, "jedi_force_power_regen", 10, true);
+
+		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
+		box->setPromptTitle("Prestige");
+		box->setPromptText("Master Jedi you have made a great sacrifice, through death you have lost all of your abilities, but you have gained a permanent skill mod bonus to force power max and force power regeneration. You have also been give an additional 20 skill points (they do not show up until you go into negative skill points). You have taken your first steps into a larger world...");
+
+		ghost->addSuiBox(box);
+		player->sendMessage(box->generateMessage());
+
+
+		PlayerObject* ghost = player->getPlayerObject();
+		ghost->addSkillPoints(20);
 	}
 }
 
@@ -1730,7 +1783,7 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 				xpAmount *= (float) damage / totalDamage;
 
 				//Cap xp based on level
-				xpAmount = Math::min(xpAmount, calculatePlayerLevel(attacker, xpType) * 300.f);
+//				xpAmount = Math::min(xpAmount, calculatePlayerLevel(attacker, xpType) * 300.f);
 
 				//Apply group bonus if in group
 				if (group != nullptr)
@@ -5432,8 +5485,8 @@ bool PlayerManagerImplementation::doBurstRun(CreatureObject* player, float hamMo
 
 	uint32 crc = STRING_HASHCODE("burstrun");
 	float hamCost = 100.0f;
-	float duration = 30;
-	float cooldown = 300;
+	float duration = 60;
+	float cooldown = 150;
 
 	float burstRunMod = (float) player->getSkillMod("burst_run");
 	hamModifier += (burstRunMod / 100.f);

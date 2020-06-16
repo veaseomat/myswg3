@@ -11,7 +11,7 @@
 #include "server/zone/objects/building/BuildingObject.h"
 
 ForceHealQueueCommand::ForceHealQueueCommand(const String& name, ZoneProcessServer* server) : JediQueueCommand(name, server) {
-	speed = 3;
+	speed = 4;
 	allowedTarget = TARGET_AUTO;
 
 	forceCost = 0;

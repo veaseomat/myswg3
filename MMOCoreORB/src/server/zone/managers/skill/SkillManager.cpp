@@ -338,10 +338,10 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
-		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
-			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
-			ghost->setSkillPoints(totalSkillPointsWasted);
-		}
+//		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
+//			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
+//			ghost->setSkillPoints(totalSkillPointsWasted);
+//		}
 
 		if (playerManager != nullptr) {
 			creature->setLevel(playerManager->calculatePlayerLevel(creature));
@@ -495,10 +495,10 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
-		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
-			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
-			ghost->setSkillPoints(totalSkillPointsWasted);
-		}
+//		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
+//			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
+//			ghost->setSkillPoints(totalSkillPointsWasted);
+//		}
 
 		ManagedReference<PlayerManager*> playerManager = creature->getZoneServer()->getPlayerManager();
 		if (playerManager != nullptr) {

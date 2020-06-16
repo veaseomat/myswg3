@@ -435,7 +435,9 @@ public:
 
 		PlayerManager* playerManager = server->getZoneServer()->getPlayerManager();
 
-		uint32 amountEnhanced = playerManager->healEnhance(enhancer, patient, attribute, buffPower, enhancePack->getDuration(), enhancePack->getAbsorption());
+		int durationextra = (enhancePack->getDuration() * 2);
+
+		uint32 amountEnhanced = playerManager->healEnhance(enhancer, patient, attribute, buffPower, durationextra, enhancePack->getAbsorption());
 
 		if (creature->isPlayerCreature() && targetCreature->isPlayerCreature()) {
 			playerManager->sendBattleFatigueMessage(creature, targetCreature);
@@ -452,8 +454,8 @@ public:
 			enhancePack->decreaseUseCount();
 		}
 
-		if (patient != enhancer)
-			awardXp(enhancer, "medical", amountEnhanced); //No experience for healing yourself.
+
+			awardXp(enhancer, "medical", amountEnhanced * 2); //No experience for healing yourself.
 
 		doAnimations(enhancer, patient);
 

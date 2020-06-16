@@ -50,7 +50,7 @@ void WeaponObjectImplementation::loadTemplateData(SharedObjectTemplate* template
 
 	weaponTemplate = dynamic_cast<SharedWeaponObjectTemplate*>(templateData);
 
-	certified = false;
+	certified = true;
 
 	attackType = weaponTemplate->getAttackType();
 	weaponEffect =  weaponTemplate->getWeaponEffect();
@@ -217,8 +217,8 @@ void WeaponObjectImplementation::fillAttributeList(AttributeListMessage* alm, Cr
 
 	if (res) {
 		alm->insertAttribute("weapon_cert_status", "Yes");
-	} else {
-		alm->insertAttribute("weapon_cert_status", "No");
+//	} else {
+//		alm->insertAttribute("weapon_cert_status", "No");
 	}
 
 	/*if (usesRemaining > 0)
@@ -646,16 +646,16 @@ bool WeaponObjectImplementation::isCertifiedFor(CreatureObject* object) const {
 	ManagedReference<PlayerObject*> ghost = object->getPlayerObject();
 
 	if (ghost == nullptr)
-		return false;
+		return true;
 
 	const auto certificationsRequired = weaponTemplate->getCertificationsRequired();
 
 	for (int i = 0; i < certificationsRequired->size(); ++i) {
 		const String& cert = certificationsRequired->get(i);
 
-		if (!ghost->hasAbility(cert) && !object->hasSkill(cert)) {
-			return false;
-		}
+//		if (!ghost->hasAbility(cert) && !object->hasSkill(cert)) {
+//			return false;
+//		}
 	}
 
 	return true;

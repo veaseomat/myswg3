@@ -61,11 +61,6 @@ function Glowing:badgeAwardedEventHandler(pPlayer, pPlayer2, badgeNumber)
 		return 0
 	end
 
-	if self:hasRequiredBadgeCount(pPlayer) and not CreatureObject(pPlayer):hasSkill("force_title_jedi_novice") then
-		VillageJediManagerCommon.setJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_GLOWING)
-		FsIntro:startPlayerOnIntro(pPlayer)
-		return 1
-	end
 
 	return 0
 end
@@ -82,8 +77,8 @@ end
 function Glowing:onPlayerLoggedIn(pPlayer)
 	if not self:isGlowing(pPlayer) then
 		if self:hasRequiredBadgeCount(pPlayer) then
-			VillageJediManagerCommon.setJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_GLOWING)
-			FsIntro:startPlayerOnIntro(pPlayer)
+
+
 		else
 			self:registerObservers(pPlayer)
 		end
@@ -95,7 +90,7 @@ end
 function Glowing:checkForceStatusCommand(pPlayer)
 	local progress = "@jedi_spam:fs_progress_" .. self:getCompletedBadgeTypeCount(pPlayer)
 
-	CreatureObject(pPlayer):sendSystemMessage(progress)
+	CreatureObject(pPlayer):sendSystemMessage("Only a Holocron can teach you what you seek...")
 end
 
 return Glowing

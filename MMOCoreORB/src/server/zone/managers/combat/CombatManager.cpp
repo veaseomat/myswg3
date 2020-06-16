@@ -570,8 +570,8 @@ void CombatManager::applyWeaponDots(CreatureObject* attacker, CreatureObject* de
 	if (defender->getPvpStatusBitmask() == CreatureFlag::NONE)
 		return;
 
-	if (!weapon->isCertifiedFor(attacker))
-		return;
+//	if (!weapon->isCertifiedFor(attacker))
+//		return;
 
 	for (int i = 0; i < weapon->getNumberOfDots(); i++) {
 		if (weapon->getDotUses(i) <= 0)
@@ -733,7 +733,7 @@ int CombatManager::getAttackerAccuracyModifier(TangibleObject* attacker, Creatur
 		}
 	}
 
-	if (attackerAccuracy == 0) attackerAccuracy = -15; // unskilled penalty, TODO: this might be -50 or -125, do research
+	//if (attackerAccuracy == 0) attackerAccuracy = -15; // unskilled penalty, TODO: this might be -50 or -125, do research
 
 	attackerAccuracy += creoAttacker->getSkillMod("attack_accuracy") + creoAttacker->getSkillMod("dead_eye");
 
@@ -742,6 +742,9 @@ int CombatManager::getAttackerAccuracyModifier(TangibleObject* attacker, Creatur
 		attackerAccuracy += creoAttacker->getSkillMod("melee_accuracy");
 	else if (weapon->getAttackType() == SharedWeaponObjectTemplate::RANGEDATTACK)
 		attackerAccuracy += creoAttacker->getSkillMod("ranged_accuracy");
+
+	attackerAccuracy += creoAttacker->getSkillMod("force_manipulation_light");
+	attackerAccuracy += creoAttacker->getSkillMod("force_manipulation_dark");
 
 	// now apply overall weapon defense mods
 	if (weapon->isMeleeWeapon()) {
@@ -790,6 +793,10 @@ int CombatManager::getDefenderDefenseModifier(CreatureObject* defender, WeaponOb
 	}
 
 	debug() << "Base target defense is " << targetDefense;
+
+	//jedi frs bonus
+	targetDefense += defender->getSkillMod("force_manipulation_dark");
+	targetDefense += defender->getSkillMod("force_manipulation_light");
 
 	// defense hardcap
 	if (targetDefense > 125)
@@ -845,9 +852,9 @@ float CombatManager::getDefenderToughnessModifier(CreatureObject* defender, int 
 		}
 	}
 
-	int jediToughness = defender->getSkillMod("jedi_toughness");
-	if (damType != SharedWeaponObjectTemplate::LIGHTSABER && jediToughness > 0)
-		damage *= 1.f - (jediToughness / 100.f);
+//	int jediToughness = defender->getSkillMod("jedi_toughness");
+//	if (damType != SharedWeaponObjectTemplate::LIGHTSABER && jediToughness > 0)
+//		damage *= 1.f - (jediToughness / 100.f);
 
 	return damage < 0 ? 0 : damage;
 }
@@ -883,10 +890,10 @@ int CombatManager::calculateDamageRange(TangibleObject* attacker, CreatureObject
 	float minDamage = weapon->getMinDamage(), maxDamage = weapon->getMaxDamage();
 
 	// restrict damage if a player is not certified (don't worry about mobs)
-	if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(cast<CreatureObject*>(attacker))) {
-		minDamage = 5;
-		maxDamage = 10;
-	}
+//	if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(cast<CreatureObject*>(attacker))) {
+//		minDamage = 5;
+//		maxDamage = 10;
+//	}
 
 	debug() << "attacker base damage is " << minDamage << "-" << maxDamage;
 
@@ -1282,10 +1289,10 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 	} else {
 		float minDamage = weapon->getMinDamage(), maxDamage = weapon->getMaxDamage();
 
-		if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(attacker)) {
-			minDamage = 5.f;
-			maxDamage = 10.f;
-		}
+//		if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(attacker)) {
+//			minDamage = 5.f;
+//			maxDamage = 10.f;
+//		}
 
 		damage = minDamage;
 		diff = maxDamage - minDamage;
@@ -1427,15 +1434,6 @@ void CombatManager::getFrsModifiedForceAttackDamage(CreatureObject* attacker, fl
 	float minMod = 0, maxMod = 0;
 	int powerModifier = 0;
 
-	if (councilType == FrsManager::COUNCIL_LIGHT) {
-		powerModifier = attacker->getSkillMod("force_power_light");
-		minMod = data.getFrsLightMinDamageModifier();
-		maxMod = data.getFrsLightMaxDamageModifier();
-	} else if (councilType == FrsManager::COUNCIL_DARK) {
-		powerModifier = attacker->getSkillMod("force_power_dark");
-		minMod = data.getFrsDarkMinDamageModifier();
-		maxMod = data.getFrsDarkMaxDamageModifier();
-	}
 
 	if (powerModifier > 0) {
 		if (minMod > 0)
@@ -1464,8 +1462,8 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 		diff = calculateDamageRange(attacker, defender, weapon);
 		float minDamage = weapon->getMinDamage();
 
-		if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(attacker))
-			minDamage = 5;
+//		if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(attacker))
+//			minDamage = 5;
 
 		damage = minDamage;
 	}
@@ -1488,13 +1486,11 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 		damage *= 1.25;
 
 	if (defender->isKnockedDown()) {
-		damage *= 1.5f;
-	} else if (data.isForceAttack() && data.getCommandName().hashCode() == STRING_HASHCODE("forcechoke")) {
-		if  (defender->isProne())
-			damage *= 1.5f;
-		else if (defender->isKneeling())
-			damage *= 1.25f;
+		damage *= 1.25f;
 	}
+
+	// FRS Damage increase
+
 
 	// Toughness reduction
 	if (data.isForceAttack())
@@ -1510,9 +1506,58 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 			damage *= 1.f / (1.f + ((float)forceDefense / 100.f));
 	}
 
+//	int jediarmor = defender->getSkillMod("jedi_force_power_regen");
+//
+//	if (jediarmor > 0) {
+//		jediarmor = 20;
+//		damage *= 1.f / (1.f + ((float)jediarmor / 100.f));
+//	}
+
+	//frsarmor
+	int darkarmor = defender->getSkillMod("force_manipulation_dark") / 4;
+
+	if (darkarmor > 0) {
+		darkarmor += 5;
+		damage *= 1.f / (1.f + ((float)darkarmor / 100.f));
+	}
+
+	int lightarmor = defender->getSkillMod("force_manipulation_light") / 4;
+
+	if (lightarmor > 0) {
+		lightarmor += 10;
+		damage *= 1.f / (1.f + ((float)lightarmor / 100.f));
+	}
+
+	//frsdamage
+	int lightDamage = attacker->getSkillMod("force_manipulation_light") / 4;
+
+	if (lightDamage > 0) {
+		lightDamage += 5;
+		damage *= 1.f * (1.f + ((float)lightDamage / 100.f));
+	}
+
+	int darkDamage = attacker->getSkillMod("force_manipulation_dark") / 4;
+
+	if (darkDamage > 0) {
+		darkDamage += 10;
+		damage *= 1.f * (1.f + ((float)darkDamage / 100.f));
+	}
+
+
 	// PvP Damage Reduction.
 	if (attacker->isPlayerCreature() && defender->isPlayerCreature() && !data.isForceAttack())
-		damage *= 0.25;
+		damage *= 0.2;
+
+	// EVP Damage Reduction.
+	if (!attacker->isPlayerCreature() && defender->isPlayerCreature())
+		damage *= 0.33;
+
+	// PvE Damage increase for non jedi.
+//	if (attacker->isPlayerCreature() && !defender->isPlayerCreature()) {
+//
+//		if (!data.isForceAttack() || weapon->getAttackType() != SharedWeaponObjectTemplate::LIGHTSABER)
+//		damage *= 1.5;
+//	}
 
 	if (damage < 1) damage = 1;
 
@@ -1626,12 +1671,33 @@ int CombatManager::getHitChance(TangibleObject* attacker, CreatureObject* target
 		const auto defenseAccMods = targetWeapon->getDefenderSecondaryDefenseModifiers();
 		const String& def = defenseAccMods->get(0); // FIXME: this is hacky, but a lot faster than using contains()
 
+		//jeditoughdodge
+		int jeditoughdodge = targetCreature->getSkillMod("jedi_toughness");
+
+		if ((!weapon->isJediWeapon()) && jeditoughdodge > 0) {
+			if (jeditoughdodge > System::random(100))
+				return MISS;
+
+		}
+
+		//FRS DODGE SYSTEM
+		int frsdodge = (targetCreature->getSkillMod("force_manipulation_light") + targetCreature->getSkillMod("force_manipulation_dark")) / 4;
+
+		if (frsdodge > 0) {
+			frsdodge += 5;
+			if (frsdodge > System::random(100))
+				return MISS;
+
+		}
+
 		// saber block is special because it's just a % chance to block based on the skillmod
 		if (def == "saber_block") {
 			if (!(attacker->isTurret() || weapon->isThrownWeapon()) && ((weapon->isHeavyWeapon() || weapon->isSpecialHeavyWeapon() || (weapon->getAttackType() == SharedWeaponObjectTemplate::RANGEDATTACK)) && ((System::random(100)) < targetCreature->getSkillMod(def))))
 				return RICOCHET;
+
 			else return HIT;
 		}
+
 
 		targetDefense = getDefenderSecondaryDefenseModifier(targetCreature);
 

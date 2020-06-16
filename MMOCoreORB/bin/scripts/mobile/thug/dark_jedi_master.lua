@@ -42,6 +42,13 @@ dark_jedi_master = Creature:new {
 				{group = "carbines", chance = 1300000},
 				{group = "dark_jedi_common", chance = 800000}
 			}
+		},
+		{
+			groups = {
+
+				{group = "color_crystals", chance = 10000000},
+
+			}
 		}
 	},
 	weapons = {"dark_jedi_weapons_gen4"},

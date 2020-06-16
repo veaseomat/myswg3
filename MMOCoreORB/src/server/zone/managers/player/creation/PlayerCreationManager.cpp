@@ -327,8 +327,8 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 
 	auto client = callback->getClient();
 
-	if (client->getCharacterCount(zoneServer.get()->getGalaxyID()) >= 10) {
-		ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are limited to 10 characters per galaxy.", 0x0);
+	if (client->getCharacterCount(zoneServer.get()->getGalaxyID()) >= 7) {
+		ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are limited to 7 characters per galaxy.", 0x0);
 		client->sendMessage(errMsg);
 
 		return false;
@@ -476,8 +476,8 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 
 							Time timeVal(sec);
 
-							if (timeVal.miliDifference() < 3600000) {
-								ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are only permitted to create one character per hour. Repeat attempts prior to 1 hour elapsing will reset the timer.", 0x0);
+							if (timeVal.miliDifference() < 15000) {
+								ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are only permitted to create one character every 15min. Repeat attempts prior to 15 minutes elapsing will reset the timer.", 0x0);
 								client->sendMessage(errMsg);
 
 								playerCreature->destroyPlayerCreatureFromDatabase(true);
@@ -493,8 +493,8 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 					if (lastCreatedCharacter.containsKey(accID)) {
 						Time lastCreatedTime = lastCreatedCharacter.get(accID);
 
-						if (lastCreatedTime.miliDifference() < 3600000) {
-							ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are only permitted to create one character per hour. Repeat attempts prior to 1 hour elapsing will reset the timer.", 0x0);
+						if (lastCreatedTime.miliDifference() < 15000) {
+							ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are only permitted to create one character ever 15min. Repeat attempts prior to 15 minutes elapsing will reset the timer.", 0x0);
 							client->sendMessage(errMsg);
 
 							playerCreature->destroyPlayerCreatureFromDatabase(true);
@@ -562,14 +562,14 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 
 	JediManager::instance()->onPlayerCreated(playerCreature);
 
-	chatManager->sendMail("system", "@newbie_tutorial/newbie_mail:welcome_subject", "@newbie_tutorial/newbie_mail:welcome_body", playerCreature->getFirstName());
+	chatManager->sendMail("mySWG", "Welcome", "Welcome to mySWG, This is a fun server that stays true to the vanilla systems with lots of Quality of life improvements. The quality of life improvements exist to make character progression reasonably faster without affecting how we would normally play. Jedi unlock is different here, village is removed entirely. Holocrons unlock jedi, they also unlock knight and train FRS skills. Holocrons can be looted from anything in the game, higher level creatures/npc/container have an increased chance to drop, holocrons are RARE. how rare? RARE.\n\nAnyways, \n	So I dont have to keep changing this email, all of the changes can be seen on the swgemu forum post for mySWG in SWGEmu based server listing section. If you have any questions/comments/concerns/suggestions please send an email to mySWGdev@gmail.com.\nThanks,\nVeaseomat", playerCreature->getFirstName());
 
 	//Join auction chat room
 	ghost->addChatRoom(chatManager->getAuctionRoom()->getRoomID());
 
 	ManagedReference<SuiMessageBox*> box = new SuiMessageBox(playerCreature, SuiWindowType::NONE);
-	box->setPromptTitle("PLEASE NOTE");
-	box->setPromptText("You are limited to creating one character per hour. Attempting to create another character or deleting your character before the 1 hour timer expires will reset the timer.");
+	box->setPromptTitle("WELCOME");
+	box->setPromptText("Welcome to mySWG! Don't forget to migrate your stats!");
 
 	ghost->addSuiBox(box);
 	playerCreature->sendMessage(box->generateMessage());

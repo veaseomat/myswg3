@@ -3,7 +3,7 @@
 		See file COPYING for copying conditions. */
 
 #include "server/zone/objects/player/PlayerObject.h"
-
+#include "server/zone/objects/creature/CreatureObject.h"
 #include "server/zone/managers/object/ObjectManager.h"
 #include "server/zone/managers/player/PlayerManager.h"
 #include "server/zone/managers/skill/SkillManager.h"
@@ -2034,15 +2034,13 @@ void PlayerObjectImplementation::activateForcePowerRegen() {
 	if (!forceRegenerationEvent->isScheduled()) {
 		int forceControlMod = 0, forceManipulationMod = 0;
 
-		if (creature->hasSkill("force_rank_light_novice")) {
-			forceControlMod = creature->getSkillMod("force_control_light");
-			forceManipulationMod = creature->getSkillMod("force_manipulation_light");
-		} else if (creature->hasSkill("force_rank_dark_novice")) {
-			forceControlMod = creature->getSkillMod("force_power_dark");
-			forceManipulationMod = creature->getSkillMod("force_manipulation_dark");
+		forceManipulationMod = (creature->getSkillMod("force_manipulation_light") + creature->getSkillMod("force_manipulation_dark"));
+
+		if (forceManipulationMod > 0) {
+			regen += (160) / 10.f;
 		}
 
-		regen += (forceControlMod + forceManipulationMod) / 10.f;
+		regen += (forceManipulationMod * 3) / 10.f;
 
 		int regenMultiplier = creature->getSkillMod("private_force_regen_multiplier");
 		int regenDivisor = creature->getSkillMod("private_force_regen_divisor");
@@ -2283,11 +2281,16 @@ void PlayerObjectImplementation::doForceRegen() {
 
 	uint32 modifier = 1;
 
+	if (creature->isSitting()) {
+
+			modifier = 2;
+	}
+
 	if (creature->isMeditating()) {
 		Reference<ForceMeditateTask*> medTask = creature->getPendingTask("forcemeditate").castTo<ForceMeditateTask*>();
 
 		if (medTask != nullptr)
-			modifier = 3;
+			modifier = 6;
 	}
 
 	uint32 forceTick = tick * modifier;

@@ -12,8 +12,8 @@ FsIntro = ScreenPlay:new {
 	VILLAGE = 8,
 
 	stepDelay = {
-		[1] = { 43200, 129600 }, -- Old man visit, 12-36 hours
-		[3] = { 3600, 43200 } -- Sith shadow attack, 1 hour to 12 hours
+		[1] = { 1, 2 }, -- Old man visit, 12-36 hours
+		[3] = { 1, 2 } -- Sith shadow attack, 1 hour to 12 hours
 	}
 }
 
@@ -55,22 +55,19 @@ function FsIntro:startStepDelay(pPlayer, step)
 	end
 
 	self:setCurrentStep(pPlayer, step)
-	local stepDelay = getRandomNumber(stepData[1], stepData[2])
+	local stepDelay = 60000
 
-	if (step == 1) then
-		local oldManVisits = tonumber(readScreenPlayData(pPlayer, "VillageJediProgression", "FsIntroOldManVisits"))
-
-		if oldManVisits ~= nil then
-			if (oldManVisits == 2) then
-				stepDelay = stepDelay + (1 * 24 * 60 * 60)
-			elseif (oldManVisits >= 3) then
-				stepDelay = stepDelay + (oldManVisits * 24 * 60 * 60)
-			end
-		end
+	if QuestManager.hasActiveQuest(pPlayer, QuestManager.quests.TWO_MILITARY) then
+	--player beat bh
+		QuestManager.completeQuest(pPlayer, QuestManager.quests.TWO_MILITARY)
+		stepDelay = getRandomNumber(60000, 172800000) --1min - 2 day
+	else
+	--player lost bh or first time
+		stepDelay = getRandomNumber(10800000, 604800000) --3hr - 1 week
 	end
 
 	writeScreenPlayData(pPlayer, "VillageJediProgression", "FsIntroDelay", stepDelay + os.time())
-	createEvent(stepDelay * 1000, "FsIntro", "doDelayedStep", pPlayer, "")
+	createEvent(stepDelay, "FsIntro", "doDelayedStep", pPlayer, "")
 end
 
 function FsIntro:doDelayedStep(pPlayer)
@@ -85,7 +82,7 @@ function FsIntro:doDelayedStep(pPlayer)
 	end
 
 	if (CreatureObject(pPlayer):isDead() or CreatureObject(pPlayer):isIncapacitated() or not Encounter:isPlayerInPositionForEncounter(pPlayer)) then
-		createEvent(getRandomNumber(300, 900) * 1000, "FsIntro", "doDelayedStep", pPlayer, "")
+		createEvent(getRandomNumber(1, 1) * 60 * 1000, "FsIntro", "doDelayedStep", pPlayer, "")
 		return
 	end
 
@@ -122,7 +119,7 @@ function FsIntro:doDelayedStep(pPlayer)
 	end
 
 	if (not encounterResult) then
-		local rescheduleDelay = getRandomNumber(15, 30) * 60 * 1000
+		local rescheduleDelay = getRandomNumber(1, 1) * 60 * 1000
 		createEvent(rescheduleDelay, "FsIntro", "doDelayedStep", pPlayer, "")
 	end
 end
@@ -171,7 +168,7 @@ function FsIntro:onLoggedIn(pPlayer)
 		end
 
 		if (self:hasDelayPassed(pPlayer)) then
-			createEvent(getRandomNumber(300, 900) * 1000, "FsIntro", "startOldMan", pPlayer, "")
+			createEvent(getRandomNumber(1, 2) * 1000, "FsIntro", "startOldMan", pPlayer, "")
 		end
 
 		self:setCurrentStep(pPlayer, self.OLDMANWAIT)
@@ -180,26 +177,26 @@ function FsIntro:onLoggedIn(pPlayer)
 
 	if (curStep == self.OLDMANWAIT) then
 		if (self:hasDelayPassed(pPlayer)) then
-			createEvent(getRandomNumber(300, 900) * 1000, "FsIntro", "startOldMan", pPlayer, "")
+			createEvent(getRandomNumber(1, 2) * 1000, "FsIntro", "startOldMan", pPlayer, "")
 			self:setCurrentStep(pPlayer, curStep + 1)
 		end
 	elseif (curStep == self.OLDMANMEET) then
 		QuestManager.resetQuest(pPlayer, QuestManager.quests.OLD_MAN_INITIAL)
-		createEvent(getRandomNumber(300, 900) * 1000, "FsIntro", "startOldMan", pPlayer, "")
+		createEvent(getRandomNumber(1, 2) * 1000, "FsIntro", "startOldMan", pPlayer, "")
 	elseif (curStep == self.SITHWAIT) then
 		if (self:hasDelayPassed(pPlayer)) then
-			createEvent(getRandomNumber(300, 900) * 1000, "FsIntro", "startSithAttack", pPlayer, "")
+			createEvent(getRandomNumber(1, 2) * 1000, "FsIntro", "startSithAttack", pPlayer, "")
 			self:setCurrentStep(pPlayer, curStep + 1)
 		end
 	elseif (curStep == self.SITHATTACK) then
-		createEvent(getRandomNumber(300, 900) * 1000, "FsIntro", "startSithAttack", pPlayer, "")
+		createEvent(getRandomNumber(1, 2) * 1000, "FsIntro", "startSithAttack", pPlayer, "")
 	elseif (curStep == self.USEDATAPADONE) then
 		if (not self:hasFirstDatapad(pPlayer)) then
 			QuestManager.resetQuest(pPlayer, QuestManager.quests.TWO_MILITARY)
 			QuestManager.resetQuest(pPlayer, QuestManager.quests.LOOT_DATAPAD_1)
 			QuestManager.resetQuest(pPlayer, QuestManager.quests.GOT_DATAPAD)
 			self:setCurrentStep(pPlayer, curStep - 1)
-			createEvent(getRandomNumber(300, 900) * 1000, "FsIntro", "startSithAttack", pPlayer, "")
+			createEvent(getRandomNumber(1, 2) * 1000, "FsIntro", "startSithAttack", pPlayer, "")
 		end
 	elseif (curStep == self.SITHTHEATER) then
 		if (SithShadowIntroTheater:hasTaskStarted(pPlayer)) then
@@ -304,7 +301,7 @@ function FsIntro:startOldMan(pPlayer)
 	local result = OldManIntroEncounter:start(pPlayer)
 
 	if (not result) then
-		createEvent(getRandomNumber(300, 900) * 1000, "FsIntro", "startOldMan", pPlayer, "")
+		createEvent(getRandomNumber(1, 2) * 1000, "FsIntro", "startOldMan", pPlayer, "")
 		return
 	end
 end
@@ -323,7 +320,7 @@ function FsIntro:startSithAttack(pPlayer)
 	local result = SithShadowEncounter:start(pPlayer)
 
 	if (not result) then
-		createEvent(getRandomNumber(300, 900) * 1000, "FsIntro", "startSithAttack", pPlayer, "")
+		createEvent(getRandomNumber(1, 2) * 1000, "FsIntro", "startSithAttack", pPlayer, "")
 		return
 	end
 end

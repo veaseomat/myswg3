@@ -261,8 +261,13 @@ function trainerConvHandler:handleConfirmLearnScreen(pConvTemplate, pPlayer, pNp
 
 		local pGhost = CreatureObject(pPlayer):getPlayerObject()
 
-		if (pGhost ~= nil and PlayerObject(pGhost):isJediTrainer(pNpc) and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and not JediTrials:isOnKnightTrials(pPlayer) and JediTrials:isEligibleForKnightTrials(pPlayer)) then
-			KnightTrials:startKnightTrials(pPlayer)
+			if (not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03")) and CreatureObject(pPlayer):villageKnightPrereqsMet("") then
+
+			local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
+			sui.setTitle("Jedi Knight")
+			sui.setPrompt("You are now strong enough to become a Jedi Knight. Find a Holocron to Unlock Knight.")
+			sui.sendTo(pPlayer)			
+			
 		end
 	else
 		local messageString = LuaStringIdChatParameter(stringTable .. "prose_train_failed")

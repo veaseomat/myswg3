@@ -94,7 +94,7 @@ int CraftingManagerImplementation::calculateExperimentationSuccess(CreatureObjec
 	}
 
 	/// Range 0-100
-	int luckRoll = System::random(100) + cityBonus;
+	int luckRoll = 80 + System::random(20) + cityBonus;
 
 	if(luckRoll > ((95 - expbonus) - forceSkill))
 		return AMAZINGSUCCESS;
@@ -136,23 +136,6 @@ String CraftingManagerImplementation::generateSerial() {
 	StringBuffer ss;
 
 	char a;
-
-	ss << "(";
-
-	for (int i = 0; i < 8; ++i) {
-
-		a = (System::random(34));
-		if (a < 9) {
-			a = a + 48;
-		} else {
-			a -= 9;
-			a = a + 97;
-		}
-		ss << a;
-	}
-
-	ss << ")";
-
 
 	return ss.toString();
 }

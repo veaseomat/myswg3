@@ -6,7 +6,7 @@ jediManagerName = "VillageJediManager"
 
 NOTINABUILDING = 0
 
-NUMBEROFTREESTOMASTER = 6
+NUMBEROFTREESTOMASTER = 0
 
 VillageJediManager = JediManager:new {
 	screenplayName = jediManagerName,
@@ -110,10 +110,6 @@ function VillageJediManager:canLearnSkill(pPlayer, skillName)
 		end
 	end
 
-	if skillName == "force_title_jedi_rank_01" and CreatureObject(pPlayer):getForceSensitiveSkillCount(false) < 24 then
-		return false
-	end
-
 	if skillName == "force_title_jedi_rank_03" and not CreatureObject(pPlayer):villageKnightPrereqsMet("") then
 		return false
 	end
@@ -126,15 +122,6 @@ function VillageJediManager:canSurrenderSkill(pPlayer, skillName)
 
 	if skillName == "force_title_jedi_rank_02" or skillName == "force_title_jedi_novice" then
 		CreatureObject(pPlayer):sendSystemMessage("@jedi_spam:revoke_force_title")
-		return false
-	end
-
-	if string.find(skillName, "force_sensitive_") and CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and CreatureObject(pPlayer):getForceSensitiveSkillCount(false) <= 24 then
-		CreatureObject(pPlayer):sendSystemMessage("@jedi_spam:revoke_force_sensitive")
-		return false
-	end
-
-	if string.find(skillName, "force_discipline_") and CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and not CreatureObject(pPlayer):villageKnightPrereqsMet(skillName) then
 		return false
 	end
 

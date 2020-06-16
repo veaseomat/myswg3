@@ -233,7 +233,7 @@ void SlicingSessionImplementation::endSlicing() {
 	}
 
 	if (tangibleObject->isMissionTerminal())
-		player->addCooldown("slicing.terminal", (2 * (60 * 1000))); // 2min Cooldown
+		player->addCooldown("slicing.terminal", (30 * 1000)); //30 sec Cooldown
 
 	cancelSession();
 
@@ -532,7 +532,7 @@ void SlicingSessionImplementation::handleWeaponSlice() {
 
 	}
 
-	uint8 percentage = System::random(max - min) + min;
+	uint8 percentage = max;
 
 	switch(System::random(1)) {
 	case 0:

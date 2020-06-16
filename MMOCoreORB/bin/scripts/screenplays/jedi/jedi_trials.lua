@@ -1,6 +1,6 @@
 JediTrials = ScreenPlay:new {
-	padawanTrialsEnabled = true,
-	knightTrialsEnabled = true,
+	padawanTrialsEnabled = false,
+	knightTrialsEnabled = false,
 
 	-- Object ID's of the various force shrines.
 	forceShrineIds = {
@@ -29,7 +29,7 @@ function JediTrials:isEligibleForPadawanTrials(pPlayer)
 
 	local learnedBranches = VillageJediManagerCommon.getLearnedForceSensitiveBranches(pPlayer)
 
-	return CreatureObject(pPlayer):hasScreenPlayState(32, "VillageJediProgression") and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and learnedBranches >= 6 and tonumber(readScreenPlayData(pPlayer, "PadawanTrials", "completedTrials")) ~= 1
+	return CreatureObject(pPlayer):hasScreenPlayState(32, "VillageJediProgression") and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and learnedBranches >= 0 and tonumber(readScreenPlayData(pPlayer, "PadawanTrials", "completedTrials")) ~= 1
 end
 
 function JediTrials:isOnPadawanTrials(pPlayer)
@@ -144,7 +144,6 @@ function JediTrials:unlockJediPadawan(pPlayer, dontSendSui)
 		local pItem = giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_padawan.iff", -1)
 	end
 
-	sendMail("system", "@jedi_spam:welcome_subject", "@jedi_spam:welcome_body", CreatureObject(pPlayer):getFirstName())
 end
 
 function JediTrials:unlockJediKnight(pPlayer)
@@ -183,16 +182,12 @@ function JediTrials:unlockJediKnight(pPlayer)
 	end
 
 	awardSkill(pPlayer, "force_title_jedi_rank_03")
-	writeScreenPlayData(pPlayer, "KnightTrials", "completedTrials", 1)
 	CreatureObject(pPlayer):playMusicMessage(unlockMusic)
 	playClientEffectLoc(CreatureObject(pPlayer):getObjectID(), "clienteffect/trap_electric_01.cef", CreatureObject(pPlayer):getZoneName(), CreatureObject(pPlayer):getPositionX(), CreatureObject(pPlayer):getPositionZ(), CreatureObject(pPlayer):getPositionY(), CreatureObject(pPlayer):getParentID())
 
-	PlayerObject(pGhost):addWaypoint(enclaveLoc[3], enclaveName, "", enclaveLoc[1], enclaveLoc[2], WAYPOINTYELLOW, true, true, 0)
 	PlayerObject(pGhost):setJediState(jediState)
 	PlayerObject(pGhost):setFrsCouncil(councilType)
 	PlayerObject(pGhost):setFrsRank(0)
-	CreatureObject(pPlayer):setFactionStatus(2) -- Overt
-	CreatureObject(pPlayer):setFaction(setFactionVal)
 
 	local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 	sui.setTitle("@jedi_trials:knight_trials_title")
@@ -497,16 +492,4 @@ function JediTrials:completeKnightForTesting(pPlayer, councilType)
 	writeScreenPlayData(pPlayer, "JediTrials", "JediCouncil", councilType)
 	self:setTrialsCompleted(pPlayer, #knightTrialQuests)
 	self:unlockJediKnight(pPlayer)
-
-	local enclaveLoc
-
-	if (isZoneEnabled("yavin4")) then
-		if (councilType == self.COUNCIL_LIGHT) then
-			enclaveLoc = { -5575, 0, 4905 }
-		else
-			enclaveLoc = { 5079, 0, 305 }
-		end
-
-		SceneObject(pPlayer):switchZone("yavin4", enclaveLoc[1], enclaveLoc[2], enclaveLoc[3], 0)
-	end
 end
