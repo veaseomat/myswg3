@@ -75,8 +75,24 @@ void LightsaberCrystalComponentImplementation::generateCrystalStats() {
 	setMaxCondition(7000 + System::random(4000) + (itemLevel * 10));
 
 	if (color == 31) {
+			//poor
+			damage = System::random(10);
+			//premium
+		if (itemLevel > 219)
+			damage += System::random(20);
+		//select
+		if (itemLevel > 139)
+			damage += System::random(20);
+		//quality
+		if (itemLevel > 99)
+			damage += System::random(20);
+		//good
+		if (itemLevel > 69)
+			damage += System::random(20);
+		//fair
+		if (itemLevel > 39)
+			damage += System::random(10);
 
-		damage = System::random((itemLevel * 2) / 10) + System::random(50);
 		if (damage > 100) damage = 100;
 
 		sacHealth = (System::random((itemLevel / 100) * 3) + System::random(10)) * -1;
@@ -166,12 +182,20 @@ void LightsaberCrystalComponentImplementation::validateCrystalStats() {
 }
 
 int LightsaberCrystalComponentImplementation::getCrystalQuality() {
-	if (itemLevel < 100)
+	if (itemLevel < 40)
+		return POOR;
+	else if (itemLevel < 70)
+		return FAIR;
+	else if (itemLevel < 100)
 		return GOOD;
-	else if (itemLevel < 250)
+	else if (itemLevel < 140)
 		return QUALITY;
-	else
+	else if (itemLevel < 220)
+		return SELECT;
+	else if (itemLevel < 330)
 		return PREMIUM;
+	else
+		return FLAWLESS;
 }
 
 int LightsaberCrystalComponentImplementation::getRandomizedStat(int min, int max, int itemLevel) {
