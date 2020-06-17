@@ -1514,14 +1514,14 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 //	}
 
 	//frsarmor
-	int darkarmor = defender->getSkillMod("force_manipulation_dark") / 4;
+	float darkarmor = defender->getSkillMod("force_manipulation_dark") / 4;
 
 	if (darkarmor > 0) {
 		darkarmor += 5;
 		damage *= 1.f / (1.f + ((float)darkarmor / 100.f));
 	}
 
-	int lightarmor = defender->getSkillMod("force_manipulation_light") / 4;
+	float lightarmor = defender->getSkillMod("force_manipulation_light") / 4;
 
 	if (lightarmor > 0) {
 		lightarmor += 10;
@@ -1529,14 +1529,14 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 	}
 
 	//frsdamage
-	int lightDamage = attacker->getSkillMod("force_manipulation_light") / 4;
+	float lightDamage = attacker->getSkillMod("force_manipulation_light") / 4;
 
 	if (lightDamage > 0) {
 		lightDamage += 5;
 		damage *= 1.f * (1.f + ((float)lightDamage / 100.f));
 	}
 
-	int darkDamage = attacker->getSkillMod("force_manipulation_dark") / 4;
+	float darkDamage = attacker->getSkillMod("force_manipulation_dark") / 4;
 
 	if (darkDamage > 0) {
 		darkDamage += 10;
@@ -1681,14 +1681,14 @@ int CombatManager::getHitChance(TangibleObject* attacker, CreatureObject* target
 //		}
 
 		//FRS DODGE SYSTEM
-		int frsdodge = (targetCreature->getSkillMod("force_manipulation_light") + targetCreature->getSkillMod("force_manipulation_dark")) / 4;
-
-		if (frsdodge > 0) {
-			frsdodge += 10;
-			if (frsdodge > System::random(100))
-				return MISS;
-
-		}
+//		float frsdodge = (targetCreature->getSkillMod("force_manipulation_light") + targetCreature->getSkillMod("force_manipulation_dark")) / 4;
+//
+//		if (frsdodge > 0) {
+//			frsdodge += 10;
+//			if (frsdodge > System::random(100))
+//				return MISS;
+//
+//		}
 
 		// saber block is special because it's just a % chance to block based on the skillmod
 		if (def == "saber_block") {

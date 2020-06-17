@@ -75,6 +75,16 @@ end
 -- Handling of the onPlayerLoggedIn event. The progression of the player will be checked and observers will be registered.
 -- @param pPlayer pointer to the creature object of the player who logged in.
 function Glowing:onPlayerLoggedIn(pPlayer)
+	local pGhost = CreatureObject(pPlayer):getPlayerObject()
+
+	if (pGhost == nil) then
+		return
+	end
+	
+	if PlayerObject(pGhost):getVisibility() > 500 then
+		FsIntro:startStepDelay(pPlayer, 3)
+	end
+
 	if not self:isGlowing(pPlayer) then
 		if self:hasRequiredBadgeCount(pPlayer) then
 

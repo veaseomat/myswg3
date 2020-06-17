@@ -358,7 +358,9 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 		CreatureObject(pPlayer):sendSystemMessage("The Holocron hums quietly and begins to glow! You have absorbed the ancient knowledge of the holocron.")
 		CreatureObject(pPlayer):awardExperience("jedi_general", 1000000, true)
 		
-		FsIntro:startStepDelay(pPlayer, 3)
+		if PlayerObject(pGhost):getVisibility() > 500 then
+			FsIntro:startStepDelay(pPlayer, 3)
+		end
 		
 		CreatureObject(pPlayer):addCooldown(USEDHOLOCRON, HOLOCRONCOOLDOWNTIME)
 			

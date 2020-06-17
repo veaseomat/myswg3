@@ -605,7 +605,7 @@ bool LootManagerImplementation::createLoot(SceneObject* container, AiAgent* crea
 bool LootManagerImplementation::createLootFromCollection(SceneObject* container, const LootGroupCollection* lootCollection, int level) {
 	for (int i = 0; i < lootCollection->count(); ++i) {
 		const LootGroupCollectionEntry* entry = lootCollection->get(i);
-		int lootChance = (entry->getLootChance() * 5);
+		int lootChance = (entry->getLootChance() * 2);
 
 		int delevel = System::random(level) + System::random(300);
 

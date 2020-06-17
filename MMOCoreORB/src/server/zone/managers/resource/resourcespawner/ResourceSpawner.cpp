@@ -602,15 +602,15 @@ int ResourceSpawner::randomizeValue(int min, int max) {
 	if (min > lowerGateOverride)
 		min = lowerGateOverride;
 
-	int randomStat = max;
+	int randomStat = System::random(max) + System::random(1000);
 
-//	if (randomStat > max) {
-//		randomStat = max;
-//	}
-//
-//	if (randomStat < max) {
-//		randomStat = max;
-//	}
+	if (randomStat > 1000) {
+		randomStat = 1000;
+	}
+
+	if (randomStat < 500) {
+		randomStat = 500;
+	}
 
 	return randomStat;
 }
