@@ -570,8 +570,8 @@ void CombatManager::applyWeaponDots(CreatureObject* attacker, CreatureObject* de
 	if (defender->getPvpStatusBitmask() == CreatureFlag::NONE)
 		return;
 
-//	if (!weapon->isCertifiedFor(attacker))
-//		return;
+	if (!weapon->isCertifiedFor(attacker))
+		return;
 
 	for (int i = 0; i < weapon->getNumberOfDots(); i++) {
 		if (weapon->getDotUses(i) <= 0)
@@ -733,7 +733,16 @@ int CombatManager::getAttackerAccuracyModifier(TangibleObject* attacker, Creatur
 		}
 	}
 
-	//if (attackerAccuracy == 0) attackerAccuracy = -15; // unskilled penalty, TODO: this might be -50 or -125, do research
+	if (attackerAccuracy == 0) attackerAccuracy = -15; // unskilled penalty, TODO: this might be -50 or -125, do research
+
+
+	//frs accuracy 25
+	int frsacc = (creoAttacker->getSkillMod("force_manipulation_dark") + creoAttacker->getSkillMod("force_manipulation_light")) / 4;
+
+	if (frsacc > 0) {
+		attackerAccuracy += frsacc + 5;
+	}
+
 
 	attackerAccuracy += creoAttacker->getSkillMod("attack_accuracy") + creoAttacker->getSkillMod("dead_eye");
 
@@ -742,9 +751,6 @@ int CombatManager::getAttackerAccuracyModifier(TangibleObject* attacker, Creatur
 		attackerAccuracy += creoAttacker->getSkillMod("melee_accuracy");
 	else if (weapon->getAttackType() == SharedWeaponObjectTemplate::RANGEDATTACK)
 		attackerAccuracy += creoAttacker->getSkillMod("ranged_accuracy");
-
-	attackerAccuracy += creoAttacker->getSkillMod("force_manipulation_light");
-	attackerAccuracy += creoAttacker->getSkillMod("force_manipulation_dark");
 
 	// now apply overall weapon defense mods
 	if (weapon->isMeleeWeapon()) {
@@ -761,6 +767,11 @@ int CombatManager::getAttackerAccuracyModifier(TangibleObject* attacker, Creatur
 		case SceneObjectType::HEAVYWEAPON:
 			attackerAccuracy += 25.f;
 		}
+	}
+
+	//accuracy cap new
+	if (attackerAccuracy > 100) {
+		attackerAccuracy = 100;
 	}
 
 	return attackerAccuracy;
@@ -795,12 +806,15 @@ int CombatManager::getDefenderDefenseModifier(CreatureObject* defender, WeaponOb
 	debug() << "Base target defense is " << targetDefense;
 
 	//jedi frs bonus
-	targetDefense += defender->getSkillMod("force_manipulation_dark");
-	targetDefense += defender->getSkillMod("force_manipulation_light");
+	int frsdef = (defender->getSkillMod("force_manipulation_dark") + defender->getSkillMod("force_manipulation_light")) / 4;
+
+	if (frsdef > 0) {
+		targetDefense += frsdef + 5;
+	}
 
 	// defense hardcap
-	if (targetDefense > 125)
-		targetDefense = 125;
+	if (targetDefense > 100)
+		targetDefense = 100;
 
 	if (attacker->isPlayerCreature())
 		targetDefense += defender->getSkillMod("private_defense");
@@ -834,8 +848,8 @@ int CombatManager::getDefenderSecondaryDefenseModifier(CreatureObject* defender)
 		targetDefense += defender->getSkillMod("private_" + mod);
 	}
 
-	if (targetDefense > 125)
-		targetDefense = 125;
+	if (targetDefense > 100)
+		targetDefense = 100;
 
 	return targetDefense;
 }
@@ -890,10 +904,10 @@ int CombatManager::calculateDamageRange(TangibleObject* attacker, CreatureObject
 	float minDamage = weapon->getMinDamage(), maxDamage = weapon->getMaxDamage();
 
 	// restrict damage if a player is not certified (don't worry about mobs)
-//	if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(cast<CreatureObject*>(attacker))) {
-//		minDamage = 5;
-//		maxDamage = 10;
-//	}
+	if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(cast<CreatureObject*>(attacker))) {
+		minDamage = 5;
+		maxDamage = 10;
+	}
 
 	debug() << "attacker base damage is " << minDamage << "-" << maxDamage;
 
@@ -1289,10 +1303,10 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 	} else {
 		float minDamage = weapon->getMinDamage(), maxDamage = weapon->getMaxDamage();
 
-//		if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(attacker)) {
-//			minDamage = 5.f;
-//			maxDamage = 10.f;
-//		}
+		if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(attacker)) {
+			minDamage = 5.f;
+			maxDamage = 10.f;
+		}
 
 		damage = minDamage;
 		diff = maxDamage - minDamage;
@@ -1462,8 +1476,8 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 		diff = calculateDamageRange(attacker, defender, weapon);
 		float minDamage = weapon->getMinDamage();
 
-//		if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(attacker))
-//			minDamage = 5;
+		if (attacker->isPlayerCreature() && !weapon->isCertifiedFor(attacker))
+			minDamage = 5;
 
 		damage = minDamage;
 	}
@@ -1486,10 +1500,8 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 		damage *= 1.25;
 
 	if (defender->isKnockedDown()) {
-		damage *= 1.25f;
+		damage *= 1.5f;
 	}
-
-	// FRS Damage increase
 
 
 	// Toughness reduction
@@ -1517,14 +1529,14 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 	float darkarmor = defender->getSkillMod("force_manipulation_dark") / 4;
 
 	if (darkarmor > 0) {
-		darkarmor += 5;
+//		darkarmor += 5;
 		damage *= 1.f / (1.f + ((float)darkarmor / 100.f));
 	}
 
 	float lightarmor = defender->getSkillMod("force_manipulation_light") / 4;
 
 	if (lightarmor > 0) {
-		lightarmor += 10;
+		lightarmor += 5;
 		damage *= 1.f / (1.f + ((float)lightarmor / 100.f));
 	}
 
@@ -1532,14 +1544,14 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 	float lightDamage = attacker->getSkillMod("force_manipulation_light") / 4;
 
 	if (lightDamage > 0) {
-		lightDamage += 5;
+//		lightDamage += 5;
 		damage *= 1.f * (1.f + ((float)lightDamage / 100.f));
 	}
 
 	float darkDamage = attacker->getSkillMod("force_manipulation_dark") / 4;
 
 	if (darkDamage > 0) {
-		darkDamage += 10;
+		darkDamage += 5;
 		damage *= 1.f * (1.f + ((float)darkDamage / 100.f));
 	}
 
@@ -1547,6 +1559,10 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 	// PvP Damage Reduction.
 	if (attacker->isPlayerCreature() && defender->isPlayerCreature() && !data.isForceAttack())
 		damage *= 0.2;
+
+	// PVE Damage Reduction
+//	if (attacker->isPlayerCreature() && !defender->isPlayerCreature())
+//		damage *= 0.8;
 
 	// EVP Damage Reduction.
 	if (!attacker->isPlayerCreature() && defender->isPlayerCreature())

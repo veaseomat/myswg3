@@ -71,5 +71,4 @@ disabledWearableSkillMods = {
 	"jedi_toughness",
 	"jedi_state_defense",
 	"force_defense",
-	"lightsaber_toughness",
 }

@@ -60,8 +60,8 @@ skillModChance = 10 -- 1 in 500
 randomDotAttribute = {0, 8} -- See CreatureAttributes.h in src for numbers.
 randomDotStrength = {10, 200} -- Set for disease. Fire will be x1.5, poison x2.
 randomDotDuration = {30, 240} -- Set for poison. Fire will be x1.5, disease x5.
-randomDotPotency = {1, 99}
-randomDotUses = {1, 99}
+randomDotPotency = {33, 99}
+randomDotUses = {99, 999}
 
 -- Modifier applied to min/max junk values found in loot item lua
 junkValueModifier = 5;
@@ -140,6 +140,7 @@ lootableArmorAttachmentStatMods = {
 }
 
 lootableClothingAttachmentStatMods = {
+	"lightsaber_toughness",
 	"jedi_force_power_regen",
 	"twohandlightsaber_accuracy",
 	"twohandlightsaber_speed",
@@ -376,6 +377,7 @@ lootableArmorStatMods = {
 }
 
 lootableClothingStatMods = {
+	"lightsaber_toughness",
 	"jedi_force_power_regen",
 	"twohandlightsaber_accuracy",
 	"twohandlightsaber_speed",

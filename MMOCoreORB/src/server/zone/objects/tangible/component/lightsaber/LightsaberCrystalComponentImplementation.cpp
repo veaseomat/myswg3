@@ -72,7 +72,7 @@ void LightsaberCrystalComponentImplementation::generateCrystalStats() {
 		return;
 	}
 
-	setMaxCondition(7000 + System::random(4000) + (itemLevel * 10));
+	setMaxCondition(1000 + System::random(200) + itemLevel);
 
 	if (color == 31) {
 			//poor

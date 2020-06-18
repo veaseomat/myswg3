@@ -50,7 +50,7 @@ void WeaponObjectImplementation::loadTemplateData(SharedObjectTemplate* template
 
 	weaponTemplate = dynamic_cast<SharedWeaponObjectTemplate*>(templateData);
 
-	certified = true;
+	certified = false;
 
 	attackType = weaponTemplate->getAttackType();
 	weaponEffect =  weaponTemplate->getWeaponEffect();
@@ -217,8 +217,8 @@ void WeaponObjectImplementation::fillAttributeList(AttributeListMessage* alm, Cr
 
 	if (res) {
 		alm->insertAttribute("weapon_cert_status", "Yes");
-//	} else {
-//		alm->insertAttribute("weapon_cert_status", "No");
+	} else {
+		alm->insertAttribute("weapon_cert_status", "No");
 	}
 
 	/*if (usesRemaining > 0)
@@ -653,9 +653,9 @@ bool WeaponObjectImplementation::isCertifiedFor(CreatureObject* object) const {
 	for (int i = 0; i < certificationsRequired->size(); ++i) {
 		const String& cert = certificationsRequired->get(i);
 
-//		if (!ghost->hasAbility(cert) && !object->hasSkill(cert)) {
-//			return false;
-//		}
+		if (!ghost->hasAbility(cert) && !object->hasSkill(cert)) {
+			return false;
+		}
 	}
 
 	return true;
@@ -733,8 +733,7 @@ void WeaponObjectImplementation::decay(CreatureObject* user) {
 			// TODO: is this supposed to be every crystal, or random crystal(s)?
 			for (int i = 0; i < saberInv->getContainerObjectsSize(); i++) {
 				ManagedReference<LightsaberCrystalComponent*> crystal = saberInv->getContainerObject(i).castTo<LightsaberCrystalComponent*>();
-
-				if (crystal != nullptr) {
+				if (crystal->getColor() == 31) {
 					crystal->inflictDamage(crystal, 0, 1, true, true);
 				}
 			}
