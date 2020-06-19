@@ -265,6 +265,10 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 	if (creature->hasSkill(skill->getSkillName()))
 		return true;
 
+	if (creature->hasSkill("force_title_jedi_rank_02")) {
+		SkillManager::surrenderAllSkills(creature, true, false);
+	}
+
 	ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
 
 	if (ghost != nullptr) {
@@ -424,6 +428,9 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 	if (skillName.beginsWith("force_") && !(JediManager::instance()->canSurrenderSkill(creature, skillName)))
 		return false;
 
+
+
+
 	removeSkillRelatedMissions(creature, skill);
 
 	creature->removeSkill(skill, notifyClient);
@@ -495,10 +502,12 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
-//		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
-//			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
-//			ghost->setSkillPoints(totalSkillPointsWasted);
-//		}
+		if (skill->getSkillName() == "force_title_jedi_novice") {
+			if (ghost->getSkillPoints() != totalSkillPointsWasted) {
+				creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
+				ghost->setSkillPoints(totalSkillPointsWasted);
+			}
+		}
 
 		ManagedReference<PlayerManager*> playerManager = creature->getZoneServer()->getPlayerManager();
 		if (playerManager != nullptr) {
@@ -692,6 +701,10 @@ bool SkillManager::canLearnSkill(const String& skillName, CreatureObject* creatu
 	}
 
 	if (!fulfillsSkillPrerequisites(skillName, creature)) {
+		return false;
+	}
+
+	if (creature->hasSkill("force_title_jedi_novice") && !skillName.beginsWith("force_")) {
 		return false;
 	}
 

@@ -78,19 +78,19 @@ void LightsaberCrystalComponentImplementation::generateCrystalStats() {
 			//poor
 		damage = System::random(10);
 			//fair
-		if (itemLevel > 49)
+		if (itemLevel > 39)
 			damage = System::random(10) + 10;
 			//good
-		if (itemLevel > 99)
+		if (itemLevel > 69)
 			damage = System::random(20) + 20;
 			//quality
-		if (itemLevel > 149)
+		if (itemLevel > 99)
 			damage = System::random(20) + 40;
 			//select
-		if (itemLevel > 219)
+		if (itemLevel > 139)
 			damage = System::random(20) + 60;
 			//premium
-		if (itemLevel > 289)
+		if (itemLevel > 219)
 			damage = System::random(20) + 80;
 
 		if (damage > 100) damage = 100;
@@ -182,15 +182,15 @@ void LightsaberCrystalComponentImplementation::validateCrystalStats() {
 }
 
 int LightsaberCrystalComponentImplementation::getCrystalQuality() {
-	if (itemLevel < 50)
+	if (itemLevel < 40)
 		return POOR;
-	else if (itemLevel < 100)
+	else if (itemLevel < 70)
 		return FAIR;
-	else if (itemLevel < 150)
+	else if (itemLevel < 100)
 		return GOOD;
-	else if (itemLevel < 220)
+	else if (itemLevel < 140)
 		return QUALITY;
-	else if (itemLevel < 290)
+	else if (itemLevel < 220)
 		return SELECT;
 	else if (itemLevel < 330)
 		return PREMIUM;
@@ -450,7 +450,7 @@ void LightsaberCrystalComponentImplementation::updateCraftingValues(CraftingValu
 
 	if (colorMax != 31) {
 		int finalColor = System::random(11);
-		if (itemLevel > 289){
+		if (itemLevel > 219){
 		finalColor = System::random(19) + 11;
 		}
 		setColor(finalColor);

@@ -1,7 +1,7 @@
 local ObjectManager = require("managers.object.object_manager")
 
 USEDHOLOCRON = "used_holocron"
-HOLOCRONCOOLDOWNTIME =  1000 -- 1 sec
+HOLOCRONCOOLDOWNTIME =  3600000 -- 1 hr
 
 VillageJediManagerHolocron = ScreenPlay:new {}
 
@@ -41,12 +41,23 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 		return
 	end
 	
-	if CreatureObject(pPlayer):hasSkill("force_rank_dark_master") or CreatureObject(pPlayer):hasSkill("force_rank_light_master") then
+	if CreatureObject(pPlayer):hasSkill("force_rank_dark_master") then
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 		sui.setTitle("Prestige")
-		sui.setPrompt("Great power requires great sacrifice. Death is only the beginning...")
+		sui.setPrompt("Great power requires great sacrifice. The hardest choices require the strongest wills. Death is only the beginning...")
 		sui.sendTo(pPlayer)
 		
+		return
+--		PlayerObject(pGhost):addSkillPoints(2)
+	end
+	
+	if  CreatureObject(pPlayer):hasSkill("force_rank_light_master") then
+		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
+		sui.setTitle("Prestige")
+		sui.setPrompt("Death is a natural part of life. Rejoice for those around you who transform into the Force. Train yourself to let go of everything you fear to lose...")
+		sui.sendTo(pPlayer)
+		
+		return
 --		PlayerObject(pGhost):addSkillPoints(2)
 	end
 	
@@ -67,7 +78,7 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 		
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 		sui.setTitle("Jedi Unlock")
-		sui.setPrompt("You begin to feel attuned with the power of the Force, your Jedi skills have been unlocked. Use /findmytrainer to locate your jedi skill trainer.")
+		sui.setPrompt("You begin to feel attuned with the power of the Force, your Jedi skills have been unlocked. Use /findmytrainer to locate your jedi skill trainer. you will also lose ALL non jedi skills once you train your first novice box. May the Force be with you... Jedi")
 		sui.sendTo(pPlayer)
 		
 			local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
@@ -78,12 +89,12 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_padawan.iff", -1)
 			end	
 			
-		CreatureObject(pPlayer):playEffect("clienteffect/trap_electric_01.cef", "")
-		CreatureObject(pPlayer):playMusicMessage("sound/music_become_jedi.snd")
-		
-		SceneObject(pSceneObject):destroyObjectFromWorld()
-		SceneObject(pSceneObject):destroyObjectFromDatabase()
-		return
+--		CreatureObject(pPlayer):playEffect("clienteffect/trap_electric_01.cef", "")
+--		CreatureObject(pPlayer):playMusicMessage("sound/music_become_jedi.snd")
+--		
+--		SceneObject(pSceneObject):destroyObjectFromWorld()
+--		SceneObject(pSceneObject):destroyObjectFromDatabase()
+--		return --was used to prevent 1mil xp to unlock
 		
 
 	end
@@ -97,7 +108,7 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 	if CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and not (CreatureObject(pPlayer):hasSkill("force_rank_light_novice") or CreatureObject(pPlayer):hasSkill("force_rank_dark_novice"))then
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 		sui.setTitle("Knight Box")
-		sui.setPrompt("You must first surrender the Jedi Knight Force progression box before you can choose a new knight path.")
+		sui.setPrompt("You already have the Jedi Knight Force progression box, you must surrender it before you can choose a side.")
 		sui.sendTo(pPlayer)
 		return
 	end	
@@ -108,7 +119,7 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 		awardSkill(pPlayer, "force_rank_light_master")
 									local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You are now Max Force Rank, if you clone for any reason you will lose all of your skills, good luck.")
+					sui.setPrompt("You are now a Force Ranking System LEADER, if you clone for any reason you will lose all of your skills, good luck.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_09") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_10") then
@@ -230,7 +241,7 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 		awardSkill(pPlayer, "force_rank_dark_master")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You are now Max Force Rank, if you clone for any reason you will lose all of your skills, good luck.")
+					sui.setPrompt("You are now a Force Ranking System LEADER, if you clone for any reason you will lose all of your skills, good luck.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_09") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_10") then
@@ -355,8 +366,8 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 		SceneObject(pSceneObject):destroyObjectFromWorld()
 		SceneObject(pSceneObject):destroyObjectFromDatabase()
 		
-		CreatureObject(pPlayer):sendSystemMessage("The Holocron hums quietly and begins to glow! You have absorbed the ancient knowledge of the holocron.")
-		CreatureObject(pPlayer):awardExperience("jedi_general", 1000000, true)
+		CreatureObject(pPlayer):sendSystemMessage("The Holocron hums quietly and begins to glow! You have absorbed the ancient knowledge within the holocron.")
+		--CreatureObject(pPlayer):awardExperience("jedi_general", 1000000, true) --no xp anymore
 		
 		if PlayerObject(pGhost):getVisibility() > 500 then
 			FsIntro:startStepDelay(pPlayer, 3)
@@ -388,7 +399,7 @@ function VillageJediManagerHolocron.useHolocron(pSceneObject, pPlayer)
 	if VillageJediManagerHolocron.canUseHolocron(pPlayer) then
 		VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 	else
-		CreatureObject(pPlayer):sendSystemMessage("stop spamming the holocron")
+		CreatureObject(pPlayer):sendSystemMessage("But you are exhausted from using the last holocron! You must wait one hour from the last holocron you used.")
 	end
 
 end

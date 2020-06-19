@@ -2034,13 +2034,17 @@ void PlayerObjectImplementation::activateForcePowerRegen() {
 	if (!forceRegenerationEvent->isScheduled()) {
 		int forceControlMod = 0, forceManipulationMod = 0;
 
-		forceManipulationMod = (creature->getSkillMod("force_manipulation_light") + creature->getSkillMod("force_manipulation_dark"));
+		float frsregen = (creature->getSkillMod("force_manipulation_light") + creature->getSkillMod("force_manipulation_dark")) / 4;
 
-		if (forceManipulationMod > 0) {
-			regen += (160) / 10.f;
+		if (frsregen > 0) {
+			regen += 5.0f;
 		}
 
-		regen += (forceManipulationMod * 3) / 10.f;
+		regen += frsregen;
+
+		if (regen > 100.0f) {
+			regen = 100.0f;
+		}
 
 		int regenMultiplier = creature->getSkillMod("private_force_regen_multiplier");
 		int regenDivisor = creature->getSkillMod("private_force_regen_divisor");
@@ -2920,7 +2924,11 @@ void PlayerObjectImplementation::recalculateForcePower() {
 		forceControlMod = player->getSkillMod("force_control_dark");
 	}
 
-	maxForce += (forcePowerMod + forceControlMod) * 10;
+	maxForce += forceControlMod * 10;
+
+//	if (maxForce > 10000) {
+//		maxForce = 10000;
+//	}
 
 	setForcePowerMax(maxForce, true);
 }

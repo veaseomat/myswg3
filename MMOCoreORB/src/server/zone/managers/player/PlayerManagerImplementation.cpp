@@ -1609,14 +1609,14 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 
 		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
 		box->setPromptTitle("Prestige");
-		box->setPromptText("Master Jedi you have made a great sacrifice, through death you have lost all of your abilities, but you have gained a permanent skill mod bonus to force power max and force power regeneration. You have also been give an additional 20 skill points (they do not show up until you go into negative skill points). You have taken your first steps into a larger world...");
+		box->setPromptText("Master Jedi you have made a great sacrifice, through death you have lost all of your abilities, but you have gained a permanent skill mod bonus to force power max and force power regeneration. You have also been give an additional 250 skill points (they do not show up until you to go into negative skill points). You have taken your first steps into a larger world...");
 
 		ghost->addSuiBox(box);
 		player->sendMessage(box->generateMessage());
 
 
 		PlayerObject* ghost = player->getPlayerObject();
-		ghost->addSkillPoints(20);
+		ghost->addSkillPoints(250);
 	}
 }
 

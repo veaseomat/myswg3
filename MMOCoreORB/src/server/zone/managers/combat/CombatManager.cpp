@@ -812,18 +812,18 @@ int CombatManager::getDefenderDefenseModifier(CreatureObject* defender, WeaponOb
 		targetDefense += frsdef + 5;
 	}
 
+	// SL bonuses go on top of hardcap, NOT ANYMORE BIIIITCH
+	for (int i = 0; i < defenseAccMods->size(); ++i) {
+		const String& mod = defenseAccMods->get(i);
+		targetDefense += defender->getSkillMod("private_group_" + mod);
+	}
+
 	// defense hardcap
 	if (targetDefense > 100)
 		targetDefense = 100;
 
 	if (attacker->isPlayerCreature())
 		targetDefense += defender->getSkillMod("private_defense");
-
-	// SL bonuses go on top of hardcap
-	for (int i = 0; i < defenseAccMods->size(); ++i) {
-		const String& mod = defenseAccMods->get(i);
-		targetDefense += defender->getSkillMod("private_group_" + mod);
-	}
 
 	// food bonus goes on top as well
 	targetDefense += defender->getSkillMod("dodge_attack");
@@ -1526,33 +1526,37 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 //	}
 
 	//frsarmor
-	float darkarmor = defender->getSkillMod("force_manipulation_dark") / 4;
-
-	if (darkarmor > 0) {
-//		darkarmor += 5;
-		damage *= 1.f / (1.f + ((float)darkarmor / 100.f));
-	}
-
-	float lightarmor = defender->getSkillMod("force_manipulation_light") / 4;
+	float lightarmor = defender->getSkillMod("force_manipulation_light") / 8;
 
 	if (lightarmor > 0) {
-		lightarmor += 5;
+		lightarmor += 2.f;
 		damage *= 1.f / (1.f + ((float)lightarmor / 100.f));
 	}
 
-	//frsdamage
-	float lightDamage = attacker->getSkillMod("force_manipulation_light") / 4;
+	float darkarmor = defender->getSkillMod("force_manipulation_dark") / 8;
 
-	if (lightDamage > 0) {
-//		lightDamage += 5;
-		damage *= 1.f * (1.f + ((float)lightDamage / 100.f));
+	if (darkarmor > 0) {
+		darkarmor += 1.f;
+		damage *= 1.f / (1.f + ((float)darkarmor / 100.f));
 	}
 
-	float darkDamage = attacker->getSkillMod("force_manipulation_dark") / 4;
+	//frsdamage
+	float lightDamage = attacker->getSkillMod("force_manipulation_light") / 8;
+
+	if (lightDamage > 0) {
+		if (data.isForceAttack() || weapon->getAttackType() == SharedWeaponObjectTemplate::LIGHTSABER) {
+			lightDamage += 1.f;
+			damage *= 1.f * (1.f + ((float)lightDamage / 100.f));
+		}
+	}
+
+	float darkDamage = attacker->getSkillMod("force_manipulation_dark") / 8;
 
 	if (darkDamage > 0) {
-		darkDamage += 5;
-		damage *= 1.f * (1.f + ((float)darkDamage / 100.f));
+		if (data.isForceAttack() || weapon->getAttackType() == SharedWeaponObjectTemplate::LIGHTSABER) {
+			darkDamage += 2.f;
+			damage *= 1.f * (1.f + ((float)darkDamage / 100.f));
+		}
 	}
 
 
