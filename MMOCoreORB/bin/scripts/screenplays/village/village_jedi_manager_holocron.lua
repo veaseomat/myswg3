@@ -1,7 +1,7 @@
 local ObjectManager = require("managers.object.object_manager")
 
 USEDHOLOCRON = "used_holocron"
-HOLOCRONCOOLDOWNTIME =  3600000 -- 1 hr
+HOLOCRONCOOLDOWNTIME =  1000 -- 1 sec
 
 VillageJediManagerHolocron = ScreenPlay:new {}
 
@@ -41,32 +41,33 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 		return
 	end
 	
-	if CreatureObject(pPlayer):hasSkill("force_rank_dark_master") then
+	
+	if CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and not CreatureObject(pPlayer):villageKnightPrereqsMet("") then	
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-		sui.setTitle("Prestige")
-		sui.setPrompt("Great power requires great sacrifice. The hardest choices require the strongest wills. Death is only the beginning...")
+		sui.setTitle("JEDI PADAWAN")
+		sui.setPrompt("You are not yet ready to continue your path padawan, keep training...")
 		sui.sendTo(pPlayer)
 		
 		return
---		PlayerObject(pGhost):addSkillPoints(2)
+	end
+	
+	if CreatureObject(pPlayer):hasSkill("force_rank_dark_master") then
+		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
+		sui.setTitle("JEDI MASTER")
+		sui.setPrompt("Master Jedi, you have survived a long time. If you are killed now you will lose all of your FRS progress. Remain Vigilant!")
+		sui.sendTo(pPlayer)
+		return
 	end
 	
 	if  CreatureObject(pPlayer):hasSkill("force_rank_light_master") then
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-		sui.setTitle("Prestige")
-		sui.setPrompt("Death is a natural part of life. Rejoice for those around you who transform into the Force. Train yourself to let go of everything you fear to lose...")
+		sui.setTitle("JEDI MASTER")
+		sui.setPrompt("Master Jedi, you have survived a long time. If you are killed now you will lose all of your FRS progress. Remain Vigilant!")
 		sui.sendTo(pPlayer)
-		
 		return
+		--addSkillPoints(pPlayer, 200)
 --		PlayerObject(pGhost):addSkillPoints(2)
 	end
-	
---	if CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and not CreatureObject(pPlayer):villageKnightPrereqsMet("") then	
---		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
---		sui.setTitle("Young Jedi")
---		sui.setPrompt("You are not yet ready to continue your path padawan, keep training...")
---		sui.sendTo(pPlayer)
---	end
 		
 	if not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") then
 	
@@ -77,8 +78,8 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 		CreatureObject(pPlayer):sendSystemMessage("You begin to feel attuned with the power of the Force, your Jedi skills have been unlocked.")
 		
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-		sui.setTitle("Jedi Unlock")
-		sui.setPrompt("You begin to feel attuned with the power of the Force, your Jedi skills have been unlocked. Use /findmytrainer to locate your jedi skill trainer. you will also lose ALL non jedi skills once you train your first novice box. May the Force be with you... Jedi")
+		sui.setTitle("JEDI UNLOCK")
+		sui.setPrompt("You begin to feel attuned with the power of the Force, your Jedi skills have been unlocked. Use /findmytrainer to locate your jedi skill trainer. All of your non jedi skills have been REMOVED. May the Force be with you... Jedi")
 		sui.sendTo(pPlayer)
 		
 			local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
@@ -107,7 +108,7 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 	
 	if CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and not (CreatureObject(pPlayer):hasSkill("force_rank_light_novice") or CreatureObject(pPlayer):hasSkill("force_rank_dark_novice"))then
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-		sui.setTitle("Knight Box")
+		sui.setTitle("Surrender Knight Box")
 		sui.setPrompt("You already have the Jedi Knight Force progression box, you must surrender it before you can choose a side.")
 		sui.sendTo(pPlayer)
 		return
@@ -118,8 +119,8 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_10") and not CreatureObject(pPlayer):hasSkill("force_rank_light_master") then
 		awardSkill(pPlayer, "force_rank_light_master")
 									local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You are now a Force Ranking System LEADER, if you clone for any reason you will lose all of your skills, good luck.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You are now a Force Ranking System LEADER, if you are killed while in this position you will drop to rank 0, good luck Master Jedi.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_09") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_10") then
@@ -136,15 +137,15 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 					sui.sendTo(pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("Welcome to the council! you will not lose any FRS rank if you are killed while in this position. You have also been awared an extra 250 skill points to learn ALL of the jedi skills! Congratulations... Master Jedi")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_08") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_09") then
 		awardSkill(pPlayer, "force_rank_light_rank_09")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 8.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_07") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_08") then
@@ -161,22 +162,22 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 					sui.sendTo(pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. You will not lose any rank if killed while in this position.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_06") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_07") then
 		awardSkill(pPlayer, "force_rank_light_rank_07")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed in this position you will drop down to rank 5.")
 					sui.sendTo(pPlayer)
 		end		
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_05") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_06") then
 		awardSkill(pPlayer, "force_rank_light_rank_06")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 5.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_04") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_05") then
@@ -193,29 +194,29 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 					sui.sendTo(pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. You will not lose any rank if killed while in this position.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_03") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_04") then
 		awardSkill(pPlayer, "force_rank_light_rank_04")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_02") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_03") then
 		awardSkill(pPlayer, "force_rank_light_rank_03")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_01") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_02") then
 		awardSkill(pPlayer, "force_rank_light_rank_02")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_novice") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_01") then
@@ -232,16 +233,16 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 					sui.sendTo(pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You are now FRS rank 1. When you are killed in the FRS you will drop down to the first skill of that row. example: if you die as a rank 4 you will drop down to rank 1, but a rank 5 will not lose any rank. As a Rank 1 you will not lose any rank if killed.")
 					sui.sendTo(pPlayer)
 		end
 		
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_10") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_master") then
 		awardSkill(pPlayer, "force_rank_dark_master")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You are now a Force Ranking System LEADER, if you clone for any reason you will lose all of your skills, good luck.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You are now a Force Ranking System LEADER, if you are killed while in this position you will drop to rank 0, good luck Master Jedi.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_09") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_10") then
@@ -258,15 +259,15 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 					sui.sendTo(pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("Welcome to the council! you will not lose any FRS rank if you are killed while in this position. You have also been awared an extra 250 skill points to learn ALL of the jedi skills! Congratulations... Master Jedi")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_08") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_09") then
 		awardSkill(pPlayer, "force_rank_dark_rank_09")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 8.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_07") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_08") then
@@ -283,22 +284,22 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 					sui.sendTo(pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. You will not lose any rank if killed while in this position.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_06") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_07") then
 		awardSkill(pPlayer, "force_rank_dark_rank_07")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 5.")
 					sui.sendTo(pPlayer)
 		end		
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_05") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_06") then
 		awardSkill(pPlayer, "force_rank_dark_rank_06")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 5.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_04") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_05") then
@@ -315,29 +316,29 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 					sui.sendTo(pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. You will not lose any rank if killed while in this position.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_03") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_04") then
 		awardSkill(pPlayer, "force_rank_dark_rank_04")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_02") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_03") then
 		awardSkill(pPlayer, "force_rank_dark_rank_03")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_01") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_02") then
 		awardSkill(pPlayer, "force_rank_dark_rank_02")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_novice") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_01") then
@@ -354,8 +355,8 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 					sui.sendTo(pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-					sui.setTitle("Jedi Knight")
-					sui.setPrompt("You have gained a Force Rank.")
+					sui.setTitle("FORCE RANKING SYSTEM")
+					sui.setPrompt("You are now FRS rank 1. When you are killed in the FRS you will drop down to the first skill of that row. example: if you die as a rank 4 you will drop down to rank 1, but a rank 5 will not lose any rank. As a Rank 1 you will not lose any rank if killed.")
 					sui.sendTo(pPlayer)
 		end
 	end
@@ -399,7 +400,7 @@ function VillageJediManagerHolocron.useHolocron(pSceneObject, pPlayer)
 	if VillageJediManagerHolocron.canUseHolocron(pPlayer) then
 		VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 	else
-		CreatureObject(pPlayer):sendSystemMessage("But you are exhausted from using the last holocron! You must wait one hour from the last holocron you used.")
+		CreatureObject(pPlayer):sendSystemMessage("Stop spamming the holocron!")
 	end
 
 end

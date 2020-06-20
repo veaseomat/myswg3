@@ -84,6 +84,11 @@ function Glowing:onPlayerLoggedIn(pPlayer)
 	if PlayerObject(pGhost):getVisibility() > 500 then
 		FsIntro:startStepDelay(pPlayer, 3)
 	end
+	
+		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
+		sui.setTitle("LOGIN MESSAGE")
+		sui.setPrompt("Please vist the mySWG, SWGEmu Based Server Listings forum post to see the current updates!")
+		sui.sendTo(pPlayer)
 
 	if not self:isGlowing(pPlayer) then
 		if self:hasRequiredBadgeCount(pPlayer) then

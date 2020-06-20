@@ -614,12 +614,12 @@ bool LootManagerImplementation::createLootFromCollection(SceneObject* container,
 //		if(delevel > 300)
 //			delevel = 300;
 
-		int hroll = System::random(100000);
+		int hroll = System::random(1000000);
 
-		int holoresult = hroll + ((level * level) / 30);
+		int holoresult = hroll + ((level ^ 3) / 1000);
 
 
-		if (holoresult >= 100000){
+		if (holoresult >= 1000000){
 			createLoot(container, "holocron_nd", level);
 		}
 

@@ -140,8 +140,6 @@ lootableArmorAttachmentStatMods = {
 }
 
 lootableClothingAttachmentStatMods = {
-	"lightsaber_toughness",
-	"jedi_force_power_regen",
 	"twohandlightsaber_accuracy",
 	"twohandlightsaber_speed",
 	"polearmlightsaber_accuracy",
@@ -377,8 +375,6 @@ lootableArmorStatMods = {
 }
 
 lootableClothingStatMods = {
-	"lightsaber_toughness",
-	"jedi_force_power_regen",
 	"twohandlightsaber_accuracy",
 	"twohandlightsaber_speed",
 	"polearmlightsaber_accuracy",

@@ -265,15 +265,23 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 	if (creature->hasSkill(skill->getSkillName()))
 		return true;
 
-	if (creature->hasSkill("force_title_jedi_rank_02")) {
+	//jedi can only learn jedi skill
+	if (creature->hasSkill("force_title_jedi_novice")) {
 		SkillManager::surrenderAllSkills(creature, true, false);
 	}
+
 
 	ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
 
 	if (ghost != nullptr) {
 		//Withdraw skill points.
 		ghost->addSkillPoints(-skill->getSkillPointsRequired());
+
+		//frs council rank awards 250 skill points
+		if (skill->getSkillName() == "force_rank_light_rank_10" || skill->getSkillName() == "force_rank_dark_rank_10") {
+
+			ghost->addSkillPoints(250);
+		}
 
 		//Witdraw experience.
 		if (!noXpRequired) {
@@ -376,6 +384,8 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 		}
 	}
 
+
+
 	/// Update client with new values for things like Terrain Negotiation
 	CreatureObjectDeltaMessage4* msg4 = new CreatureObjectDeltaMessage4(creature);
 	msg4->updateAccelerationMultiplierBase();
@@ -428,7 +438,13 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 	if (skillName.beginsWith("force_") && !(JediManager::instance()->canSurrenderSkill(creature, skillName)))
 		return false;
 
-
+//	if (skill->getSkillName() == "force_rank_light_master") {
+//		return false;
+//	}
+//
+//	if (skill->getSkillName() == "force_rank_dark_master") {
+//		return false;
+//	}
 
 
 	removeSkillRelatedMissions(creature, skill);
@@ -502,7 +518,7 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
-		if (skill->getSkillName() == "force_title_jedi_novice") {
+		if (skill->getSkillName() == "force_title_jedi_rank_02") {
 			if (ghost->getSkillPoints() != totalSkillPointsWasted) {
 				creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
 				ghost->setSkillPoints(totalSkillPointsWasted);

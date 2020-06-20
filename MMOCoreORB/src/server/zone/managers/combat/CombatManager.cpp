@@ -1518,12 +1518,13 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 			damage *= 1.f / (1.f + ((float)forceDefense / 100.f));
 	}
 
-//	int jediarmor = defender->getSkillMod("jedi_force_power_regen");
-//
-//	if (jediarmor > 0) {
-//		jediarmor = 20;
-//		damage *= 1.f / (1.f + ((float)jediarmor / 100.f));
-//	}
+	float jediarmor = defender->getSkillMod("jedi_force_power_max") / 100;
+
+	if (jediarmor > 0) {
+		jediarmor += 25.f;
+		if (jediarmor > 50) jediarmor = 50;
+		damage *= 1.f / (1.f + ((float)jediarmor / 100.f));
+	}
 
 	//frsarmor
 	float lightarmor = defender->getSkillMod("force_manipulation_light") / 8;
@@ -1699,6 +1700,7 @@ int CombatManager::getHitChance(TangibleObject* attacker, CreatureObject* target
 //				return MISS;
 //
 //		}
+
 
 		//FRS DODGE SYSTEM
 //		float frsdodge = (targetCreature->getSkillMod("force_manipulation_light") + targetCreature->getSkillMod("force_manipulation_dark")) / 4;
