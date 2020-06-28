@@ -812,7 +812,7 @@ int CombatManager::getDefenderDefenseModifier(CreatureObject* defender, WeaponOb
 		targetDefense += frsdef + 5;
 	}
 
-	// SL bonuses go on top of hardcap, NOT ANYMORE BIIIITCH
+	// SL bonuses go on top of hardcap// NOT ANYMORE BIIIITCH
 	for (int i = 0; i < defenseAccMods->size(); ++i) {
 		const String& mod = defenseAccMods->get(i);
 		targetDefense += defender->getSkillMod("private_group_" + mod);
@@ -1518,7 +1518,7 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 			damage *= 1.f / (1.f + ((float)forceDefense / 100.f));
 	}
 
-	float jediarmor = defender->getSkillMod("jedi_force_power_max") / 100;
+	float jediarmor = defender->getSkillMod("jedi_force_power_max") / 200;
 
 	if (jediarmor > 0) {
 		jediarmor += 25.f;
@@ -1566,8 +1566,8 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 		damage *= 0.2;
 
 	// PVE Damage Reduction
-//	if (attacker->isPlayerCreature() && !defender->isPlayerCreature())
-//		damage *= 0.8;
+	if (attacker->isPlayerCreature() && !defender->isPlayerCreature())
+		damage *= 0.8;
 
 	// EVP Damage Reduction.
 	if (!attacker->isPlayerCreature() && defender->isPlayerCreature())

@@ -278,15 +278,19 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 		ghost->addSkillPoints(-skill->getSkillPointsRequired());
 
 		//frs council rank awards 250 skill points
-		if (skill->getSkillName() == "force_rank_light_rank_10" || skill->getSkillName() == "force_rank_dark_rank_10") {
+//		if (skill->getSkillName() == "force_rank_light_rank_10" || skill->getSkillName() == "force_rank_dark_rank_10") {
+//
+//			ghost->addSkillPoints(250);
+//		}
 
-			ghost->addSkillPoints(250);
+		if (skill->getSkillName().contains("force_rank_light_rank_") || skill->getSkillName().contains("force_rank_dark_rank_")) {
+			ghost->addSkillPoints(20);
 		}
 
 		//Witdraw experience.
-		if (!noXpRequired) {
-			ghost->addExperience(skill->getXpType(), -skill->getXpCost(), true);
-		}
+//		if (!noXpRequired) {
+//			ghost->addExperience(skill->getXpType(), -skill->getXpCost(), true);
+//		}
 
 		creature->addSkill(skill, notifyClient);
 
@@ -518,6 +522,10 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
+		if (skill->getSkillName().contains("force_rank_light_rank_") || skill->getSkillName().contains("force_rank_dark_rank_")) {
+			ghost->addSkillPoints(-20);
+		}
+
 		if (skill->getSkillName() == "force_title_jedi_rank_02") {
 			if (ghost->getSkillPoints() != totalSkillPointsWasted) {
 				creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
@@ -727,11 +735,11 @@ bool SkillManager::canLearnSkill(const String& skillName, CreatureObject* creatu
 	ManagedReference<PlayerObject* > ghost = creature->getPlayerObject();
 	if (ghost != nullptr) {
 		//Check if player has enough xp to learn the skill.
-		if (!noXpRequired) {
-			if (ghost->getExperience(skill->getXpType()) < skill->getXpCost()) {
-				return false;
-			}
-		}
+//		if (!noXpRequired) {
+//			if (ghost->getExperience(skill->getXpType()) < skill->getXpCost()) {
+//				return false;
+//			}
+//		}
 
 		//Check if player has enough skill points to learn the skill.
 		if (ghost->getSkillPoints() < skill->getSkillPointsRequired()) {
@@ -758,12 +766,12 @@ bool SkillManager::fulfillsSkillPrerequisitesAndXp(const String& skillName, Crea
 	}
 
 	ManagedReference<PlayerObject* > ghost = creature->getPlayerObject();
-	if (ghost != nullptr) {
-		//Check if player has enough xp to learn the skill.
-		if (skill->getXpCost() > 0 && ghost->getExperience(skill->getXpType()) < skill->getXpCost()) {
-			return false;
-		}
-	}
+//	if (ghost != nullptr) {
+//		//Check if player has enough xp to learn the skill.
+//		if (skill->getXpCost() > 0 && ghost->getExperience(skill->getXpType()) < skill->getXpCost()) {
+//			return false;
+//		}
+//	}
 
 	return true;
 }

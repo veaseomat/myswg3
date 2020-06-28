@@ -1643,12 +1643,18 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 	uint64 preDesignatedFacilityOid = ghost->getCloningFacility();
 	ManagedReference<SceneObject*> preDesignatedFacility = server->getObject(preDesignatedFacilityOid);
 
-	if (preDesignatedFacility == nullptr || preDesignatedFacility != cloner) {
+
 		player->setWounds(CreatureAttribute::HEALTH, 0, true);
+		player->setWounds(CreatureAttribute::STRENGTH, 0, true);
+		player->setWounds(CreatureAttribute::CONSTITUTION, 0, true);
 		player->setWounds(CreatureAttribute::ACTION, 0, true);
+		player->setWounds(CreatureAttribute::QUICKNESS, 0, true);
+		player->setWounds(CreatureAttribute::STAMINA, 0, true);
 		player->setWounds(CreatureAttribute::MIND, 0, true);
-		player->setShockWounds(250, true);
-	}
+		player->setWounds(CreatureAttribute::FOCUS, 0, true);
+		player->setWounds(CreatureAttribute::WILLPOWER, 0, true);
+		player->setShockWounds(0, true);
+
 
 	if (player->getFactionStatus() != FactionStatus::ONLEAVE && cbot->getFacilityType() != CloningBuildingObjectTemplate::FACTION_IMPERIAL && cbot->getFacilityType() != CloningBuildingObjectTemplate::FACTION_REBEL && !player->hasSkill("force_title_jedi_rank_03"))
 		player->setFactionStatus(FactionStatus::ONLEAVE);

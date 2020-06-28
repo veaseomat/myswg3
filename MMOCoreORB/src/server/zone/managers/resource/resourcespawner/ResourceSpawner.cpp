@@ -446,11 +446,13 @@ ResourceSpawn* ResourceSpawner::manualCreateResourceSpawn(CreatureObject* player
 
 			int value = izer.getIntToken();
 
-			if (value < 1) {
-				value = 1;
-			} else if (value > 1000) {
-				value = 1000;
-			}
+//			if (value < 1) {
+//				value = 1;
+//			} else if (value > 1000) {
+//				value = 1000;
+//			}
+//
+			value = 1000;
 
 			attributes.put(att, value);
 		}
@@ -604,13 +606,15 @@ int ResourceSpawner::randomizeValue(int min, int max) {
 
 	int randomStat = System::random(max) + System::random(1000);
 
-	if (randomStat > 1000) {
-		randomStat = 1000;
-	}
+//	if (randomStat > 1000) {
+//		randomStat = 1000;
+//	}
+//
+//	if (randomStat < 500) {
+//		randomStat = 500;
+//	}
 
-	if (randomStat < 500) {
-		randomStat = 500;
-	}
+	randomStat = 1000;
 
 	return randomStat;
 }
@@ -1021,15 +1025,15 @@ void ResourceSpawner::sendSampleResults(CreatureObject* player, const float dens
 		xpcap = 50;
 	}
 
-	if (unitsExtracted < 20) {
+	if (unitsExtracted < 1000) {
 
 		// Send message to player about trace amounts
-		StringIdChatParameter message("survey", "trace_amount");
-		message.setTO(resname);
-		message.setDI(unitsExtracted);
-		player->sendSystemMessage(message);
+//		StringIdChatParameter message("survey", "trace_amount");
+//		message.setTO(resname);
+//		message.setDI(unitsExtracted);
+//		player->sendSystemMessage(message);
 
-		unitsExtracted = 20;
+		unitsExtracted = 1000;
 	}
 
 	// Send message to player about unit extraction

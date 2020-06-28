@@ -138,14 +138,14 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("Welcome to the council! you will not lose any FRS rank if you are killed while in this position. You have also been awared an extra 250 skill points to learn ALL of the jedi skills! Congratulations... Master Jedi")
+					sui.setPrompt("Welcome to the council! you will not lose any FRS rank if you are killed while in this position. You have been awared an extra 20 skill points and can now learn ALL of the jedi skills! Congratulations... Master Jedi")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_08") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_09") then
 		awardSkill(pPlayer, "force_rank_light_rank_09")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 8.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 8.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_07") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_08") then
@@ -163,21 +163,21 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. You will not lose any rank if killed while in this position.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. You will not lose any rank if killed while in this position.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_06") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_07") then
 		awardSkill(pPlayer, "force_rank_light_rank_07")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed in this position you will drop down to rank 5.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed in this position you will drop down to rank 5.")
 					sui.sendTo(pPlayer)
 		end		
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_05") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_06") then
 		awardSkill(pPlayer, "force_rank_light_rank_06")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 5.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 5.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_04") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_05") then
@@ -195,28 +195,28 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. You will not lose any rank if killed while in this position.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. You will not lose any rank if killed while in this position.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_03") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_04") then
 		awardSkill(pPlayer, "force_rank_light_rank_04")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_02") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_03") then
 		awardSkill(pPlayer, "force_rank_light_rank_03")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_01") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_02") then
 		awardSkill(pPlayer, "force_rank_light_rank_02")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_novice") and not CreatureObject(pPlayer):hasSkill("force_rank_light_rank_01") then
@@ -234,7 +234,7 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You are now FRS rank 1. When you are killed in the FRS you will drop down to the first skill of that row. example: if you die as a rank 4 you will drop down to rank 1, but a rank 5 will not lose any rank. As a Rank 1 you will not lose any rank if killed.")
+					sui.setPrompt("You are now FRS rank 1. When you are killed in the FRS you will drop down to the first skill of that row. example: if you die as a rank 4 you will drop down to rank 1, but a rank 5 will not lose any rank. As a Rank 1 you will not lose any rank if killed. \rYou have also been awarded with 20 extra skill points (they do not show up like normal but will allow you to go into negative sp), each rank receives 20 skill points, a council member has enough skill points to learn ALL jedi skills, losing a rank will also revoke the added skill poitns of that rank.")
 					sui.sendTo(pPlayer)
 		end
 		
@@ -260,14 +260,14 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("Welcome to the council! you will not lose any FRS rank if you are killed while in this position. You have also been awared an extra 250 skill points to learn ALL of the jedi skills! Congratulations... Master Jedi")
+					sui.setPrompt("Welcome to the council! you will not lose any FRS rank if you are killed while in this position. You have been awared an extra 20 skill points and can now learn ALL of the jedi skills! Congratulations... Master Jedi")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_08") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_09") then
 		awardSkill(pPlayer, "force_rank_dark_rank_09")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 8.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 8.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_07") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_08") then
@@ -285,21 +285,21 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. You will not lose any rank if killed while in this position.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. You will not lose any rank if killed while in this position.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_06") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_07") then
 		awardSkill(pPlayer, "force_rank_dark_rank_07")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 5.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 5.")
 					sui.sendTo(pPlayer)
 		end		
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_05") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_06") then
 		awardSkill(pPlayer, "force_rank_dark_rank_06")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 5.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 5.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_04") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_05") then
@@ -317,28 +317,28 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. You will not lose any rank if killed while in this position.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. You will not lose any rank if killed while in this position.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_03") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_04") then
 		awardSkill(pPlayer, "force_rank_dark_rank_04")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_02") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_03") then
 		awardSkill(pPlayer, "force_rank_dark_rank_03")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_01") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_02") then
 		awardSkill(pPlayer, "force_rank_dark_rank_02")
 							local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You have gained a Force Rank. If you are killed while in this position you will drop down to rank 1.")
+					sui.setPrompt("You have gained a Force Rank and have been awarded with 20 extra skill points. If you are killed while in this position you will drop down to rank 1.")
 					sui.sendTo(pPlayer)
 		end
 		if CreatureObject(pPlayer):hasSkill("force_rank_dark_novice") and not CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_01") then
@@ -356,7 +356,7 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 			end	
 								local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 					sui.setTitle("FORCE RANKING SYSTEM")
-					sui.setPrompt("You are now FRS rank 1. When you are killed in the FRS you will drop down to the first skill of that row. example: if you die as a rank 4 you will drop down to rank 1, but a rank 5 will not lose any rank. As a Rank 1 you will not lose any rank if killed.")
+					sui.setPrompt("You are now FRS rank 1. When you are killed in the FRS you will drop down to the first skill of that row. example: if you die as a rank 4 you will drop down to rank 1, but a rank 5 will not lose any rank. As a Rank 1 you will not lose any rank if killed. \rYou have also been awarded with 20 extra skill points (they do not show up like normal but will allow you to go into negative sp), each rank receives 20 skill points, a council member has enough skill points to learn ALL jedi skills, losing a rank will also revoke the added skill poitns of that rank.")
 					sui.sendTo(pPlayer)
 		end
 	end

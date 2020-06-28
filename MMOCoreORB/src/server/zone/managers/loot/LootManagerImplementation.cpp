@@ -605,7 +605,7 @@ bool LootManagerImplementation::createLoot(SceneObject* container, AiAgent* crea
 bool LootManagerImplementation::createLootFromCollection(SceneObject* container, const LootGroupCollection* lootCollection, int level) {
 	for (int i = 0; i < lootCollection->count(); ++i) {
 		const LootGroupCollectionEntry* entry = lootCollection->get(i);
-		int lootChance = (entry->getLootChance() * 2);
+		int lootChance = (entry->getLootChance() * 3);
 
 //		int delevel = System::random(300);
 
@@ -614,12 +614,27 @@ bool LootManagerImplementation::createLootFromCollection(SceneObject* container,
 //		if(delevel > 300)
 //			delevel = 300;
 
-		int hroll = System::random(1000000);
+//		int hroll = System::random(10000);
 
-		int holoresult = hroll + ((level ^ 3) / 1000);
+		int holoresult = System::random(20000) + level;
 
+//		if (level < 25) holoresult = System::random(5000);
+//
+//		if (level < 50) holoresult = System::random(2000) + 3000;
+//
+//		if (level < 100) holoresult = System::random(1000) + 4000;
+//
+//		if (level < 150) holoresult = System::random(500) + 4500;
+//
+//		if (level < 200) holoresult = System::random(200) + 4800;
+//
+//		if (level < 250) holoresult = System::random(50) + 4950;
+//
+//		if (level < 300) holoresult = System::random(25) + 4975;
+//
+//		if (level > 299) holoresult = System::random(5) + 4995;
 
-		if (holoresult >= 1000000){
+		if (holoresult >= 20000){
 			createLoot(container, "holocron_nd", level);
 		}
 
