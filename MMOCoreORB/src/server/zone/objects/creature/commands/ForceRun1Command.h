@@ -33,6 +33,12 @@ public:
 //			return GENERALERROR;
 //		}
 
+		// Toggle On/Off
+		if (res == NOSTACKJEDIBUFF) {
+			creature->sendSystemMessage("You feel the Force leave your body, and you return to normal movement speed."); // Toggle Force Run off.
+			creature->removeBuff(BuffCRC::JEDI_FORCE_RUN_1);
+		}
+
 		// Return if something is in error.
 		if (res != SUCCESS) {
 			return res;
@@ -44,11 +50,7 @@ public:
 			creature->removeBuff(STRING_HASHCODE("retreat"));
 		}
 
-		// Toggle On/Off
-		if (res == NOSTACKJEDIBUFF) {
-			creature->sendSystemMessage("You feel the Force leave your body, and you return to normal movement speed."); // Toggle Force Run off.
-			creature->removeBuff(BuffCRC::JEDI_FORCE_RUN_1);
-		}
+
 
 		return SUCCESS;
 	}

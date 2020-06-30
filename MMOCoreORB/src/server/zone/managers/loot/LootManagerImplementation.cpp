@@ -300,7 +300,7 @@ TangibleObject* LootManagerImplementation::createLootObject(const LootItemTempla
 
 	setCustomObjectName(prototype, templateObject);
 
-	float excMod = (System::random(25) / 10) + 1.0;
+	float excMod = (System::random(40) / 10) + 1.0;
 
 	float adjustment = floor((float)(((level > 50) ? level : 50) - 50) / 10.f + 0.5);
 
@@ -313,6 +313,10 @@ TangibleObject* LootManagerImplementation::createLootObject(const LootItemTempla
 
 	String subtitle;
 	bool yellow = false;
+
+	if (excMod > 2.5) {
+		yellow = true;
+	}
 
 	for (int i = 0; i < craftingValues->getExperimentalPropertySubtitleSize(); ++i) {
 		subtitle = craftingValues->getExperimentalPropertySubtitle(i);
@@ -605,7 +609,7 @@ bool LootManagerImplementation::createLoot(SceneObject* container, AiAgent* crea
 bool LootManagerImplementation::createLootFromCollection(SceneObject* container, const LootGroupCollection* lootCollection, int level) {
 	for (int i = 0; i < lootCollection->count(); ++i) {
 		const LootGroupCollectionEntry* entry = lootCollection->get(i);
-		int lootChance = (entry->getLootChance() * 3);
+		int lootChance = (entry->getLootChance() * 5);
 
 //		int delevel = System::random(300);
 
@@ -616,7 +620,7 @@ bool LootManagerImplementation::createLootFromCollection(SceneObject* container,
 
 //		int hroll = System::random(10000);
 
-		int holoresult = System::random(20000) + level;
+		int holoresult = System::random(300);
 
 //		if (level < 25) holoresult = System::random(5000);
 //
@@ -634,7 +638,7 @@ bool LootManagerImplementation::createLootFromCollection(SceneObject* container,
 //
 //		if (level > 299) holoresult = System::random(5) + 4995;
 
-		if (holoresult >= 20000){
+		if (holoresult >= 300){
 			createLoot(container, "holocron_nd", level);
 		}
 

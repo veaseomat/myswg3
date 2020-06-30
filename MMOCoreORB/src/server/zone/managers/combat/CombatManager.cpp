@@ -1518,44 +1518,44 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 			damage *= 1.f / (1.f + ((float)forceDefense / 100.f));
 	}
 
-	float jediarmor = defender->getSkillMod("jedi_force_power_max") / 200;
-
-	if (jediarmor > 0) {
-		jediarmor += 25.f;
-		if (jediarmor > 50) jediarmor = 50;
-		damage *= 1.f / (1.f + ((float)jediarmor / 100.f));
-	}
+//	float jediarmor = defender->getSkillMod("jedi_force_power_max") / 200;
+//
+//	if (jediarmor > 0) {
+//		jediarmor += 25.f;
+//		if (jediarmor > 50) jediarmor = 50;
+//		damage *= 1.f / (1.f + ((float)jediarmor / 100.f));
+//	}
 
 	//frsarmor
-	float lightarmor = defender->getSkillMod("force_manipulation_light") / 8;
+	float lightarmor = defender->getSkillMod("force_manipulation_light") / 2;
 
 	if (lightarmor > 0) {
-		lightarmor += 2.f;
+		lightarmor += 41.f;
 		damage *= 1.f / (1.f + ((float)lightarmor / 100.f));
 	}
 
-	float darkarmor = defender->getSkillMod("force_manipulation_dark") / 8;
+	float darkarmor = defender->getSkillMod("force_manipulation_dark") / 2;
 
 	if (darkarmor > 0) {
-		darkarmor += 1.f;
+		darkarmor += 40.f;
 		damage *= 1.f / (1.f + ((float)darkarmor / 100.f));
 	}
 
 	//frsdamage
-	float lightDamage = attacker->getSkillMod("force_manipulation_light") / 8;
+	float lightDamage = attacker->getSkillMod("force_manipulation_light") / 4;
 
 	if (lightDamage > 0) {
 		if (data.isForceAttack() || weapon->getAttackType() == SharedWeaponObjectTemplate::LIGHTSABER) {
-			lightDamage += 1.f;
+			lightDamage += 20.f;
 			damage *= 1.f * (1.f + ((float)lightDamage / 100.f));
 		}
 	}
 
-	float darkDamage = attacker->getSkillMod("force_manipulation_dark") / 8;
+	float darkDamage = attacker->getSkillMod("force_manipulation_dark") / 4;
 
 	if (darkDamage > 0) {
 		if (data.isForceAttack() || weapon->getAttackType() == SharedWeaponObjectTemplate::LIGHTSABER) {
-			darkDamage += 2.f;
+			darkDamage += 21.f;
 			damage *= 1.f * (1.f + ((float)darkDamage / 100.f));
 		}
 	}
@@ -1567,11 +1567,11 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 
 	// PVE Damage Reduction
 	if (attacker->isPlayerCreature() && !defender->isPlayerCreature())
-		damage *= 0.8;
+		damage *= 1.3;
 
 	// EVP Damage Reduction.
 	if (!attacker->isPlayerCreature() && defender->isPlayerCreature())
-		damage *= 0.5;
+		damage *= 0.7;
 
 	// PvE Damage increase for non jedi.
 //	if (attacker->isPlayerCreature() && !defender->isPlayerCreature()) {

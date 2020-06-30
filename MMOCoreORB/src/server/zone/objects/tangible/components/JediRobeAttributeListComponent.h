@@ -38,6 +38,8 @@ public:
 		if (!rankRequired.isEmpty() && rankRequired != "force_title_jedi_rank_02") {
 			alm->insertAttribute("jedi_rank_required", "@skl_n:" + rankRequired);
 		}
+
+		alm->insertAttribute("sockets", 50);
 	}
 
 };
