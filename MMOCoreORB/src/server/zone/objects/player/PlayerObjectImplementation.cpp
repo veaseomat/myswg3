@@ -2024,6 +2024,16 @@ void PlayerObjectImplementation::activateForcePowerRegen() {
 
 	float regen = (float)creature->getSkillMod("jedi_force_power_regen");
 
+	//remove old bonuses
+		if (regen > 131) {
+			int newregen = (131 - regen);
+
+			ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
+
+			creature->addSkillMod(SkillModManager::PERMANENTMOD, "jedi_force_power_regen", newregen, true);
+
+		}
+
 	if(regen == 0.0f)
 		return;
 
@@ -2034,12 +2044,6 @@ void PlayerObjectImplementation::activateForcePowerRegen() {
 	if (!forceRegenerationEvent->isScheduled()) {
 		int forceControlMod = 0, forceManipulationMod = 0;
 
-
-//regen cap
-		if (regen > 100.0f) {
-			regen = 100.0f;
-		}
-//frs regen goes on top of cap
 		float frsregen = (creature->getSkillMod("force_manipulation_light") + creature->getSkillMod("force_manipulation_dark")) / 4;
 
 		if (frsregen > 0) {
@@ -2903,6 +2907,11 @@ void PlayerObjectImplementation::checkAndShowTOS() {
 }
 
 void PlayerObjectImplementation::recalculateForcePower() {
+	ManagedReference<CreatureObject*> creature = dynamic_cast<CreatureObject*>(parent.get().get());
+
+	if (creature == nullptr)
+		return;
+
 	ManagedReference<SceneObject*> parent = getParent().get();
 
 	if (parent == nullptr)
@@ -2915,6 +2924,16 @@ void PlayerObjectImplementation::recalculateForcePower() {
 
 	int maxForce = player->getSkillMod("jedi_force_power_max");
 
+	//remove old bonuses
+		if (maxForce > 14100) {
+			int newmax = (14100 - maxForce);
+
+			ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
+
+			creature->addSkillMod(SkillModManager::PERMANENTMOD, "jedi_force_power_max", newmax, true);
+
+		}
+
 	int forcePowerMod = 0, forceControlMod = 0;
 
 	if (player->hasSkill("force_rank_light_novice")) {
@@ -2926,10 +2945,6 @@ void PlayerObjectImplementation::recalculateForcePower() {
 	}
 
 	maxForce += forceControlMod * 10;
-
-	if (maxForce > 10000) {
-		maxForce = 10000;
-	}
 
 	setForcePowerMax(maxForce, true);
 }

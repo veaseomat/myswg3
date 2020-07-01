@@ -3,8 +3,8 @@
 jedi_holocron_light = {
 	minimumLevel = 0,
 	maximumLevel = -1,
-	customObjectName = "",
-	directObjectTemplate = "object/tangible/loot/misc/holocron_splinters_sith_s01.iff",
+	customObjectName = "Jedi Holocron",
+	directObjectTemplate = "object/tangible/jedi/no_drop_jedi_holocron_light.iff",
 	craftingValues = {
 	},
 	customizationStringNames = {},

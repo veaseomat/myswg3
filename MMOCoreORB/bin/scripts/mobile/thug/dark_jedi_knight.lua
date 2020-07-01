@@ -4,7 +4,7 @@ dark_jedi_knight = Creature:new {
 	randomNameTag = true,
 	socialGroup = "dark_jedi",
 	faction = "",
-	level = 265,
+	level = 300,
 	chanceHit = 23.5,
 	damageMin = 1645,
 	damageMax = 3000,
@@ -51,7 +51,7 @@ dark_jedi_knight = Creature:new {
 			}
 		}
 	},
-	weapons = {"dark_jedi_weapons_gen3"},
+	weapons = {"dark_jedi_weapons_gen2"},
 	conversationTemplate = "",
 	attacks = merge(lightsabermaster,forcepowermaster)
 }

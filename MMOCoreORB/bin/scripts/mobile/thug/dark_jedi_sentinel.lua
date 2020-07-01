@@ -28,8 +28,14 @@ dark_jedi_sentinel = Creature:new {
 	diet = HERBIVORE,
 
 	templates = { "dark_jedi" },
-	lootGroups = {},
-	weapons = {"dark_jedi_weapons_gen4"},
+	lootGroups = {
+		{
+			groups = {
+				{group = "sabers", chance = 10000000},
+			}
+		}
+	},
+	weapons = {"dark_jedi_weapons_gen2"},
 	conversationTemplate = "",
 	attacks = merge(lightsabermaster,forcepowermaster)
 }

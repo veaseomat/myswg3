@@ -21,6 +21,7 @@
 #include "server/zone/managers/mission/MissionManager.h"
 #include "server/zone/managers/frs/FrsManager.h"
 
+
 SkillManager::SkillManager()
 	: Logger("SkillManager") {
 
@@ -287,6 +288,14 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 			ghost->addSkillPoints(20);
 		}
 
+		if (skill->getSkillName() == "force_rank_light_master") {
+			ghost->addSkillPoints(20000);
+		}
+
+		if (skill->getSkillName() == "force_rank_dark_master") {
+			ghost->addSkillPoints(20000);
+		}
+
 		//Witdraw experience.
 //		if (!noXpRequired) {
 //			ghost->addExperience(skill->getXpType(), -skill->getXpCost(), true);
@@ -439,8 +448,8 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 			return false;
 	}
 
-	if (skillName.beginsWith("force_") && !(JediManager::instance()->canSurrenderSkill(creature, skillName)))
-		return false;
+//	if (skillName.beginsWith("force_") && !(JediManager::instance()->canSurrenderSkill(creature, skillName)))
+//		return false;
 
 //	if (skill->getSkillName() == "force_rank_light_master") {
 //		return false;
@@ -522,16 +531,16 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
-		if (skill->getSkillName().contains("force_rank_light_rank_") || skill->getSkillName().contains("force_rank_dark_rank_")) {
-			ghost->addSkillPoints(-20);
-		}
+//		if (skill->getSkillName().contains("force_rank_light_rank_") || skill->getSkillName().contains("force_rank_dark_rank_")) {
+//			ghost->addSkillPoints(-20);
+//		}
 
-		if (skill->getSkillName() == "force_title_jedi_rank_02") {
-			if (ghost->getSkillPoints() != totalSkillPointsWasted) {
-				creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
-				ghost->setSkillPoints(totalSkillPointsWasted);
-			}
-		}
+//		if (skill->getSkillName() == "force_title_jedi_rank_02") {
+//			if (ghost->getSkillPoints() != totalSkillPointsWasted) {
+//				creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
+//				ghost->setSkillPoints(totalSkillPointsWasted);
+//			}
+//		}
 
 		ManagedReference<PlayerManager*> playerManager = creature->getZoneServer()->getPlayerManager();
 		if (playerManager != nullptr) {

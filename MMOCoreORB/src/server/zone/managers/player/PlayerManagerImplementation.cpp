@@ -1272,162 +1272,162 @@ void PlayerManagerImplementation::killPlayer(TangibleObject* attacker, CreatureO
 
 	player->notifyObjectKillObservers(attacker);
 
-	if (player->hasSkill("force_rank_dark_master") or player->hasSkill("force_rank_light_master")) {
+//	if (player->hasSkill("force_rank_dark_master") or player->hasSkill("force_rank_light_master")) {
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_master", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_10", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_09", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_08", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_07", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_06", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_05", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_04", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_03", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_01", player, true, true);
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_light_master", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_10", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_09", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_08", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_07", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_05", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_04", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_01", player, true, true);
+//
+//		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
+//		box->setPromptTitle("FORCE RANKING SYSTEM");
+//		box->setPromptText("You have been demoted to rank 0.");
+//
+//		ghost->addSuiBox(box);
+//		player->sendMessage(box->generateMessage());
+//
+//
+////		PlayerObject* ghost = player->getPlayerObject();
+////		ghost->addSkillPoints(250);
+//
+//		return;
+//	}
 
-		SkillManager::instance()->surrenderSkill("force_rank_dark_master", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_10", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_09", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_08", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_07", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_06", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_05", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_04", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_03", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_01", player, true, true);
-
-		SkillManager::instance()->surrenderSkill("force_rank_light_master", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_10", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_09", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_08", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_07", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_05", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_04", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_01", player, true, true);
-
-		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
-		box->setPromptTitle("FORCE RANKING SYSTEM");
-		box->setPromptText("You have been demoted to rank 0.");
-
-		ghost->addSuiBox(box);
-		player->sendMessage(box->generateMessage());
-
-
-//		PlayerObject* ghost = player->getPlayerObject();
-//		ghost->addSkillPoints(250);
-
-		return;
-	}
-
-	if (player->hasSkill("force_rank_dark_rank_10") or player->hasSkill("force_rank_light_rank_10")) {
-
-		return;
-	}
-
-	if (player->hasSkill("force_rank_dark_rank_09") or player->hasSkill("force_rank_light_rank_09")) {
-
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_09", player, true, true);
-
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_09", player, true, true);
-
-		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
-		box->setPromptTitle("FORCE RANKING SYSTEM");
-		box->setPromptText("You have been demoted to rank 8.");
-
-		ghost->addSuiBox(box);
-		player->sendMessage(box->generateMessage());
-
-		return;
-	}
-
-	if (player->hasSkill("force_rank_dark_rank_08") or player->hasSkill("force_rank_light_rank_08")) {
-
-		return;
-	}
-
-	if (player->hasSkill("force_rank_dark_rank_07") or player->hasSkill("force_rank_light_rank_07")) {
-
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_07", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_07", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_06", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
-
-		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
-		box->setPromptTitle("FORCE RANKING SYSTEM");
-		box->setPromptText("You have been demoted to rank 5.");
-
-		ghost->addSuiBox(box);
-		player->sendMessage(box->generateMessage());
-
-		return;
-	}
-
-
-	if (player->hasSkill("force_rank_dark_rank_06") or player->hasSkill("force_rank_light_rank_06")) {
-
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_06", player, true, true);
-
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
-
-		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
-		box->setPromptTitle("FORCE RANKING SYSTEM");
-		box->setPromptText("You have been demoted to rank 5.");
-
-		ghost->addSuiBox(box);
-		player->sendMessage(box->generateMessage());
-
-		return;
-	}
-
-	if (player->hasSkill("force_rank_dark_rank_05") or player->hasSkill("force_rank_light_rank_05")) {
-
-		return;
-	}
-
-
-	if (player->hasSkill("force_rank_dark_rank_04") or player->hasSkill("force_rank_light_rank_04")) {
-
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_04", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_04", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_03", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
-
-		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
-		box->setPromptTitle("FORCE RANKING SYSTEM");
-		box->setPromptText("You have been demoted to rank 1.");
-
-		ghost->addSuiBox(box);
-		player->sendMessage(box->generateMessage());
-
-		return;
-	}
-
-	if (player->hasSkill("force_rank_dark_rank_03") or player->hasSkill("force_rank_light_rank_03")) {
-
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_03", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
-
-		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
-		box->setPromptTitle("FORCE RANKING SYSTEM");
-		box->setPromptText("You have been demoted to rank 1.");
-
-		ghost->addSuiBox(box);
-		player->sendMessage(box->generateMessage());
-
-		return;
-	}
-
-	if (player->hasSkill("force_rank_dark_rank_02") or player->hasSkill("force_rank_light_rank_02")) {
-
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
-
-		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
-		box->setPromptTitle("FORCE RANKING SYSTEM");
-		box->setPromptText("You have been demoted to rank 1.");
-
-		ghost->addSuiBox(box);
-		player->sendMessage(box->generateMessage());
-
-		return;
-	}
+//	if (player->hasSkill("force_rank_dark_rank_10") or player->hasSkill("force_rank_light_rank_10")) {
+//
+//		return;
+//	}
+//
+//	if (player->hasSkill("force_rank_dark_rank_09") or player->hasSkill("force_rank_light_rank_09")) {
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_09", player, true, true);
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_09", player, true, true);
+//
+//		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
+//		box->setPromptTitle("FORCE RANKING SYSTEM");
+//		box->setPromptText("You have been demoted to rank 8.");
+//
+//		ghost->addSuiBox(box);
+//		player->sendMessage(box->generateMessage());
+//
+//		return;
+//	}
+//
+//	if (player->hasSkill("force_rank_dark_rank_08") or player->hasSkill("force_rank_light_rank_08")) {
+//
+//		return;
+//	}
+//
+//	if (player->hasSkill("force_rank_dark_rank_07") or player->hasSkill("force_rank_light_rank_07")) {
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_07", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_07", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_06", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
+//
+//		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
+//		box->setPromptTitle("FORCE RANKING SYSTEM");
+//		box->setPromptText("You have been demoted to rank 5.");
+//
+//		ghost->addSuiBox(box);
+//		player->sendMessage(box->generateMessage());
+//
+//		return;
+//	}
+//
+//
+//	if (player->hasSkill("force_rank_dark_rank_06") or player->hasSkill("force_rank_light_rank_06")) {
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_06", player, true, true);
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
+//
+//		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
+//		box->setPromptTitle("FORCE RANKING SYSTEM");
+//		box->setPromptText("You have been demoted to rank 5.");
+//
+//		ghost->addSuiBox(box);
+//		player->sendMessage(box->generateMessage());
+//
+//		return;
+//	}
+//
+//	if (player->hasSkill("force_rank_dark_rank_05") or player->hasSkill("force_rank_light_rank_05")) {
+//
+//		return;
+//	}
+//
+//
+//	if (player->hasSkill("force_rank_dark_rank_04") or player->hasSkill("force_rank_light_rank_04")) {
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_04", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_04", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_03", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
+//
+//		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
+//		box->setPromptTitle("FORCE RANKING SYSTEM");
+//		box->setPromptText("You have been demoted to rank 1.");
+//
+//		ghost->addSuiBox(box);
+//		player->sendMessage(box->generateMessage());
+//
+//		return;
+//	}
+//
+//	if (player->hasSkill("force_rank_dark_rank_03") or player->hasSkill("force_rank_light_rank_03")) {
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_03", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
+//
+//		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
+//		box->setPromptTitle("FORCE RANKING SYSTEM");
+//		box->setPromptText("You have been demoted to rank 1.");
+//
+//		ghost->addSuiBox(box);
+//		player->sendMessage(box->generateMessage());
+//
+//		return;
+//	}
+//
+//	if (player->hasSkill("force_rank_dark_rank_02") or player->hasSkill("force_rank_light_rank_02")) {
+//
+//		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
+//		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
+//
+//		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(player, SuiWindowType::NONE);
+//		box->setPromptTitle("FORCE RANKING SYSTEM");
+//		box->setPromptText("You have been demoted to rank 1.");
+//
+//		ghost->addSuiBox(box);
+//		player->sendMessage(box->generateMessage());
+//
+//		return;
+//	}
 }
 
 void PlayerManagerImplementation::sendActivateCloneRequest(CreatureObject* player, int typeofdeath) {

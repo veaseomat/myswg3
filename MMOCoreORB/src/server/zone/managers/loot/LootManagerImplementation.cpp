@@ -300,7 +300,7 @@ TangibleObject* LootManagerImplementation::createLootObject(const LootItemTempla
 
 	setCustomObjectName(prototype, templateObject);
 
-	float excMod = (System::random(40) / 10) + 1.0;
+	float excMod = 5;
 
 	float adjustment = floor((float)(((level > 50) ? level : 50) - 50) / 10.f + 0.5);
 
@@ -314,9 +314,9 @@ TangibleObject* LootManagerImplementation::createLootObject(const LootItemTempla
 	String subtitle;
 	bool yellow = false;
 
-	if (excMod > 2.5) {
-		yellow = true;
-	}
+//	if (excMod == 5) {
+//		yellow = true;
+//	}
 
 	for (int i = 0; i < craftingValues->getExperimentalPropertySubtitleSize(); ++i) {
 		subtitle = craftingValues->getExperimentalPropertySubtitle(i);
@@ -480,7 +480,7 @@ void LootManagerImplementation::setSkillMods(TangibleObject* object, const LootI
 	if (System::random(skillModChance / modSqr) == 0) {
 		// if it has a skillmod the name will be yellow
 		yellow = true;
-		int modCount = System::random(9) + System::random(level / 100);
+		int modCount = System::random(10);
 
 		if(modCount > 10)
 			modCount = 10;
@@ -620,27 +620,22 @@ bool LootManagerImplementation::createLootFromCollection(SceneObject* container,
 
 //		int hroll = System::random(10000);
 
-		int holoresult = System::random(300);
-
 //		if (level < 25) holoresult = System::random(5000);
-//
 //		if (level < 50) holoresult = System::random(2000) + 3000;
-//
 //		if (level < 100) holoresult = System::random(1000) + 4000;
-//
 //		if (level < 150) holoresult = System::random(500) + 4500;
-//
 //		if (level < 200) holoresult = System::random(200) + 4800;
-//
 //		if (level < 250) holoresult = System::random(50) + 4950;
-//
 //		if (level < 300) holoresult = System::random(25) + 4975;
-//
 //		if (level > 299) holoresult = System::random(5) + 4995;
 
-		if (holoresult >= 300){
-			createLoot(container, "holocron_nd", level);
-		}
+//		int holoresult = System::random(250);
+//
+//		if (holoresult >= 250){
+//			createLoot(container, "holocron_nd", level);
+//		}
+
+
 
 		if (lootChance <= 0)
 			continue;

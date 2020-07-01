@@ -14,7 +14,7 @@ SithShadowEncounter = Encounter:new {
 	-- Encounter properties
 	encounterDespawnTime = 1 * 60 * 1000, -- 1 minutes
 	spawnObjectList = {
-		{ template = "boba_fett2", minimumDistance = 64, maximumDistance = 96, referencePoint = 0, followPlayer = true, setNotAttackable = false, runOnDespawn = true },
+		{ template = "dark_jedi_sentinel", minimumDistance = 64, maximumDistance = 96, referencePoint = 0, followPlayer = true, setNotAttackable = false, runOnDespawn = true },
 	},
 	onEncounterSpawned = nil,
 	isEncounterFinished = nil,
@@ -66,7 +66,7 @@ function SithShadowEncounter:onPlayerKilled(pPlayer, pKiller, nothing)
 
 	Logger:log("Player was killed.", LT_INFO)
 	if SpawnMobiles.isFromSpawn(pPlayer, SithShadowEncounter.taskName, pKiller) then
-		spatialChat(pKiller, "Not so tough now, are you?")
+		spatialChat(pKiller, "Pathetic...")
 
 		QuestManager.completeQuest(pPlayer, QuestManager.quests.TWO_MILITARY)
 		
@@ -117,7 +117,7 @@ function SithShadowEncounter:onEncounterInRange(pPlayer, spawnedObjects)
 	Logger:log("Sending threaten string.", LT_INFO)
 	local threatenString = LuaStringIdChatParameter(SITH_SHADOW_THREATEN_STRING)
 	threatenString:setTT(CreatureObject(pPlayer):getFirstName())
-	spatialChat(spawnedObjects[1], "Fight me Jedi!")
+	spatialChat(spawnedObjects[1], "Time to die!")
 
 
 	foreach(spawnedObjects, function(pMobile)
