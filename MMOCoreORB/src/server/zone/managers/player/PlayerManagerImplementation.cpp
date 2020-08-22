@@ -1272,6 +1272,26 @@ void PlayerManagerImplementation::killPlayer(TangibleObject* attacker, CreatureO
 
 	player->notifyObjectKillObservers(attacker);
 
+
+
+	if (player->hasSkill("force_rank_dark_novice") and player->hasSkill("force_rank_light_novice")) {
+
+		SkillManager::instance()->surrenderSkill("force_rank_light_master", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_10", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_09", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_08", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_07", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_05", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_04", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_01", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_novice", player, true, true);
+
+		ghost->setJediState(8);
+
+	}
 //	if (player->hasSkill("force_rank_dark_master") or player->hasSkill("force_rank_light_master")) {
 //
 //		SkillManager::instance()->surrenderSkill("force_rank_dark_master", player, true, true);
@@ -2002,6 +2022,7 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 
 		awardExperience(leader, "squadleader", entry->getValue() * 2.f);
 	}
+
 
 	threatMap->removeAll();
 }

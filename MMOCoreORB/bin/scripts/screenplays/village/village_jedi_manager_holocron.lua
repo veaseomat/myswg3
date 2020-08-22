@@ -103,6 +103,14 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 	end
 	
 	if not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and CreatureObject(pPlayer):villageKnightPrereqsMet("") then
+		if CreatureObject(pPlayer):hasSkill("force_rank_light_novice") or CreatureObject(pPlayer):hasSkill("force_rank_dark_novice") then
+				local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
+				sui.setTitle("Surrender FRS Box")
+				sui.setPrompt("You already have a FRS novice box, you must surrender it before you can choose a side.")
+				sui.sendTo(pPlayer)
+				return
+			end
+		else
 		
 		KnightTrials:sendCouncilChoiceSui(pPlayer)
 		
@@ -118,9 +126,9 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 	
 	if CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") then
 	
-		if PlayerObject(pGhost):getVisibility() > 0 then
-			FsIntro:startStepDelay(pPlayer, 3)
-		end
+--		if PlayerObject(pGhost):getVisibility() > 0 then
+--			FsIntro:startStepDelay(pPlayer, 3)
+--		end
 
 		if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_10") and not CreatureObject(pPlayer):hasSkill("force_rank_light_master") then
 		awardSkill(pPlayer, "force_rank_light_master")
