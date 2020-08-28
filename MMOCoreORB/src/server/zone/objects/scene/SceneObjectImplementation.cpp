@@ -80,6 +80,10 @@ void SceneObjectImplementation::initializeTransientMembers() {
 	setLogging(false);
 
 	setLoggingName("SceneObject");
+
+	if (originalObjectID == 0) {
+		originalObjectID = getObjectID();
+	}
 }
 
 void SceneObjectImplementation::initializePrivateData() {
@@ -131,6 +135,10 @@ void SceneObjectImplementation::initializePrivateData() {
 	childObjects.setNoDuplicateInsertPlan();
 
 	collidableObject = false;
+
+	originalObjectID = 0;
+
+	forceNoTrade = false;
 }
 
 void SceneObjectImplementation::loadTemplateData(SharedObjectTemplate* templateData) {
@@ -503,6 +511,9 @@ void SceneObjectImplementation::sendAttributeListTo(CreatureObject* object) {
 	AttributeListMessage* alm = new AttributeListMessage(asSceneObject());
 
 	try {
+        	if (attributeListComponent == nullptr) {
+			throw Exception("nullptr attribute list component");
+		}
 
 		attributeListComponent->fillAttributeList(alm, object, asSceneObject());
 

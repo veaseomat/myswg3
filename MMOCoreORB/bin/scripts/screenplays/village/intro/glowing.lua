@@ -3,11 +3,11 @@ local Logger = require("utils.logger")
 
 Glowing = ScreenPlay:new {
 	requiredBadges = {
-		{ type = "exploration_jedi", amount = 3 },
-		{ type = "exploration_dangerous", amount = 2 },
-		{ type = "exploration_easy", amount = 5 },
+		{ type = "exploration_jedi", amount = 0 },
+		{ type = "exploration_dangerous", amount = 0 },
+		{ type = "exploration_easy", amount = 0 },
 		{ type = "master", amount = 1 },
-		{ type = "content", amount = 5 },
+		{ type = "content", amount = 1 },
 	}
 }
 
@@ -61,6 +61,19 @@ function Glowing:badgeAwardedEventHandler(pPlayer, pPlayer2, badgeNumber)
 		return 0
 	end
 
+	if self:hasRequiredBadgeCount(pPlayer) and not CreatureObject(pPlayer):hasSkill("force_title_jedi_novice") then
+
+		FsIntro:completeVillageIntroFrog(pPlayer)
+		
+		FsOutro:completeVillageOutroFrog(pPlayer)
+		
+		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
+		sui.setTitle("Jedi Unlock")
+		sui.setPrompt("Congratulations, you are now ready to start training as a Jedi. You have completed the village and may travel there to learn skills but it is not required. All you need to do is meditate at a jedi shrine to unlock. \r\r **WARNING***\r Meditating at a shrine will remove all of your skills and make this character PERMENENTLY a Jedi.")
+		sui.sendTo(pPlayer)
+		
+		return 1
+	end
 
 	return 0
 end
@@ -75,25 +88,11 @@ end
 -- Handling of the onPlayerLoggedIn event. The progression of the player will be checked and observers will be registered.
 -- @param pPlayer pointer to the creature object of the player who logged in.
 function Glowing:onPlayerLoggedIn(pPlayer)
-	local pGhost = CreatureObject(pPlayer):getPlayerObject()
-
-	if (pGhost == nil) then
-		return
-	end
-	
-	if PlayerObject(pGhost):getVisibility() > 500 then
-		FsIntro:startStepDelay(pPlayer, 3)
-	end
-	
-		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-		sui.setTitle("LOGIN MESSAGE")
-		sui.setPrompt("Please vist the mySWG, SWGEmu Based Server Listings forum post to see the current updates!")
-		sui.sendTo(pPlayer)
-
 	if not self:isGlowing(pPlayer) then
 		if self:hasRequiredBadgeCount(pPlayer) then
-
-
+			FsIntro:completeVillageIntroFrog(pPlayer)
+			
+			FsOutro:completeVillageOutroFrog(pPlayer)
 		else
 			self:registerObservers(pPlayer)
 		end
@@ -105,7 +104,7 @@ end
 function Glowing:checkForceStatusCommand(pPlayer)
 	local progress = "@jedi_spam:fs_progress_" .. self:getCompletedBadgeTypeCount(pPlayer)
 
-	CreatureObject(pPlayer):sendSystemMessage("Only a Holocron can teach you what you seek...")
+	CreatureObject(pPlayer):sendSystemMessage(progress)
 end
 
 return Glowing

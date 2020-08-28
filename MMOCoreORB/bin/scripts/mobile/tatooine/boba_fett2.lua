@@ -1,0 +1,35 @@
+boba_fett2 = Creature:new {
+	objectName = "@mob/creature_names:boba_fett",
+	socialGroup = "",
+	faction = "",
+	level = 291,
+	chanceHit = 27.25,
+	damageMin = 1800,
+	damageMax = 3310,
+	baseXp = 9336,
+	baseHAM = 24000,
+	baseHAMmax = 29000,
+	armor = 3,
+	resists = {45,45,45,90,90,90,45,45,45},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
+	creatureBitmask = KILLER + STALKER,
+	optionsBitmask = AIENABLED,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/boba_fett.iff"},
+	lootGroups = {},
+	weapons = {"boba_fett_weapons"},
+	conversationTemplate = "",
+	attacks = merge(bountyhuntermaster,carbineermaster,marksmanmaster)
+}
+
+CreatureTemplates:addCreatureTemplate(boba_fett2, "boba_fett2")

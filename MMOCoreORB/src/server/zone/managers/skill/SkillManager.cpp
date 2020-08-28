@@ -267,8 +267,8 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 		return true;
 
 	//jedi can only learn jedi skill
-	if (creature->hasSkill("force_title_jedi_novice")) {
-		SkillManager::surrenderAllSkills(creature, true, false);
+	if (creature->hasSkill("force_title_jedi_rank_02") && !skillName.beginsWith("force_")) {
+		return false;
 	}
 
 
@@ -276,7 +276,7 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 
 	if (ghost != nullptr) {
 		//Withdraw skill points.
-		ghost->addSkillPoints(-skill->getSkillPointsRequired());
+//		ghost->addSkillPoints(-skill->getSkillPointsRequired());
 
 		//frs council rank awards 250 skill points
 //		if (skill->getSkillName() == "force_rank_light_rank_10" || skill->getSkillName() == "force_rank_dark_rank_10") {
@@ -284,17 +284,17 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 //			ghost->addSkillPoints(250);
 //		}
 
-		if (skill->getSkillName().contains("force_rank_light_rank_") || skill->getSkillName().contains("force_rank_dark_rank_")) {
-			ghost->addSkillPoints(20);
-		}
+//		if (skill->getSkillName().contains("force_rank_light_rank_") || skill->getSkillName().contains("force_rank_dark_rank_")) {
+//			ghost->addSkillPoints(20);
+//		}
 
-		if (skill->getSkillName() == "force_rank_light_master") {
-			ghost->addSkillPoints(20000);
-		}
+//		if (skill->getSkillName() == "force_rank_light_master") {
+//			ghost->addSkillPoints(20000);
+//		}
 
-		if (skill->getSkillName() == "force_rank_dark_master") {
-			ghost->addSkillPoints(20000);
-		}
+//		if (skill->getSkillName() == "force_rank_dark_master") {
+//			ghost->addSkillPoints(20000);
+//		}
 
 		//Witdraw experience.
 //		if (!noXpRequired) {
@@ -355,12 +355,12 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 
 		const SkillList* list = creature->getSkillList();
 
-		int totalSkillPointsWasted = 250;
+		int totalSkillPointsWasted = 11250;
 
 		for (int i = 0; i < list->size(); ++i) {
 			Skill* skill = list->get(i);
 
-			totalSkillPointsWasted -= skill->getSkillPointsRequired();
+//			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
 //		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
@@ -396,8 +396,6 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 			}
 		}
 	}
-
-
 
 	/// Update client with new values for things like Terrain Negotiation
 	CreatureObjectDeltaMessage4* msg4 = new CreatureObjectDeltaMessage4(creature);
@@ -448,8 +446,8 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 			return false;
 	}
 
-//	if (skillName.beginsWith("force_") && !(JediManager::instance()->canSurrenderSkill(creature, skillName)))
-//		return false;
+	if (skillName.beginsWith("force_") && !(JediManager::instance()->canSurrenderSkill(creature, skillName)))
+		return false;
 
 //	if (skill->getSkillName() == "force_rank_light_master") {
 //		return false;
@@ -477,7 +475,7 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 
 	if (ghost != nullptr) {
 		//Give the player the used skill points back.
-		ghost->addSkillPoints(skill->getSkillPointsRequired());
+//		ghost->addSkillPoints(skill->getSkillPointsRequired());
 
 		//Remove abilities but only if the creature doesn't still have a skill that grants the
 		//ability.  Some abilities are granted by multiple skills. For example Dazzle for dancers
@@ -523,12 +521,12 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 
 		const SkillList* list = creature->getSkillList();
 
-		int totalSkillPointsWasted = 250;
+		int totalSkillPointsWasted = 11250;
 
 		for (int i = 0; i < list->size(); ++i) {
 			Skill* skill = list->get(i);
 
-			totalSkillPointsWasted -= skill->getSkillPointsRequired();
+//			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
 //		if (skill->getSkillName().contains("force_rank_light_rank_") || skill->getSkillName().contains("force_rank_dark_rank_")) {
@@ -620,7 +618,7 @@ void SkillManager::surrenderAllSkills(CreatureObject* creature, bool notifyClien
 
 			if (ghost != nullptr) {
 				//Give the player the used skill points back.
-				ghost->addSkillPoints(skill->getSkillPointsRequired());
+//				ghost->addSkillPoints(skill->getSkillPointsRequired());
 
 				//Remove abilities
 				auto abilityNames = skill->getAbilities();
@@ -736,24 +734,24 @@ bool SkillManager::canLearnSkill(const String& skillName, CreatureObject* creatu
 	if (!fulfillsSkillPrerequisites(skillName, creature)) {
 		return false;
 	}
-
-	if (creature->hasSkill("force_title_jedi_novice") && !skillName.beginsWith("force_")) {
+// jedi cant learn non jedi skills
+	if (creature->hasSkill("force_title_jedi_rank_02") && !skillName.beginsWith("force_")) {
 		return false;
 	}
 
 	ManagedReference<PlayerObject* > ghost = creature->getPlayerObject();
 	if (ghost != nullptr) {
 		//Check if player has enough xp to learn the skill.
-//		if (!noXpRequired) {
-//			if (ghost->getExperience(skill->getXpType()) < skill->getXpCost()) {
-//				return false;
-//			}
-//		}
+		if (!noXpRequired) {
+			if (ghost->getExperience(skill->getXpType()) < skill->getXpCost()) {
+				return false;
+			}
+		}
 
 		//Check if player has enough skill points to learn the skill.
-		if (ghost->getSkillPoints() < skill->getSkillPointsRequired()) {
-			return false;
-		}
+//		if (ghost->getSkillPoints() < skill->getSkillPointsRequired()) {
+//			return false;
+//		}
 	} else {
 		//Could not retrieve player object.
 		return false;
@@ -775,12 +773,12 @@ bool SkillManager::fulfillsSkillPrerequisitesAndXp(const String& skillName, Crea
 	}
 
 	ManagedReference<PlayerObject* > ghost = creature->getPlayerObject();
-//	if (ghost != nullptr) {
-//		//Check if player has enough xp to learn the skill.
-//		if (skill->getXpCost() > 0 && ghost->getExperience(skill->getXpType()) < skill->getXpCost()) {
-//			return false;
-//		}
-//	}
+	if (ghost != nullptr) {
+		//Check if player has enough xp to learn the skill.
+		if (skill->getXpCost() > 0 && ghost->getExperience(skill->getXpType()) < skill->getXpCost()) {
+			return false;
+		}
+	}
 
 	return true;
 }

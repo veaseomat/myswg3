@@ -107,6 +107,8 @@
 #include "server/zone/managers/frs/FrsManager.h"
 #include "server/zone/objects/player/events/OnlinePlayerLogTask.h"
 #include <sys/stat.h>
+#include "server/zone/objects/transaction/TransactionLog.h"
+#include "server/zone/objects/creature/commands/TransferItemMiscCommand.h"
 
 PlayerManagerImplementation::PlayerManagerImplementation(ZoneServer* zoneServer, ZoneProcessServer* impl,
 					bool trackOnlineUsers) : Logger("PlayerManager") {
@@ -1195,8 +1197,8 @@ void PlayerManagerImplementation::killPlayer(TangibleObject* attacker, CreatureO
 
 	if (ghost != nullptr) {
 		ghost->resetIncapacitationTimes();
-		if (ghost->hasPvpTef()) {
-			ghost->schedulePvpTefRemovalTask(true, true);
+		if (ghost->hasTef()) {
+			ghost->schedulePvpTefRemovalTask(true, true, true);
 		}
 	}
 
@@ -2716,6 +2718,9 @@ void PlayerManagerImplementation::handleVerifyTradeMessage(CreatureObject* playe
 		return;
 	}
 
+	// Get a trx group to trace all trx's in this session
+	auto trxGroup = TransactionLog::getNewTrxGroup();
+
 	tradeContainer->setVerifiedTrade(true);
 
 	uint64 targID = tradeContainer->getTradeTargetPlayer();
@@ -2748,6 +2753,9 @@ void PlayerManagerImplementation::handleVerifyTradeMessage(CreatureObject* playe
 			for (int i = 0; i < tradeContainer->getTradeSize(); ++i) {
 				ManagedReference<SceneObject*> item = tradeContainer->getTradeItem(i);
 
+				TransactionLog trx(player, receiver, item, TrxCode::PLAYERTRADE);
+				trx.setTrxGroup(trxGroup);
+
 				if (item->isTangibleObject()) {
 					if (objectController->transferObject(item, receiverInventory, -1, true))
 						item->sendDestroyTo(player);
@@ -2763,18 +2771,29 @@ void PlayerManagerImplementation::handleVerifyTradeMessage(CreatureObject* playe
 			for (int i = 0; i < receiverTradeContainer->getTradeSize(); ++i) {
 				ManagedReference<SceneObject*> item = receiverTradeContainer->getTradeItem(i);
 
+				TransactionLog trx(receiver, player, item, TrxCode::PLAYERTRADE);
+				trx.setTrxGroup(trxGroup);
+
 				if (item->isTangibleObject()) {
-					if (objectController->transferObject(item, playerInventory, -1, true))
+					if (objectController->transferObject(item, playerInventory, -1, true)) {
 						item->sendDestroyTo(receiver);
+					} else {
+						trx.errorMessage() << "transferObject failed";
+					}
 				} else {
-					if (objectController->transferObject(item, playerDatapad, -1, true))
+					if (objectController->transferObject(item, playerDatapad, -1, true)) {
 						item->sendDestroyTo(receiver);
+					} else {
+						trx.errorMessage() << "transferObject failed";
+					}
 				}
 			}
 
 			uint32 giveMoney = tradeContainer->getMoneyToTrade();
 
 			if (giveMoney > 0) {
+				TransactionLog trx(player, receiver, TrxCode::PLAYERTRADE, giveMoney, true);
+				trx.setTrxGroup(trxGroup);
 				player->subtractCashCredits(giveMoney);
 				receiver->addCashCredits(giveMoney);
 			}
@@ -2782,6 +2801,8 @@ void PlayerManagerImplementation::handleVerifyTradeMessage(CreatureObject* playe
 			giveMoney = receiverTradeContainer->getMoneyToTrade();
 
 			if (giveMoney > 0) {
+				TransactionLog trx(receiver, player, TrxCode::PLAYERTRADE, giveMoney, true);
+				trx.setTrxGroup(trxGroup);
 				receiver->subtractCashCredits(giveMoney);
 				player->addCashCredits(giveMoney);
 			}
@@ -3747,6 +3768,8 @@ void PlayerManagerImplementation::lootAll(CreatureObject* player, CreatureObject
 	if (creatureInventory == nullptr)
 		return;
 
+	auto trxGroup = TransactionLog::getNewTrxGroup();
+
 	int cashCredits = ai->getCashCredits();
 
 	if (cashCredits > 0) {
@@ -3755,8 +3778,13 @@ void PlayerManagerImplementation::lootAll(CreatureObject* player, CreatureObject
 		if (luck > 0)
 			cashCredits += (cashCredits * luck) / 20;
 
-		player->addCashCredits(cashCredits, true);
-		ai->clearCashCredits();
+		{
+			TransactionLog trx(ai, player, TrxCode::NPCLOOTCLAIM, cashCredits, true);
+			trx.setTrxGroup(trxGroup);
+			trx.addState("srcDisplayedName", ai->getDisplayedName());
+			player->addCashCredits(cashCredits, true);
+			ai->clearCashCredits();
+		}
 
 		StringIdChatParameter param("base_player", "prose_coin_loot"); //You loot %DI credits from %TT.
 		param.setDI(cashCredits);
@@ -3779,15 +3807,13 @@ void PlayerManagerImplementation::lootAll(CreatureObject* player, CreatureObject
 		return;
 	}
 
-	StringBuffer args;
-	args << playerInventory->getObjectID() << " -1 0 0 0";
-
-	String stringArgs = args.toString();
-
 	for (int i = totalItems - 1; i >= 0; --i) {
 		SceneObject* object = creatureInventory->getContainerObject(i);
 
-		player->executeObjectControllerAction(STRING_HASHCODE("transferitemmisc"), object->getObjectID(), stringArgs);
+		TransactionLog trx(ai, player, object, TrxCode::NPCLOOTCLAIM);
+		trx.setTrxGroup(trxGroup);
+
+		TransferItemMiscCommand::doTransferItemMisc(player, object, playerInventory, -1, trx);
 	}
 
 	if (creatureInventory->getContainerObjectsSize() <= 0) {
@@ -5222,7 +5248,6 @@ void PlayerManagerImplementation::generateVeteranReward(CreatureObject* player) 
 	// Final check to see if milestone has already been claimed on any of the player's characters
 	// (prevent claiming while multi-logged)
 
-
 	bool milestoneClaimed = false;
 	if (!playerGhost->getChosenVeteranReward(rewardSession->getMilestone() ).isEmpty() )
 		milestoneClaimed = true;
@@ -5249,12 +5274,17 @@ void PlayerManagerImplementation::generateVeteranReward(CreatureObject* player) 
 		return;
 	}
 
-	// Transfer to player
-	if (!inventory->transferObject(rewardSceno, -1, false, true)) { // Allow overflow
-		player->sendSystemMessage("@veteran:reward_error"); //	The reward could not be granted.
-		rewardSceno->destroyObjectFromDatabase(true);
-		cancelVeteranRewardSession(player);
-		return;
+	{
+		TransactionLog trx(TrxCode::VETERANREWARD, player, rewardSceno);
+
+		// Transfer to player
+		if (!inventory->transferObject(rewardSceno, -1, false, true)) { // Allow overflow
+			trx.abort() << "Failed to transfer to player inventory";
+			player->sendSystemMessage("@veteran:reward_error"); //	The reward could not be granted.
+			rewardSceno->destroyObjectFromDatabase(true);
+			cancelVeteranRewardSession(player);
+			return;
+		}
 	}
 
 	inventory->broadcastObject(rewardSceno, true);
@@ -5264,7 +5294,6 @@ void PlayerManagerImplementation::generateVeteranReward(CreatureObject* player) 
 	GalaxyAccountInfo* accountInfo = account->getGalaxyAccountInfo(player->getZoneServer()->getGalaxyName());
 
 	accountInfo->addChosenVeteranReward(rewardSession->getMilestone(), reward.getTemplateFile());
-
 
 	cancelVeteranRewardSession(player);
 
