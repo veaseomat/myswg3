@@ -569,7 +569,7 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 
 	JediManager::instance()->onPlayerCreated(playerCreature);
 
-	chatManager->sendMail("mySWG", "Welcome", "Welcome to mySWG, This is a fun server that stays true to the vanilla systems with lots of Quality of life improvements. The quality of life improvements exist to make character progression reasonably faster without affecting how we would normally play. Jedi unlock is different here, village is removed entirely. Holocrons unlock jedi, they also unlock knight and train FRS skills. Holocrons can be looted from anything in the game, higher level creatures/npc/container have an increased chance to drop, holocrons are RARE. how rare? RARE.\n\nAnyways, \n	So I dont have to keep changing this email, all of the changes can be seen on the swgemu forum post for mySWG in SWGEmu based server listing section. If you have any questions/comments/concerns/suggestions please send an email to mySWGdev@gmail.com.\nThanks,\nVeaseomat", playerCreature->getFirstName());
+	chatManager->sendMail("mySWG", "Welcome", "Welcome to mySWG, This is a fun server that stays true to the vanilla systems with lots of Quality of life improvements.\n	For a light of the changes please visit the swgemu forum post for mySWG in SWGEmu based server listing section. If you have any questions/comments/concerns/suggestions please join the discord or send an email to mySWGdev@gmail.com.\nThanks,\nVeaseomat", playerCreature->getFirstName());
 
 	//Join auction chat room
 	ghost->addChatRoom(chatManager->getAuctionRoom()->getRoomID());

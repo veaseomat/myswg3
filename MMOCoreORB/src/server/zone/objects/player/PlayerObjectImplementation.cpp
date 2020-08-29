@@ -583,13 +583,13 @@ int PlayerObjectImplementation::addExperience(const String& xpType, int xp, bool
 		}
 	}
 
-	int xpCap = -1;
+	int xpCap = 999999999;
 
-	if (xpTypeCapList.contains(xpType))
-		xpCap = xpTypeCapList.get(xpType);
+//	if (xpTypeCapList.contains(xpType))
+//		xpCap = xpTypeCapList.get(xpType);
 
-	if (xpCap < 0)
-		xpCap = 2000;
+//	if (xpCap < 0)
+//		xpCap = 2000;
 
 	if (xp > xpCap) {
 		valueToAdd = xpCap - (xp - valueToAdd);
@@ -2038,8 +2038,8 @@ void PlayerObjectImplementation::activateForcePowerRegen() {
 	float regen = (float)creature->getSkillMod("jedi_force_power_regen");
 
 	//remove old bonuses
-		if (regen > 131) {
-			int newregen = (131 - regen);
+		if (regen > 69) {
+			int newregen = (69 - regen);
 
 			ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
 
@@ -2976,8 +2976,8 @@ void PlayerObjectImplementation::recalculateForcePower() {
 	int maxForce = player->getSkillMod("jedi_force_power_max");
 
 	//remove old bonuses
-		if (maxForce > 14100) {
-			int newmax = (14100 - maxForce);
+		if (maxForce > 7475) {
+			int newmax = (7475 - maxForce);
 
 			ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
 

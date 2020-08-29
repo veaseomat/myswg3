@@ -2121,11 +2121,61 @@ void CreatureObjectImplementation::notifyLoadFromDatabase() {
 		totalSkillPointsWasted -= skill->getSkillPointsRequired();
 	}
 
-//	if (ghost->getSkillPoints() != totalSkillPointsWasted) {
-//		error() << "skill points on load mismatch calculated: " << totalSkillPointsWasted
-//		       << " found: " << ghost->getSkillPoints();
-//		ghost->setSkillPoints(totalSkillPointsWasted);
-//	}
+
+	//fix skill points and remove added skill points from old system
+	if (ghost->getSkillPoints() != totalSkillPointsWasted) {
+		error() << "skill points on load mismatch calculated: " << totalSkillPointsWasted
+		       << " found: " << ghost->getSkillPoints();
+
+		Reference<CreatureObject*> player = asCreatureObject();
+		skillManager->surrenderAllSkills(player, true, true);
+
+		ghost->setSkillPoints(totalSkillPointsWasted);
+	}
+
+
+	//remove old frs system
+	Reference<CreatureObject*> player = asCreatureObject();
+	FrsData* playerData = ghost->getFrsData();
+	int councilType = playerData->getCouncilType();
+
+	if (player->hasSkill("force_rank_light_novice") and councilType != 1) {
+		SkillManager::instance()->surrenderSkill("force_rank_light_master", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_10", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_09", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_08", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_07", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_05", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_04", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_rank_01", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_light_novice", player, true, true);
+
+		SkillManager::instance()->surrenderSkill("force_title_jedi_rank_03", player, true, true);
+
+		ghost->setJediState(2);
+	}
+
+	if (player->hasSkill("force_rank_dark_novice") and councilType != 2) {
+		SkillManager::instance()->surrenderSkill("force_rank_dark_master", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_10", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_09", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_08", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_07", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_06", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_05", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_04", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_03", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_01", player, true, true);
+		SkillManager::instance()->surrenderSkill("force_rank_dark_novice", player, true, true);
+
+		SkillManager::instance()->surrenderSkill("force_title_jedi_rank_03", player, true, true);
+
+		ghost->setJediState(2);
+	}
 
 	ghost->getSchematics()->addRewardedSchematics(ghost);
 

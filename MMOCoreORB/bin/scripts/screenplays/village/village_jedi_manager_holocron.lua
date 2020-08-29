@@ -43,7 +43,7 @@ function VillageJediManagerHolocron.useTheHolocron(pSceneObject, pPlayer)
 
 	-- The holocrom hums softly as you feel your Force power replenish.
 	CreatureObject(pPlayer):sendSystemMessage("@jedi_spam:holocron_force_replenish")
-	PlayerObject(pGhost):setForcePower((PlayerObject(pGhost):getForcePowerMax() / 2));
+	PlayerObject(pGhost):setForcePower(PlayerObject(pGhost):getForcePowerMax());
 	CreatureObject(pPlayer):addCooldown(USEDHOLOCRON, HOLOCRONCOOLDOWNTIME)
 
 	SceneObject(pSceneObject):destroyObjectFromWorld()

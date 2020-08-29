@@ -69,7 +69,7 @@ function Glowing:badgeAwardedEventHandler(pPlayer, pPlayer2, badgeNumber)
 		
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 		sui.setTitle("Jedi Unlock")
-		sui.setPrompt("Congratulations, you are now ready to start training as a Jedi. You have completed the village and may travel there to learn skills but it is not required. All you need to do is meditate at a jedi shrine to unlock. \r\r **WARNING***\r Meditating at a shrine will remove all of your skills and make this character PERMENENTLY a Jedi.")
+		sui.setPrompt("Congratulations, You have completed the village and may travel there and learn skills but it is not required. All you need to do is meditate at a Jedi shrine to begin.")
 		sui.sendTo(pPlayer)
 		
 		return 1

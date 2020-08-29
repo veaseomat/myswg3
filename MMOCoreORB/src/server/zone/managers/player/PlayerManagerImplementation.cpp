@@ -1958,6 +1958,8 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 
 			uint32 combatXp = 0;
 
+			uint32 frsXp = 0;
+
 			Locker crossLocker(attacker, destructedObject);
 
 			for (int j = 0; j < entry->size(); ++j) {
@@ -1980,6 +1982,8 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 				//Jedi experience doesn't count towards combat experience, and is earned at 20% the rate of normal experience
 				if (xpType != "jedi_general")
 					combatXp += xpAmount;
+				if (xpType == "jedi_general" && attacker->hasSkill("force_title_jedi_rank_03"))
+					frsXp += xpAmount;
 				else
 					xpAmount *= 0.2f;
 
@@ -1988,6 +1992,8 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 			}
 
 			combatXp = awardExperience(attacker, "combat_general", combatXp, true, 0.1f);
+
+			frsXp = awardExperience(attacker, "force_rank_xp", frsXp, true, 0.001f);
 
 			//Check if the group leader is a squad leader
 			if (group == nullptr)

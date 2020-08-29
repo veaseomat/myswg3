@@ -76,22 +76,22 @@ void LightsaberCrystalComponentImplementation::generateCrystalStats() {
 
 	if (color == 31) {
 			//poor
-		damage = System::random(10) + 1;
+		damage = System::random(10);
 			//fair
 		if (itemLevel > 39)
-			damage = System::random(15) + 10;
+			damage += System::random(10);
 			//good
 		if (itemLevel > 69)
-			damage = System::random(25) + 15;
+			damage += System::random(20);
 			//quality
 		if (itemLevel > 99)
-			damage = System::random(25) + 35;
+			damage += System::random(20);
 			//select
 		if (itemLevel > 139)
-			damage = System::random(25) + 50;
+			damage += System::random(20);
 			//premium
 		if (itemLevel > 219)
-			damage = System::random(25) + 75;
+			damage += System::random(20);
 
 		if (damage > 100) damage = 100;
 

@@ -276,7 +276,7 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 
 	if (ghost != nullptr) {
 		//Withdraw skill points.
-//		ghost->addSkillPoints(-skill->getSkillPointsRequired());
+		ghost->addSkillPoints(-skill->getSkillPointsRequired());
 
 		//frs council rank awards 250 skill points
 //		if (skill->getSkillName() == "force_rank_light_rank_10" || skill->getSkillName() == "force_rank_dark_rank_10") {
@@ -355,18 +355,21 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 
 		const SkillList* list = creature->getSkillList();
 
-		int totalSkillPointsWasted = 11250;
+		int totalSkillPointsWasted = 250;
 
 		for (int i = 0; i < list->size(); ++i) {
 			Skill* skill = list->get(i);
 
-//			totalSkillPointsWasted -= skill->getSkillPointsRequired();
+			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
-//		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
-//			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
-//			ghost->setSkillPoints(totalSkillPointsWasted);
-//		}
+		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
+			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
+
+			surrenderAllSkills(creature, true, true);
+
+			ghost->setSkillPoints(totalSkillPointsWasted);
+		}
 
 		if (playerManager != nullptr) {
 			creature->setLevel(playerManager->calculatePlayerLevel(creature));
@@ -475,7 +478,7 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 
 	if (ghost != nullptr) {
 		//Give the player the used skill points back.
-//		ghost->addSkillPoints(skill->getSkillPointsRequired());
+		ghost->addSkillPoints(skill->getSkillPointsRequired());
 
 		//Remove abilities but only if the creature doesn't still have a skill that grants the
 		//ability.  Some abilities are granted by multiple skills. For example Dazzle for dancers
@@ -521,24 +524,27 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 
 		const SkillList* list = creature->getSkillList();
 
-		int totalSkillPointsWasted = 11250;
+		int totalSkillPointsWasted = 250;
 
 		for (int i = 0; i < list->size(); ++i) {
 			Skill* skill = list->get(i);
 
-//			totalSkillPointsWasted -= skill->getSkillPointsRequired();
+			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
 
 //		if (skill->getSkillName().contains("force_rank_light_rank_") || skill->getSkillName().contains("force_rank_dark_rank_")) {
 //			ghost->addSkillPoints(-20);
 //		}
 
-//		if (skill->getSkillName() == "force_title_jedi_rank_02") {
-//			if (ghost->getSkillPoints() != totalSkillPointsWasted) {
-//				creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
-//				ghost->setSkillPoints(totalSkillPointsWasted);
-//			}
-//		}
+
+		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
+			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
+
+			surrenderAllSkills(creature, true, true);
+
+			ghost->setSkillPoints(totalSkillPointsWasted);
+		}
+
 
 		ManagedReference<PlayerManager*> playerManager = creature->getZoneServer()->getPlayerManager();
 		if (playerManager != nullptr) {
@@ -618,7 +624,7 @@ void SkillManager::surrenderAllSkills(CreatureObject* creature, bool notifyClien
 
 			if (ghost != nullptr) {
 				//Give the player the used skill points back.
-//				ghost->addSkillPoints(skill->getSkillPointsRequired());
+				ghost->addSkillPoints(skill->getSkillPointsRequired());
 
 				//Remove abilities
 				auto abilityNames = skill->getAbilities();
@@ -703,9 +709,9 @@ void SkillManager::updateXpLimits(PlayerObject* ghost) {
 		if (skillBox == nullptr)
 			continue;
 
-		if (xpTypeCapList->contains(skillBox->getXpType()) && (xpTypeCapList->get(skillBox->getXpType()) < skillBox->getXpCap())) {
-			xpTypeCapList->get(skillBox->getXpType()) = skillBox->getXpCap();
-		}
+//		if (xpTypeCapList->contains(skillBox->getXpType()) && (xpTypeCapList->get(skillBox->getXpType()) < skillBox->getXpCap())) {
+//			xpTypeCapList->get(skillBox->getXpType()) = skillBox->getXpCap();
+//		}
 	}
 
 	//Iterate over the player xp types and cap all xp types to the limits.
@@ -713,9 +719,9 @@ void SkillManager::updateXpLimits(PlayerObject* ghost) {
 
 	for (int i = 0; i < experienceList->size(); ++i) {
 		String xpType = experienceList->getKeyAt(i);
-		if (experienceList->get(xpType) > xpTypeCapList->get(xpType)) {
-			ghost->addExperience(xpType, xpTypeCapList->get(xpType) - experienceList->get(xpType), true);
-		}
+//		if (experienceList->get(xpType) > xpTypeCapList->get(xpType)) {
+//			ghost->addExperience(xpType, xpTypeCapList->get(xpType) - experienceList->get(xpType), true);
+//		}
 	}
 }
 
@@ -749,9 +755,9 @@ bool SkillManager::canLearnSkill(const String& skillName, CreatureObject* creatu
 		}
 
 		//Check if player has enough skill points to learn the skill.
-//		if (ghost->getSkillPoints() < skill->getSkillPointsRequired()) {
-//			return false;
-//		}
+		if (ghost->getSkillPoints() < skill->getSkillPointsRequired()) {
+			return false;
+		}
 	} else {
 		//Could not retrieve player object.
 		return false;
