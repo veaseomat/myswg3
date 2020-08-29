@@ -103,7 +103,7 @@ void SurveySessionImplementation::startSurvey(const String& resname) {
 	}
 
 	//Get actual cost based upon player's Focus
-	int mindCost = 0;
+	int mindCost = (100 - (int)(surveyer->getHAM(CreatureAttribute::FOCUS)/15.f)) / 2;
 
 	if (surveyer->getHAM(CreatureAttribute::MIND) < mindCost) {
 		surveyer->setPosture(CreaturePosture::UPRIGHT, true);
@@ -192,7 +192,7 @@ void SurveySessionImplementation::startSample(const String& resname) {
 	}
 
 	//Get actual cost based upon player's Quickness
-	int actionCost = 0;
+	int actionCost = (124 - (int)(surveyer->getHAM(CreatureAttribute::QUICKNESS)/12.5f)) / 2;
 
 	if (surveyer->getHAM(CreatureAttribute::ACTION) < actionCost) {
 		surveyer->setPosture(CreaturePosture::UPRIGHT, true);
@@ -367,9 +367,9 @@ void SurveySessionImplementation::rescheduleSample() {
 	// Add sampletask
 	if (sampleTask == nullptr)
 		sampleTask = new SampleTask(surveyer, activeSurveyTool.get());
-
+//sample timer
 	if (surveyer->getPendingTask("sample") == nullptr)
-		surveyer->addPendingTask("sample", sampleTask, 5000);
+		surveyer->addPendingTask("sample", sampleTask, 10000);
 }
 
 void SurveySessionImplementation::rescheduleSampleResults(const ResourceSpawner* resourceSpawner, float density, const String& resname) {

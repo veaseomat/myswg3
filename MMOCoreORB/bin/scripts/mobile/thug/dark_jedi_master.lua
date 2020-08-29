@@ -4,7 +4,7 @@ dark_jedi_master = Creature:new {
 	randomNameTag = true,
 	socialGroup = "dark_jedi",
 	faction = "",
-	level = 300,
+	level = 291,
 	chanceHit = 27.25,
 	damageMin = 1800,
 	damageMax = 3310,
@@ -41,13 +41,6 @@ dark_jedi_master = Creature:new {
 				{group = "clothing_attachments", chance = 1100000},
 				{group = "carbines", chance = 1300000},
 				{group = "dark_jedi_common", chance = 800000}
-			}
-		},
-		{
-			groups = {
-
-				{group = "color_crystals", chance = 10000000},
-
 			}
 		}
 	},

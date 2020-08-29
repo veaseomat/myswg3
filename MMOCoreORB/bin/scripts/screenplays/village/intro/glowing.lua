@@ -3,11 +3,11 @@ local Logger = require("utils.logger")
 
 Glowing = ScreenPlay:new {
 	requiredBadges = {
-		{ type = "exploration_jedi", amount = 0 },
+		{ type = "exploration_jedi", amount = 3 },
 		{ type = "exploration_dangerous", amount = 0 },
 		{ type = "exploration_easy", amount = 0 },
-		{ type = "master", amount = 1 },
-		{ type = "content", amount = 1 },
+		{ type = "master", amount = 3 },
+		{ type = "content", amount = 3 },
 	}
 }
 
@@ -69,7 +69,7 @@ function Glowing:badgeAwardedEventHandler(pPlayer, pPlayer2, badgeNumber)
 		
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 		sui.setTitle("Jedi Unlock")
-		sui.setPrompt("Congratulations, You have completed the village and may travel there and learn skills but it is not required. All you need to do is meditate at a Jedi shrine to begin.")
+		sui.setPrompt("Congratulations Jedi, you have completed the village and may travel there to learn skills but it is not required. All you need to do is meditate at a Jedi shrine to begin. May the force be with you...")
 		sui.sendTo(pPlayer)
 		
 		return 1
@@ -96,6 +96,9 @@ function Glowing:onPlayerLoggedIn(pPlayer)
 		else
 			self:registerObservers(pPlayer)
 		end
+	end
+	if PlayerObject(pGhost):getVisibility() > 500 then
+		FsIntro:startStepDelay(pPlayer, 3)
 	end
 end
 

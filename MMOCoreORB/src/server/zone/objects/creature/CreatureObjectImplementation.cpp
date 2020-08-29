@@ -2121,60 +2121,10 @@ void CreatureObjectImplementation::notifyLoadFromDatabase() {
 		totalSkillPointsWasted -= skill->getSkillPointsRequired();
 	}
 
-
-	//fix skill points and remove added skill points from old system
 	if (ghost->getSkillPoints() != totalSkillPointsWasted) {
 		error() << "skill points on load mismatch calculated: " << totalSkillPointsWasted
 		       << " found: " << ghost->getSkillPoints();
-
-		Reference<CreatureObject*> player = asCreatureObject();
-		skillManager->surrenderAllSkills(player, true, true);
-
 		ghost->setSkillPoints(totalSkillPointsWasted);
-	}
-
-
-	//remove old frs system
-	Reference<CreatureObject*> player = asCreatureObject();
-	FrsData* playerData = ghost->getFrsData();
-	int councilType = playerData->getCouncilType();
-
-	if (player->hasSkill("force_rank_light_novice") and councilType != 1) {
-		SkillManager::instance()->surrenderSkill("force_rank_light_master", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_10", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_09", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_08", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_07", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_06", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_05", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_04", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_03", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_02", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_rank_01", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_light_novice", player, true, true);
-
-		SkillManager::instance()->surrenderSkill("force_title_jedi_rank_03", player, true, true);
-
-		ghost->setJediState(2);
-	}
-
-	if (player->hasSkill("force_rank_dark_novice") and councilType != 2) {
-		SkillManager::instance()->surrenderSkill("force_rank_dark_master", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_10", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_09", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_08", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_07", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_06", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_05", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_04", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_03", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_02", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_rank_01", player, true, true);
-		SkillManager::instance()->surrenderSkill("force_rank_dark_novice", player, true, true);
-
-		SkillManager::instance()->surrenderSkill("force_title_jedi_rank_03", player, true, true);
-
-		ghost->setJediState(2);
 	}
 
 	ghost->getSchematics()->addRewardedSchematics(ghost);
@@ -2501,8 +2451,8 @@ void CreatureObjectImplementation::setBlindedState(int durationSeconds) {
 		state->setStartFlyText("combat_effects", "go_blind", 0, 0xFF, 0);
 		state->setEndFlyText("combat_effects", "no_blind", 0xFF, 0, 0);
 
-		state->setSkillModifier("private_attack_accuracy", -75);
-		state->setSkillModifier("private_dodge_attack", -75);
+		state->setSkillModifier("private_attack_accuracy", -60);
+		state->setSkillModifier("private_dodge_attack", -60);
 
 		addBuff(state);
 	}
@@ -2527,8 +2477,8 @@ void CreatureObjectImplementation::setIntimidatedState(int durationSeconds) {
 		state->setStartFlyText("combat_effects", "go_intimidated", 0, 0xFF, 0);
 		state->setEndFlyText("combat_effects", "no_intimidated", 0xFF, 0, 0);
 
-		state->setSkillModifier("private_melee_defense", -50);
-		state->setSkillModifier("private_ranged_defense", -50);
+		state->setSkillModifier("private_melee_defense", -20);
+		state->setSkillModifier("private_ranged_defense", -20);
 
 		addBuff(state);
 	}
@@ -2840,9 +2790,9 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	if(healthRegen > 0) {
 		healthWoundHeal += (int)(healthRegen * 0.2);
 		if(healthWoundHeal >= 100) {
-			healWound(asCreatureObject(), CreatureAttribute::HEALTH, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 1, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::HEALTH, 2, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 2, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 2, true, false);
 			healthWoundHeal -= 100;
 		}
 	}
@@ -2853,9 +2803,9 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	if(actionRegen > 0) {
 		actionWoundHeal += (int)(actionRegen * 0.2);
 		if(actionWoundHeal >= 100) {
-			healWound(asCreatureObject(), CreatureAttribute::ACTION, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::STAMINA, 1, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::ACTION, 2, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 2, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::STAMINA, 2, true, false);
 			actionWoundHeal -= 100;
 		}
 	}
@@ -2866,9 +2816,9 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	if(mindRegen > 0) {
 		mindWoundHeal += (int)(mindRegen * 0.2);
 		if(mindWoundHeal >= 100) {
-			healWound(asCreatureObject(), CreatureAttribute::MIND, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::FOCUS, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 1, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::MIND, 2, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::FOCUS, 2, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 2, true, false);
 			mindWoundHeal -= 100;
 		}
 	}

@@ -455,7 +455,7 @@ public:
 		}
 
 
-			awardXp(enhancer, "medical", amountEnhanced * 2); //No experience for healing yourself.
+			awardXp(enhancer, "medical", amountEnhanced * 1); //No experience for healing yourself.
 
 		doAnimations(enhancer, patient);
 

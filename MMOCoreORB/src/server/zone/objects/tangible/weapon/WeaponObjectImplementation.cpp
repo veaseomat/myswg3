@@ -347,7 +347,7 @@ void WeaponObjectImplementation::fillAttributeList(AttributeListMessage* alm, Cr
 		alm->insertAttribute("@veteran_new:antidecay_examine_title", "@veteran_new:antidecay_examine_text");
 	}
 
-	// Force Cost
+	// Force Cost // float shows decimal points on sabers!
 	if (getForceCost() > 0)
 		alm->insertAttribute("forcecost", (float)getForceCost());
 
@@ -646,7 +646,7 @@ bool WeaponObjectImplementation::isCertifiedFor(CreatureObject* object) const {
 	ManagedReference<PlayerObject*> ghost = object->getPlayerObject();
 
 	if (ghost == nullptr)
-		return true;
+		return false;
 
 	const auto certificationsRequired = weaponTemplate->getCertificationsRequired();
 

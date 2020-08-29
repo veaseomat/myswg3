@@ -49,19 +49,19 @@ legendaryChance = 1000000 --1 in 1,000,000
 --legendaryChance = 1000 --1 in 1000 for testing
 
 --Determines how much of an increase in the base stats will be applied to the object.
-yellowModifier = 1.0
-exceptionalModifier = 1.0
-legendaryModifier = 1.0
+yellowModifier = 1.5
+exceptionalModifier = 2.5
+legendaryModifier = 5.0
 
 --The chance for random skill mods to be on looted weapons/wearables
-skillModChance = 10 -- 1 in 500
+skillModChance = 500 -- 1 in 500
 
 -- Value ranges for random dots on looted weapons (chance is set individually on the loot items)
 randomDotAttribute = {0, 8} -- See CreatureAttributes.h in src for numbers.
 randomDotStrength = {10, 200} -- Set for disease. Fire will be x1.5, poison x2.
 randomDotDuration = {30, 240} -- Set for poison. Fire will be x1.5, disease x5.
-randomDotPotency = {33, 99}
-randomDotUses = {99, 999}
+randomDotPotency = {1, 100}
+randomDotUses = {250, 9999}
 
 -- Modifier applied to min/max junk values found in loot item lua
 junkValueModifier = 5;
@@ -140,14 +140,6 @@ lootableArmorAttachmentStatMods = {
 }
 
 lootableClothingAttachmentStatMods = {
-	"twohandlightsaber_accuracy",
-	"twohandlightsaber_speed",
-	"polearmlightsaber_accuracy",
-	"polearmlightsaber_speed",
-	"onehandlightsaber_accuracy",
-	"onehandlightsaber_speed",
-	"jedi_saber_assembly",
-	"jedi_saber_experimentation",
 	"aim",
 	"alert",
 	"armor_assembly",
@@ -375,14 +367,6 @@ lootableArmorStatMods = {
 }
 
 lootableClothingStatMods = {
-	"twohandlightsaber_accuracy",
-	"twohandlightsaber_speed",
-	"polearmlightsaber_accuracy",
-	"polearmlightsaber_speed",
-	"onehandlightsaber_accuracy",
-	"onehandlightsaber_speed",
-	"jedi_saber_assembly",
-	"jedi_saber_experimentation",
 	"aim",
 	"alert",
 	"armor_assembly",
@@ -820,28 +804,28 @@ lootableHeavyWeaponStatMods = {
 -- Values used to generate lightsaber crystal stats
 jediCrystalStats = {
 	lightsaber_module_force_crystal = {
-		minDamage = 10,
+		minDamage = 0,
 		maxDamage = 50,
-		minHitpoints = 7000,
-		maxHitpoints = 14000,
-		minHealthSac = -2,
+		minHitpoints = 700,
+		maxHitpoints = 1400,
+		minHealthSac = 0,
 		maxHealthSac = -9,
-		minActionSac = -2,
+		minActionSac = 0,
 		maxActionSac = -9,
-		minMindSac = -2,
+		minMindSac = 0,
 		maxMindSac = -9,
-		minAttackSpeed = -0.1,
+		minAttackSpeed = 0,
 		maxAttackSpeed = -0.6,
-		minForceCost = -4,
-		maxForceCost = -10,
-		minWoundChance = 1,
+		minForceCost = 0,
+		maxForceCost = -9.9,
+		minWoundChance = 0,
 		maxWoundChance = 4,
 	},
 	lightsaber_module_krayt_dragon_pearl = {
-		minDamage = 25,
+		minDamage = 20,
 		maxDamage = 50,
-		minHitpoints = 9000,
-		maxHitpoints = 14000,
+		minHitpoints = 900,
+		maxHitpoints = 1400,
 		minHealthSac = -6,
 		maxHealthSac = -9,
 		minActionSac = -6,
@@ -850,8 +834,8 @@ jediCrystalStats = {
 		maxMindSac = -9,
 		minAttackSpeed = -0.3,
 		maxAttackSpeed = -0.6,
-		minForceCost = -6,
-		maxForceCost = -10,
+		minForceCost = -5.0,
+		maxForceCost = -9.9,
 		minWoundChance = 2,
 		maxWoundChance = 4,
 	}

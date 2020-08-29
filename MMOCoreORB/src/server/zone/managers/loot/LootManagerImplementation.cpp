@@ -251,7 +251,7 @@ int LootManagerImplementation::calculateLootCredits(int level) {
 	int maxcredits = (int) round((.03f * level * level) + (3 * level) + 50);
 	int mincredits = (int) round((((float) maxcredits) * .5f) + (2.0f * level));
 
-	int credits = (mincredits + System::random(maxcredits - mincredits) * 5);
+	int credits = (mincredits + System::random(maxcredits - mincredits) * 2);
 
 	return credits;
 }
@@ -300,7 +300,7 @@ TangibleObject* LootManagerImplementation::createLootObject(const LootItemTempla
 
 	setCustomObjectName(prototype, templateObject);
 
-	float excMod = 5;
+	float excMod = (System::random(40) / 10) + 1.0;
 
 	float adjustment = floor((float)(((level > 50) ? level : 50) - 50) / 10.f + 0.5);
 
@@ -468,7 +468,7 @@ void LootManagerImplementation::addConditionDamage(TangibleObject* loot, Craftin
 }
 
 void LootManagerImplementation::setSkillMods(TangibleObject* object, const LootItemTemplate* templateObject, int level, float excMod) {
-	if (!object->isWeaponObject() && !object->isWearableObject())
+	if (!object->isWearableObject())
 		return;
 
 	const VectorMap<String, int>* skillMods = templateObject->getSkillMods();
@@ -480,25 +480,21 @@ void LootManagerImplementation::setSkillMods(TangibleObject* object, const LootI
 	if (System::random(skillModChance / modSqr) == 0) {
 		// if it has a skillmod the name will be yellow
 		yellow = true;
-		int modCount = System::random(10);
-
-		if(modCount > 10)
-			modCount = 10;
-
+		int modCount = 1;
 		int roll = System::random(100);
 
-//		if(roll > (100 - modSqr))
-//			modCount += 4;
-//
-//		if(roll < (5 + modSqr))
-//			modCount += 2;
+		if(roll > (100 - modSqr))
+			modCount += 2;
+
+		if(roll < (5 + modSqr))
+			modCount += 1;
 
 		for(int i = 0; i < modCount; ++i) {
 			//Mods can't be lower than -1 or greater than 25
 			int max = (int) Math::max(10.f, Math::min(25.f, (float) round(0.1f * level + 3)));
 			int min = (int) Math::max(10.f, Math::min(25.f, (float) round(0.075f * level - 1)));
 
-			int mod = System::random(25) + System::random(level / 10);
+			int mod = System::random(max - min) + min;
 
 			if(mod < 10)
 				mod = 10;
@@ -609,7 +605,7 @@ bool LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* con
 bool LootManagerImplementation::createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* lootCollection, int level) {
 	for (int i = 0; i < lootCollection->count(); ++i) {
 		const LootGroupCollectionEntry* entry = lootCollection->get(i);
-		int lootChance = (entry->getLootChance() * 5);
+		int lootChance = (entry->getLootChance() * 2);
 
 //		int delevel = System::random(300);
 
@@ -666,7 +662,6 @@ bool LootManagerImplementation::createLootFromCollection(TransactionLog& trx, Sc
 
 			break;
 		}
-
 	}
 
 	return true;
@@ -852,7 +847,7 @@ void LootManagerImplementation::addRandomDots(TangibleObject* object, const Loot
 	float modSqr = excMod * excMod;
 
 	// Apply the Dot if the chance roll equals the number or is zero.
-	if (dotChance == 0 || System::random(20) == 20) { // Defined in loot item script.
+	if (dotChance == 0 || System::random(dotChance / modSqr) == 0) { // Defined in loot item script.
 		shouldGenerateDots = true;
 	}
 
@@ -860,7 +855,7 @@ void LootManagerImplementation::addRandomDots(TangibleObject* object, const Loot
 
 		int number = 1;
 
-		if (System::random(20) == 20)
+		if (System::random(250 / modSqr) == 0)
 			number = 2;
 
 		for (int i = 0; i < number; i++) {

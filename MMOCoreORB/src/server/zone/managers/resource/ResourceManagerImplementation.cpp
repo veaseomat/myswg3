@@ -207,7 +207,7 @@ void ResourceManagerImplementation::sendResourceListForSurvey(CreatureObject* pl
 }
 
 ResourceContainer* ResourceManagerImplementation::harvestResource(CreatureObject* player, const String& type, const int quantity) {
-	return resourceSpawner->harvestResource(player, type, (quantity * 10));
+	return resourceSpawner->harvestResource(player, type, (quantity * 5));
 }
 bool ResourceManagerImplementation::harvestResourceToPlayer(TransactionLog& trx, CreatureObject* player, ResourceSpawn* resourceSpawn, const int quantity) {
 	trx.addState("resourceType", resourceSpawn->getType());

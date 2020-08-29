@@ -51,7 +51,8 @@ public:
 
 		Locker locker(multBuff);
 
-		multBuff->setSkillModifier("private_attack_accuracy", -60);
+//		multBuff->setSkillModifier("private_damage_divisor", 20);
+		multBuff->setSkillModifier("private_attack_accuracy", -90);
 
 		creature->addBuff(multBuff);
 

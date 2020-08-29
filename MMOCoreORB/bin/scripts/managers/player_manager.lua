@@ -48,8 +48,8 @@ onlineCharactersPerAccount = 3 --How many characters are allowed online from a s
 allowSameAccountPvpRatingCredit = 0
 
 --Blue frog / GM buff values
-performanceBuff = 300
-medicalBuff = 900
+performanceBuff = 1000
+medicalBuff = 1900
 performanceDuration = 7200 -- in seconds
 medicalDuration = 7200 -- in seconds
 
@@ -57,7 +57,7 @@ medicalDuration = 7200 -- in seconds
 groupExpMultiplier = 1.0
 
 --Sets a global experience multiplier
-globalExpMultiplier = 10.0
+globalExpMultiplier = 2.0
 
 --Sets the base number of control devices of each type that a player can have in their datapad at once
 --For creature pets, A Creature Handler will have the base number + their stored pets skill mod as limit
@@ -97,9 +97,9 @@ veteranRewards = {
 		{templateFile = "object/tangible/wearables/goggles/goggles_s01.iff", milestone=21, oneTime=false, description="Special Edition Goggles Style 1"},
 		{templateFile = "object/tangible/wearables/goggles/goggles_s02.iff", milestone=21, oneTime=false, description="Special Edition Goggles Style 2"},
 		{templateFile = "object/tangible/wearables/goggles/goggles_s03.iff", milestone=21, oneTime=false, description="Special Edition Goggles Style 3"},
-		{templateFile = "object/tangible/wearables/goggles/goggles_s04.iff", milestone=21, oneTime=false, description="Special Edition Goggles Style 4"},
-		{templateFile = "object/tangible/wearables/goggles/goggles_s05.iff", milestone=21, oneTime=false, description="Special Edition Goggles Style 5"},
-		{templateFile = "object/tangible/wearables/goggles/goggles_s06.iff", milestone=21, oneTime=false, description="Special Edition Goggles Style 6"},
+--		{templateFile = "object/tangible/wearables/goggles/goggles_s04.iff", milestone=21, oneTime=false, description="Special Edition Goggles Style 4"},
+--		{templateFile = "object/tangible/wearables/goggles/goggles_s05.iff", milestone=21, oneTime=false, description="Special Edition Goggles Style 5"},
+--		{templateFile = "object/tangible/wearables/goggles/goggles_s06.iff", milestone=21, oneTime=false, description="Special Edition Goggles Style 6"},
 		{templateFile = "object/tangible/veteran_reward/frn_vet_darth_vader_toy.iff", milestone=21, oneTime=false, description="@veteran_new:mini_darthvader"},
 
 		-- 28 Day Rewards

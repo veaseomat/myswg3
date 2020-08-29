@@ -144,6 +144,7 @@ function JediTrials:unlockJediPadawan(pPlayer, dontSendSui)
 		local pItem = giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_padawan.iff", -1)
 	end
 
+	sendMail("system", "@jedi_spam:welcome_subject", "@jedi_spam:welcome_body", CreatureObject(pPlayer):getFirstName())
 end
 
 function JediTrials:unlockJediKnight(pPlayer)

@@ -37,5 +37,5 @@ void SharedStructureObjectTemplate::readObject(LuaObject* templateData) {
 
 	cityMaintenanceBase = templateData->getIntField("cityMaintenanceBase");
 
-	cityMaintenanceRate = templateData->getIntField("cityMaintenanceRate") / 5;
+	cityMaintenanceRate = templateData->getIntField("cityMaintenanceRate");
 }

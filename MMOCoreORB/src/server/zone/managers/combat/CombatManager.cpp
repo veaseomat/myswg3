@@ -1447,6 +1447,15 @@ void CombatManager::getFrsModifiedForceAttackDamage(CreatureObject* attacker, fl
 	float minMod = 0, maxMod = 0;
 	int powerModifier = 0;
 
+//	if (councilType == FrsManager::COUNCIL_LIGHT) {
+//		powerModifier = attacker->getSkillMod("force_power_light");
+//		minMod = data.getFrsLightMinDamageModifier();
+//		maxMod = data.getFrsLightMaxDamageModifier();
+//	} else if (councilType == FrsManager::COUNCIL_DARK) {
+//		powerModifier = attacker->getSkillMod("force_power_dark");
+//		minMod = data.getFrsDarkMinDamageModifier();
+//		maxMod = data.getFrsDarkMaxDamageModifier();
+//	}
 
 	if (powerModifier > 0) {
 		if (minMod > 0)
@@ -1562,15 +1571,15 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 
 	// PvP Damage Reduction.
 	if (attacker->isPlayerCreature() && defender->isPlayerCreature() && !data.isForceAttack())
-		damage *= 0.2;
+		damage *= 0.25;
 
-	// PVE Damage Reduction
+	// PVE Damage 
 	if (attacker->isPlayerCreature() && !defender->isPlayerCreature())
-		damage *= 1.3;
+		damage *= 1.25;
 
 	// EVP Damage Reduction.
 	if (!attacker->isPlayerCreature() && defender->isPlayerCreature())
-		damage *= 0.7;
+		damage *= 0.75;
 
 	// PvE Damage increase for non jedi.
 //	if (attacker->isPlayerCreature() && !defender->isPlayerCreature()) {
@@ -1715,10 +1724,8 @@ int CombatManager::getHitChance(TangibleObject* attacker, CreatureObject* target
 		if (def == "saber_block") {
 			if (!(attacker->isTurret() || weapon->isThrownWeapon()) && ((weapon->isHeavyWeapon() || weapon->isSpecialHeavyWeapon() || (weapon->getAttackType() == SharedWeaponObjectTemplate::RANGEDATTACK)) && ((System::random(100)) < targetCreature->getSkillMod(def))))
 				return RICOCHET;
-
 			else return HIT;
 		}
-
 
 		targetDefense = getDefenderSecondaryDefenseModifier(targetCreature);
 

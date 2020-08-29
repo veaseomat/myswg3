@@ -21,7 +21,6 @@
 #include "server/zone/managers/mission/MissionManager.h"
 #include "server/zone/managers/frs/FrsManager.h"
 
-
 SkillManager::SkillManager()
 	: Logger("SkillManager") {
 
@@ -267,9 +266,9 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 		return true;
 
 	//jedi can only learn jedi skill
-	if (creature->hasSkill("force_title_jedi_rank_02") && !skillName.beginsWith("force_")) {
-		return false;
-	}
+//	if (creature->hasSkill("force_title_jedi_rank_02") && !skillName.beginsWith("force_")) {
+//		return false;
+//	}
 
 
 	ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
@@ -366,7 +365,7 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
 			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
 
-			surrenderAllSkills(creature, true, true);
+//			surrenderAllSkills(creature, true, true);
 
 			ghost->setSkillPoints(totalSkillPointsWasted);
 		}
@@ -540,12 +539,11 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
 			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
 
-			surrenderAllSkills(creature, true, true);
+//			surrenderAllSkills(creature, true, true);
 
 			ghost->setSkillPoints(totalSkillPointsWasted);
 		}
-
-
+		
 		ManagedReference<PlayerManager*> playerManager = creature->getZoneServer()->getPlayerManager();
 		if (playerManager != nullptr) {
 			creature->setLevel(playerManager->calculatePlayerLevel(creature));
@@ -741,9 +739,9 @@ bool SkillManager::canLearnSkill(const String& skillName, CreatureObject* creatu
 		return false;
 	}
 // jedi cant learn non jedi skills
-	if (creature->hasSkill("force_title_jedi_rank_02") && !skillName.beginsWith("force_")) {
-		return false;
-	}
+//	if (creature->hasSkill("force_title_jedi_rank_02") && !skillName.beginsWith("force_")) {
+//		return false;
+//	}
 
 	ManagedReference<PlayerObject* > ghost = creature->getPlayerObject();
 	if (ghost != nullptr) {

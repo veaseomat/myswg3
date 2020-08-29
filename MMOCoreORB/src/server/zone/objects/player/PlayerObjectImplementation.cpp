@@ -2038,14 +2038,14 @@ void PlayerObjectImplementation::activateForcePowerRegen() {
 	float regen = (float)creature->getSkillMod("jedi_force_power_regen");
 
 	//remove old bonuses
-		if (regen > 69) {
-			int newregen = (69 - regen);
-
-			ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
-
-			creature->addSkillMod(SkillModManager::PERMANENTMOD, "jedi_force_power_regen", newregen, true);
-
-		}
+		//if (regen > 69) {
+	//		int newregen = (69 - regen);
+//
+	//		ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
+//
+	//		creature->addSkillMod(SkillModManager::PERMANENTMOD, "jedi_force_power_regen", newregen, true);
+//
+//		}
 
 	if(regen == 0.0f)
 		return;
@@ -2312,7 +2312,7 @@ void PlayerObjectImplementation::doForceRegen() {
 		Reference<ForceMeditateTask*> medTask = creature->getPendingTask("forcemeditate").castTo<ForceMeditateTask*>();
 
 		if (medTask != nullptr)
-			modifier = 6;
+			modifier = 5;
 	}
 
 	uint32 forceTick = tick * modifier;
@@ -2976,14 +2976,14 @@ void PlayerObjectImplementation::recalculateForcePower() {
 	int maxForce = player->getSkillMod("jedi_force_power_max");
 
 	//remove old bonuses
-		if (maxForce > 7475) {
-			int newmax = (7475 - maxForce);
-
-			ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
-
-			creature->addSkillMod(SkillModManager::PERMANENTMOD, "jedi_force_power_max", newmax, true);
-
-		}
+		//if (maxForce > 7475) {
+	//		int newmax = (7475 - maxForce);
+//
+	//		ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
+//
+	//		creature->addSkillMod(SkillModManager::PERMANENTMOD, "jedi_force_power_max", newmax, true);
+//
+//		}
 
 	int forcePowerMod = 0, forceControlMod = 0;
 

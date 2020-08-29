@@ -68,9 +68,4 @@ disabledWearableSkillMods = {
 	"keep_creature",
 	"stored_pets",
 	"combat_medic_effectiveness",
-	"jedi_toughness",
-	"jedi_state_defense",
-	"force_defense",
-	"lightsaber_toughness",
-	"jedi_force_power_regen",
 }

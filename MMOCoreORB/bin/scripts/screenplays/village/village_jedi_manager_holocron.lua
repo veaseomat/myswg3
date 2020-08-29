@@ -1,7 +1,7 @@
 local ObjectManager = require("managers.object.object_manager")
 
 USEDHOLOCRON = "used_holocron"
-HOLOCRONCOOLDOWNTIME = 1 * 60 * 60 * 1000 -- 1 hours
+HOLOCRONCOOLDOWNTIME = 4 * 60 * 60 * 1000 -- 4 hours
 
 VillageJediManagerHolocron = ScreenPlay:new {}
 

@@ -29,7 +29,7 @@ void AttachmentImplementation::updateCraftingValues(CraftingValues* values, bool
 		int max = (int) Math::max(10.f, Math::min(25.f, (float) round(0.1f * level + 3)));
 		int min = (int) Math::max(10.f, Math::min(25.f, (float) round(0.075f * level - 1)));
 
-		int mod = System::random(25) + System::random(level / 10);
+		int mod = System::random(max - min) + min;
 
 		if(mod < 10)
 			mod = 10;

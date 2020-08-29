@@ -186,130 +186,59 @@ CityTaxes = {
 CitySpecializations = {
 	{--Sample Rich
 		name = "@city/city:city_spec_sample_rich",
-		cost = 50000,
+		cost = 70000,
 		skillMods = {
 			{"private_spec_samplesize", 20},
-			{"private_spec_samplerate", 10},
-			{"private_spec_assembly", 10},
-			{"private_medical_rating", 10},
-			{"private_spec_cloning", 20},
-			{"private_spec_experimentation", 15},
-			{"private_spec_experimentation", 15},
-			{"private_spec_missions", 15},
-			{"private_spec_entertainer", 10},
-			{"private_defense", 90},
+			{"private_spec_samplerate", 10}
 		}
 	},
 	{--Manufacturing Center
 		name = "@city/city:city_spec_industry",
 		cost = 50000,
 		skillMods = {
-			{"private_spec_samplesize", 20},
-			{"private_spec_samplerate", 10},
-			{"private_spec_assembly", 10},
-			{"private_medical_rating", 10},
-			{"private_spec_cloning", 20},
-			{"private_spec_experimentation", 15},
-			{"private_spec_experimentation", 15},
-			{"private_spec_missions", 15},
-			{"private_spec_entertainer", 10},
-			{"private_defense", 90},
+			{"private_spec_assembly", 10}
 		}
 	},
 	{--Medical Center
 		name = "@city/city:city_spec_doctor",
-		cost = 50000,
+		cost = 80000,
 		skillMods = {
-			{"private_spec_samplesize", 20},
-			{"private_spec_samplerate", 10},
-			{"private_spec_assembly", 10},
-			{"private_medical_rating", 10},
-			{"private_spec_cloning", 20},
-			{"private_spec_experimentation", 15},
-			{"private_spec_experimentation", 15},
-			{"private_spec_missions", 15},
-			{"private_spec_entertainer", 10},
-			{"private_defense", 90},
+			{"private_medical_rating", 10}
 		}
 	},
 	{--Clone Lab
 		name = "@city/city:city_spec_cloning",
-		cost = 50000,
+		cost = 80000,
 		skillMods = {
-			{"private_spec_samplesize", 20},
-			{"private_spec_samplerate", 10},
-			{"private_spec_assembly", 10},
-			{"private_medical_rating", 10},
-			{"private_spec_cloning", 20},
-			{"private_spec_experimentation", 15},
-			{"private_spec_experimentation", 15},
-			{"private_spec_missions", 15},
-			{"private_spec_entertainer", 10},
-			{"private_defense", 90},
+			{"private_spec_cloning", 20}
 		}
 	},
 	{--Research Center
 		name = "@city/city:city_spec_research",
-		cost = 50000,
+		cost = 125000,
 		skillMods = {
-			{"private_spec_samplesize", 20},
-			{"private_spec_samplerate", 10},
-			{"private_spec_assembly", 10},
-			{"private_medical_rating", 10},
-			{"private_spec_cloning", 20},
-			{"private_spec_experimentation", 15},
-			{"private_spec_experimentation", 15},
-			{"private_spec_missions", 15},
-			{"private_spec_entertainer", 10},
-			{"private_defense", 90},
+			{"private_spec_experimentation", 15}
 		}
 	},
 	{--Improved Job Market
 		name = "@city/city:city_spec_missions",
-		cost = 50000,
+		cost = 80000,
 		skillMods = {
-			{"private_spec_samplesize", 20},
-			{"private_spec_samplerate", 10},
-			{"private_spec_assembly", 10},
-			{"private_medical_rating", 10},
-			{"private_spec_cloning", 20},
-			{"private_spec_experimentation", 15},
-			{"private_spec_experimentation", 15},
-			{"private_spec_missions", 15},
-			{"private_spec_entertainer", 10},
-			{"private_defense", 90},
+			{"private_spec_missions", 15}
 		}
 	},
 	{--Entertainment District
 		name = "@city/city:city_spec_entertainer",
-		cost = 50000,
+		cost = 80000,
 		skillMods = {
-			{"private_spec_samplesize", 20},
-			{"private_spec_samplerate", 10},
-			{"private_spec_assembly", 10},
-			{"private_medical_rating", 10},
-			{"private_spec_cloning", 20},
-			{"private_spec_experimentation", 15},
-			{"private_spec_experimentation", 15},
-			{"private_spec_missions", 15},
-			{"private_spec_entertainer", 10},
-			{"private_defense", 90},
+			{"private_spec_entertainer", 10}
 		}
 	},
 	{--Stronghold
 		name = "@city/city:city_spec_stronghold",
-		cost = 50000,
+		cost = 150000,
 		skillMods = {
-			{"private_spec_samplesize", 20},
-			{"private_spec_samplerate", 10},
-			{"private_spec_assembly", 10},
-			{"private_medical_rating", 10},
-			{"private_spec_cloning", 20},
-			{"private_spec_experimentation", 15},
-			{"private_spec_experimentation", 15},
-			{"private_spec_missions", 15},
-			{"private_spec_entertainer", 10},
-			{"private_defense", 90},
+			{"private_defense", 90}
 		}
 	},
 }

@@ -58,13 +58,14 @@ function FsIntro:startStepDelay(pPlayer, step)
 	local stepDelay = 60000
 
 	if QuestManager.hasActiveQuest(pPlayer, QuestManager.quests.TWO_MILITARY) then
-	--player beat bh
+	--player beat boba /this quest was being used to track if player won
 		QuestManager.completeQuest(pPlayer, QuestManager.quests.TWO_MILITARY)
+		--this would trip boba again
 		--stepDelay = (getRandomNumber(30, 180) * 60 * 1000) --30min - 3hr
 		return
 	else
 	--player lost bh or first time
-		stepDelay = (getRandomNumber(1, 30) * 60 * 1000) --1min - 2hr
+		stepDelay = (getRandomNumber(1, 720) * 60 * 1000) --1min - 12hr
 	end
 
 	writeScreenPlayData(pPlayer, "VillageJediProgression", "FsIntroDelay", stepDelay + os.time())

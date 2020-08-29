@@ -67,7 +67,6 @@ function ForceShrineMenuComponent:doMeditate(pObject, pPlayer)
 		local trialsCompleted = JediTrials:getTrialsCompleted(pPlayer)
 
 		if (currentTrial == 0 and trialsCompleted == 0) then
---			JediTrials:completeKnightForTesting(pPlayer)
 			local sui = SuiMessageBox.new("KnightTrials", "startNextKnightTrial")
 			sui.setTitle("@jedi_trials:knight_trials_title")
 			sui.setPrompt("@jedi_trials:knight_trials_start_query")
@@ -93,40 +92,20 @@ function ForceShrineMenuComponent:recoverRobe(pPlayer)
 		CreatureObject(pPlayer):sendSystemMessage("@jedi_spam:inventory_full_jedi_robe")
 		return
 	end
-	
-	if CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_padawan.iff", -1)
+
+	local robeTemplate
+	if (CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03")) then
+		local councilType = JediTrials:getJediCouncil(pPlayer)
+
+		if (councilType == JediTrials.COUNCIL_LIGHT) then
+			robeTemplate = "object/tangible/wearables/robe/robe_jedi_light_s01.iff"
+		else
+			robeTemplate = "object/tangible/wearables/robe/robe_jedi_dark_s01.iff"
+		end
+	else
+		robeTemplate = "object/tangible/wearables/robe/robe_jedi_padawan.iff"
 	end
-	if CreatureObject(pPlayer):hasSkill("force_rank_dark_novice") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_dark_s01.iff", -1)
-	end
-	if CreatureObject(pPlayer):hasSkill("force_rank_light_novice") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_light_s01.iff", -1)
-	end
-	if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_01") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_dark_s02.iff", -1)
-	end
-	if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_01") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_light_s02.iff", -1)
-	end
-		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_05") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_dark_s03.iff", -1)
-	end
-	if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_05") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_light_s03.iff", -1)
-	end
-		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_08") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_dark_s04.iff", -1)
-	end
-	if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_08") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_light_s04.iff", -1)
-	end
-		if CreatureObject(pPlayer):hasSkill("force_rank_dark_rank_10") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_dark_s05.iff", -1)
-	end
-	if CreatureObject(pPlayer):hasSkill("force_rank_light_rank_10") then
-				giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_light_s05.iff", -1)
-	end
-						
+
+	giveItem(pInventory, robeTemplate, -1)
 	CreatureObject(pPlayer):sendSystemMessage("@force_rank:items_recovered")
 end

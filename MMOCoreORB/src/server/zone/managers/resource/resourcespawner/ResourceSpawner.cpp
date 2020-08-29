@@ -39,7 +39,7 @@ ResourceSpawner::ResourceSpawner(ManagedReference<ZoneServer*> serv,
 
 	nameManager = processor->getNameManager();
 	objectManager = server->getObjectManager();
-	samplingMultiplier = 5; //should be 1 for normal use
+	samplingMultiplier = 1; //should be 1 for normal use has it at 5
 
 	minimumPool = new MinimumPool(this);
 	fixedPool = new FixedPool(this);
@@ -446,13 +446,11 @@ ResourceSpawn* ResourceSpawner::manualCreateResourceSpawn(CreatureObject* player
 
 			int value = izer.getIntToken();
 
-//			if (value < 1) {
-//				value = 1;
-//			} else if (value > 1000) {
-//				value = 1000;
-//			}
-//
-			value = 1000;
+			if (value < 1) {
+				value = 1;
+			} else if (value > 1000) {
+				value = 1000;
+			}
 
 			attributes.put(att, value);
 		}
@@ -604,18 +602,35 @@ int ResourceSpawner::randomizeValue(int min, int max) {
 	if (min > lowerGateOverride)
 		min = lowerGateOverride;
 
-	int randomStat = System::random(max) + System::random(1000);
+	int randomStat = System::random(max - min) + min;
 
-//	if (randomStat > 1000) {
-//		randomStat = 1000;
-//	}
-//
-//	if (randomStat < 500) {
-//		randomStat = 500;
-//	}
+	if (spawnThrottling < 90) {
+		int breakpoint = ((spawnThrottling * (max - min)) / 100) + min;
+		bool aboveBreakpoint = System::random(9) == 7;
 
-	randomStat = 1000;
+		if ((aboveBreakpoint && randomStat < breakpoint) || (!aboveBreakpoint && randomStat > breakpoint)) {
+			if (aboveBreakpoint) {
+				while (randomStat < breakpoint)
+					randomStat = System::random(max - min) + min;
+			} else {
+				while (randomStat > breakpoint)
+					randomStat = System::random(max - min) + min;
+			}
+		}
+	}
 
+	randomStat = System::random(max) + System::random(1000);
+
+	if (randomStat > 1000) {
+		randomStat = 1000;
+	}
+
+	if (randomStat < 500) {
+		randomStat = 500;
+	}
+
+//	randomStat = 1000;
+	
 	return randomStat;
 }
 
@@ -850,11 +865,11 @@ void ResourceSpawner::sendSurvey(CreatureObject* player, const String& resname) 
 				maxY = posY;
 			}
 
-			if (density < maxDensity) {
-				maxDensity = maxDensity / 2;
-				maxX = posX;
-				maxY = posY;
-			}
+//			if (density < maxDensity) {
+//				maxDensity = maxDensity / 2;
+//				maxX = posX;
+//				maxY = posY;
+//			}
 
 			surveyMessage->add(posX, posY, density);
 
@@ -959,13 +974,13 @@ void ResourceSpawner::sendSampleResults(TransactionLog& trx, CreatureObject* pla
 	String zoneName = zne->getZoneName();
 
 	// If density is too low, we can't obtain a sample
-//	if (density < .10f) {
-//		StringIdChatParameter message("survey", "efficiency_too_low");
-//		message.setTO(resname);
-//		player->sendSystemMessage(message);
-//		player->setPosture(CreaturePosture::UPRIGHT, true);
-//		return;
-//	}
+	if (density < .10f) {
+		StringIdChatParameter message("survey", "efficiency_too_low");
+		message.setTO(resname);
+		player->sendSystemMessage(message);
+		player->setPosture(CreaturePosture::UPRIGHT, true);
+		return;
+	}
 
 	// Lower skill levels mean you can't sample lower concetrations
 	int surveySkill = player->getSkillMod("surveying");
@@ -996,6 +1011,7 @@ void ResourceSpawner::sendSampleResults(TransactionLog& trx, CreatureObject* pla
 	float cityMultiplier = 1.f + player->getSkillMod("private_spec_samplesize") / 100.f;
 
 	int unitsExtracted = maxUnitsExtracted * (float(surveySkill) / 100.0f) * samplingMultiplier * cityMultiplier;
+	unitsExtracted *= 5;
 	int xpcap = 40;
 
 	if (session->tryGamble()) {
@@ -1022,10 +1038,10 @@ void ResourceSpawner::sendSampleResults(TransactionLog& trx, CreatureObject* pla
 		}
 
 		session->clearRichSampleLocation();
-		xpcap = 50;
+		xpcap = 100;
 	}
 
-	if (unitsExtracted < 1000) {
+	if (unitsExtracted < 5) {
 
 		// Send message to player about trace amounts
 //		StringIdChatParameter message("survey", "trace_amount");
@@ -1033,7 +1049,7 @@ void ResourceSpawner::sendSampleResults(TransactionLog& trx, CreatureObject* pla
 //		message.setDI(unitsExtracted);
 //		player->sendSystemMessage(message);
 
-		unitsExtracted = 1000;
+		unitsExtracted = 5;
 	}
 
 	// Send message to player about unit extraction
@@ -1059,15 +1075,15 @@ void ResourceSpawner::sendSampleResults(TransactionLog& trx, CreatureObject* pla
 	addResourceToPlayerInventory(trx, player, resourceSpawn, unitsExtracted);
 	player->notifyObservers(ObserverEventType::SAMPLE, resourceSpawn, density * 100);
 
-//	if (resourceSpawn->isType("radioactive")) {
-//		int wound = int((sampleRate / 30) - System::random(7));
-//
-//		if (wound > 0) {
-//			player->addWounds(CreatureAttribute::HEALTH, wound, true);
-//			player->addWounds(CreatureAttribute::ACTION, wound, true);
-//			player->addWounds(CreatureAttribute::MIND, wound, true);
-//		}
-//	}
+	if (resourceSpawn->isType("radioactive")) {
+		int wound = int((sampleRate / 30) - System::random(7));
+
+		if (wound > 0) {
+			player->addWounds(CreatureAttribute::HEALTH, wound, true);
+			player->addWounds(CreatureAttribute::ACTION, wound, true);
+			player->addWounds(CreatureAttribute::MIND, wound, true);
+		}
+	}
 }
 
 bool ResourceSpawner::addResourceToPlayerInventory(TransactionLog& trx, CreatureObject* player, ResourceSpawn* resourceSpawn, int unitsExtracted) const {

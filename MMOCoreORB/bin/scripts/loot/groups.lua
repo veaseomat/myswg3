@@ -9,7 +9,6 @@ includeFile("groups/data_storage_unit_parts.lua")
 includeFile("groups/fenri_dalso_drop.lua")
 includeFile("groups/holocron_dark.lua")
 includeFile("groups/holocron_light.lua")
-includeFile("groups/holocron_nd.lua")
 includeFile("groups/junk.lua")
 includeFile("groups/klin_nif_drop.lua")
 includeFile("groups/loot_kit_parts.lua")
@@ -39,7 +38,6 @@ includeFile("groups/armor/mabari_armor.lua")
 includeFile("groups/armor/padded_armor.lua")
 includeFile("groups/armor/tantel_armor.lua")
 includeFile("groups/armor/ubese_armor.lua")
-includeFile("groups/armor/mando_armor.lua")
 
 -- bestine election sub-folder
 includeFile("groups/bestine_election/bestine_history_quest_reward.lua")
@@ -363,7 +361,6 @@ includeFile("groups/weapon/mines.lua")
 includeFile("groups/weapon/pistols.lua")
 includeFile("groups/weapon/rifles.lua")
 includeFile("groups/weapon/weapons_all.lua")
-includeFile("groups/weapon/sabers.lua")
 
 -- wearables sub-folder
 includeFile("groups/wearables/wearables_all.lua")

@@ -531,8 +531,8 @@ void SlicingSessionImplementation::handleWeaponSlice() {
 		return;
 
 	}
-
-	uint8 percentage = max;
+//edit slicechance here
+	uint8 percentage = System::random(max - min) + min;
 
 	switch(System::random(1)) {
 	case 0:

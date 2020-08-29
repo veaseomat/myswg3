@@ -281,7 +281,7 @@ void EntertainingSessionImplementation::doPerformanceAction() {
 		return;
 	}
 
-	int actionDrain = 1;
+	int actionDrain = performance->getActionPointsPerLoop() - (int)(entertainer->getHAM(CreatureAttribute::QUICKNESS)/35.f) / 10;
 
 	if (entertainer->getHAM(CreatureAttribute::ACTION) <= actionDrain) {
 		if (isDancing()) {
@@ -594,7 +594,7 @@ void EntertainingSessionImplementation::doFlourish(int flourishNumber, bool gran
 	//float baseActionDrain = -40 + (getQuickness() / 37.5);
 	float flourishActionDrain = baseActionDrain / 2.0;
 
-	int actionDrain = 1; // Round to nearest dec for actual int cost
+	int actionDrain = (int)round((flourishActionDrain * 10 + 0.5) / 10.0) / 10; // Round to nearest dec for actual int cost
 
 	if (entertainer->getHAM(CreatureAttribute::ACTION) <= actionDrain) {
 		entertainer->sendSystemMessage("@performance:flourish_too_tired");
@@ -1101,7 +1101,7 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 
 			float totalBonus = 1.f + groupMod + audienceMod + applauseMod;
 
-			xpAmount = (ceil(xpAmount * totalBonus) * 5);
+			xpAmount = (ceil(xpAmount * totalBonus) * 1);
 
 			if (playerManager != nullptr)
 				playerManager->awardExperience(player, xptype, xpAmount, true);

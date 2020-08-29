@@ -484,7 +484,7 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 							Time timeVal(sec);
 
 							if (timeVal.miliDifference() < 15000) {
-								ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are only permitted to create one character every 15min. Repeat attempts prior to 15 minutes elapsing will reset the timer.", 0x0);
+								ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are only permitted to create one character every 15sec. Repeat attempts prior to 15 sec elapsing will reset the timer.", 0x0);
 								client->sendMessage(errMsg);
 
 								playerCreature->destroyPlayerCreatureFromDatabase(true);
@@ -501,7 +501,7 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 						Time lastCreatedTime = lastCreatedCharacter.get(accID);
 
 						if (lastCreatedTime.miliDifference() < 15000) {
-							ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are only permitted to create one character ever 15min. Repeat attempts prior to 15 minutes elapsing will reset the timer.", 0x0);
+							ErrorMessage* errMsg = new ErrorMessage("Create Error", "You are only permitted to create one character ever 15sec. Repeat attempts prior to 15 sec elapsing will reset the timer.", 0x0);
 							client->sendMessage(errMsg);
 
 							playerCreature->destroyPlayerCreatureFromDatabase(true);
@@ -569,7 +569,7 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 
 	JediManager::instance()->onPlayerCreated(playerCreature);
 
-	chatManager->sendMail("mySWG", "Welcome", "Welcome to mySWG, This is a fun server that stays true to the vanilla systems with lots of Quality of life improvements.\n	For a light of the changes please visit the swgemu forum post for mySWG in SWGEmu based server listing section. If you have any questions/comments/concerns/suggestions please join the discord or send an email to mySWGdev@gmail.com.\nThanks,\nVeaseomat", playerCreature->getFirstName());
+	chatManager->sendMail("mySWG", "Welcome", "Welcome to mySWG, This is a fun server with lots of Quality of life improvements.\n	For a list of the changes please visit the swgemu forum post for mySWG in SWGEmu based server listing section. If you have any questions/comments/concerns/suggestions please join the discord or send an email to mySWGdev@gmail.com.\nThanks,\nVeaseomat", playerCreature->getFirstName());
 
 	//Join auction chat room
 	ghost->addChatRoom(chatManager->getAuctionRoom()->getRoomID());
