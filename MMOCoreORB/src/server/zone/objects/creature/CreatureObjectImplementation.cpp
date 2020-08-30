@@ -2434,6 +2434,15 @@ void CreatureObjectImplementation::setStunnedState(int durationSeconds) {
 		state->setSkillModifier("private_ranged_defense", -50);
 
 		addBuff(state);
+//stupid stun dmg stuff remove here
+		Reference<PrivateSkillMultiplierBuff*> multBuff = new PrivateSkillMultiplierBuff(asCreatureObject(), STRING_HASHCODE("private_stun_multiplier"), durationSeconds, BuffType::STATE);
+
+		Locker blocker(multBuff);
+
+		multBuff->setSkillModifier("private_damage_divisor", 5);
+		multBuff->setSkillModifier("private_damage_multiplier", 4);
+
+		addBuff(multBuff);
 	}
 }
 
@@ -2481,6 +2490,14 @@ void CreatureObjectImplementation::setIntimidatedState(int durationSeconds) {
 		state->setSkillModifier("private_ranged_defense", -20);
 
 		addBuff(state);
+//stupid intim dmg stuff remove here
+		Reference<PrivateSkillMultiplierBuff*> multBuff = new PrivateSkillMultiplierBuff(asCreatureObject(), STRING_HASHCODE("private_intimidate_multiplier"), durationSeconds, BuffType::STATE);
+
+		Locker blocker(multBuff);
+
+		multBuff->setSkillModifier("private_damage_divisor", 2);
+
+		addBuff(multBuff);
 	}
 }
 
@@ -2542,9 +2559,9 @@ void CreatureObjectImplementation::setMeditateState() {
 void CreatureObjectImplementation::queueDizzyFallEvent() {
 	if (hasDizzyEvent())
 		return;
-
+//dizzy fall timer?
 	dizzyFallDownEvent = new DizzyFallDownEvent(asCreatureObject());
-	dizzyFallDownEvent->schedule(100);
+	dizzyFallDownEvent->schedule(200);
 }
 
 void CreatureObjectImplementation::activateStateRecovery() {

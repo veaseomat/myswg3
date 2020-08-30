@@ -1498,7 +1498,7 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 		player->setWounds(CreatureAttribute::MIND, 0, true);
 		player->setWounds(CreatureAttribute::FOCUS, 0, true);
 		player->setWounds(CreatureAttribute::WILLPOWER, 0, true);
-		player->setShockWounds(0, true);
+		player->setShockWounds(100, true);
 
 
 	if (player->getFactionStatus() != FactionStatus::ONLEAVE && cbot->getFacilityType() != CloningBuildingObjectTemplate::FACTION_IMPERIAL && cbot->getFacilityType() != CloningBuildingObjectTemplate::FACTION_REBEL && !player->hasSkill("force_title_jedi_rank_03"))
@@ -1754,7 +1754,8 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 					combatXp += xpAmount;
 				if (xpType == "jedi_general" && attacker->hasSkill("force_title_jedi_rank_03"))
 					frsXp += xpAmount;
-				else
+//				else
+				if (xpType == "jedi_general")
 					xpAmount *= 0.2f;
 
 				//Award individual expType

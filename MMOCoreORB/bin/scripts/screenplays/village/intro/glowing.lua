@@ -69,7 +69,7 @@ function Glowing:badgeAwardedEventHandler(pPlayer, pPlayer2, badgeNumber)
 		
 		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 		sui.setTitle("Jedi Unlock")
-		sui.setPrompt("Congratulations Jedi, you have completed the village and may travel there to learn skills but it is not required. All you need to do is meditate at a Jedi shrine to begin. May the force be with you...")
+		sui.setPrompt("Congratulations Jedi Initiate, you have completed the village and may travel there to learn force sensitive skills or do quests but it is not required. All you need to do is meditate at a Jedi shrine to begin your Padawan Trails. May the force be with you...")
 		sui.sendTo(pPlayer)
 		
 		return 1
@@ -97,7 +97,7 @@ function Glowing:onPlayerLoggedIn(pPlayer)
 			self:registerObservers(pPlayer)
 		end
 	end
-	if PlayerObject(pGhost):getVisibility() > 500 then
+	if PlayerObject(pGhost):getVisibility() > 1500 then
 		FsIntro:startStepDelay(pPlayer, 3)
 	end
 end

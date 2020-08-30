@@ -1573,13 +1573,38 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 	if (attacker->isPlayerCreature() && defender->isPlayerCreature() && !data.isForceAttack())
 		damage *= 0.25;
 
+	//weapon types dmg balance only in pvp //not working yet
+//	if (attacker->isPlayerCreature() && defender->isPlayerCreature() && !data.isForceAttack()){
+//		switch (attacker->getWeapon()->getGameObjectType()) {
+//		case SceneObjectType::PISTOL:
+//			damage *= 1.25;
+//			/* no break */
+//		case SceneObjectType::CARBINE:
+//			/* no break */
+//		case SceneObjectType::RIFLE:
+//			damage *= 0.75;
+//			/* no break */
+//		case SceneObjectType::MINE:
+//		case SceneObjectType::SPECIALHEAVYWEAPON:
+//			/* no break */
+//		case SceneObjectType::HEAVYWEAPON:
+//			damage *= 1.25;
+//			/* no break */
+//		case SceneObjectType::ONEHANDMELEEWEAPON:
+//			/* no break */
+//		case SceneObjectType::TWOHANDMELEEWEAPON:
+//			/* no break */
+//		case SceneObjectType::POLEARM:
+//		}
+//	}
+
 	// PVE Damage 
 	if (attacker->isPlayerCreature() && !defender->isPlayerCreature())
-		damage *= 1.25;
+		damage *= 1.2;
 
 	// EVP Damage Reduction.
 	if (!attacker->isPlayerCreature() && defender->isPlayerCreature())
-		damage *= 0.75;
+		damage *= 0.6;
 
 	// PvE Damage increase for non jedi.
 //	if (attacker->isPlayerCreature() && !defender->isPlayerCreature()) {

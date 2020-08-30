@@ -40,13 +40,11 @@ function ForceShrineMenuComponent:doMeditate(pObject, pPlayer)
 		local currentTrial = JediTrials:getCurrentTrial(pPlayer)
 
 		if (not JediTrials:isOnPadawanTrials(pPlayer)) then
-			JediTrials:completePadawanForTesting(pPlayer)
-			
-		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
-		sui.setTitle("Jedi Unlock")
-		sui.setPrompt("Welcome Jedi Padawan. use the /findmytrainer command to locate your jedi skill trainer. First you will need to loot a color crystal and craft a lightsaber to begin leveling. May the force be with you...")
-		sui.sendTo(pPlayer)
-		
+			PadawanTrials:startPadawanTrials(pObject, pPlayer)
+		elseif (currentTrial == 0) then
+			PadawanTrials:startNextPadawanTrial(pObject, pPlayer)
+		else
+			PadawanTrials:showCurrentTrial(pObject, pPlayer)
 		end
 	elseif (JediTrials:isOnKnightTrials(pPlayer)) then
 		local pPlayerShrine = KnightTrials:getTrialShrine(pPlayer)
