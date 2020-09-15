@@ -89,6 +89,6 @@ destroyMissionDifficultyRandomDistance = 0
 --    <BaseReward> + <DifficultyRewardFactor> * <difficultyLevel> + 
 --    rand(<RandomReward>) + rand(<DifficutlyRandomReward * <difficultyLevel>)
 destroyMissionBaseReward = 0
-destroyMissionDifficultyRewardFactor = 750
+destroyMissionDifficultyRewardFactor = 375
 destroyMissionRandomReward = 0
-destroyMissionDifficultyRandomReward = 30
+destroyMissionDifficultyRandomReward = 15

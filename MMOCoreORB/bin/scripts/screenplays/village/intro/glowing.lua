@@ -97,9 +97,6 @@ function Glowing:onPlayerLoggedIn(pPlayer)
 			self:registerObservers(pPlayer)
 		end
 	end
-	if PlayerObject(pGhost):getVisibility() > 1500 then
-		FsIntro:startStepDelay(pPlayer, 3)
-	end
 end
 
 -- Handling of the checkForceStatus command.

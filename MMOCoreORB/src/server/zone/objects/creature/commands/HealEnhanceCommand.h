@@ -39,7 +39,7 @@ public:
 			if (buff != nullptr) {
 				float percent = buff->getSkillModifierValue("heal_recovery");
 
-				delay = round(delay * (100.0f - percent) / 100.0f);
+				delay = (round(delay * (100.0f - percent) / 100.0f)) / 2;
 			}
 		}
 
@@ -435,7 +435,7 @@ public:
 
 		PlayerManager* playerManager = server->getZoneServer()->getPlayerManager();
 
-		int durationextra = (enhancePack->getDuration() * 2);
+		int durationextra = (enhancePack->getDuration() * 4);
 
 		uint32 amountEnhanced = playerManager->healEnhance(enhancer, patient, attribute, buffPower, durationextra, enhancePack->getAbsorption());
 

@@ -1604,7 +1604,7 @@ float CombatManager::calculateDamage(CreatureObject* attacker, WeaponObject* wea
 
 	// EVP Damage Reduction.
 	if (!attacker->isPlayerCreature() && defender->isPlayerCreature())
-		damage *= 0.6;
+		damage *= 0.4;
 
 	// PvE Damage increase for non jedi.
 //	if (attacker->isPlayerCreature() && !defender->isPlayerCreature()) {
@@ -1893,9 +1893,9 @@ bool CombatManager::applySpecialAttackCost(CreatureObject* attacker, WeaponObjec
 		}
 	}
 
-	float health = weapon->getHealthAttackCost() * data.getHealthCostMultiplier();
-	float action = weapon->getActionAttackCost() * data.getActionCostMultiplier();
-	float mind = weapon->getMindAttackCost() * data.getMindCostMultiplier();
+	float health = (weapon->getHealthAttackCost() * data.getHealthCostMultiplier()) * .3;
+	float action = (weapon->getActionAttackCost() * data.getActionCostMultiplier()) * .3;
+	float mind = (weapon->getMindAttackCost() * data.getMindCostMultiplier()) * .3;
 
 	health = attacker->calculateCostAdjustment(CreatureAttribute::STRENGTH, health);
 	action = attacker->calculateCostAdjustment(CreatureAttribute::QUICKNESS, action);

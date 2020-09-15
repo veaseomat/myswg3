@@ -329,9 +329,12 @@ function FsCounterStrike:completeQuest(pPlayer, teamComplete)
 		if (pCrystal == nil) then
 			CreatureObject(pPlayer):sendSystemMessage("Error: Unable to generate item.")
 		else
+		
+		local newcolor = getRandomNumber(12, 30);
+		
 			local colorCrystal = LuaLightsaberCrystalComponent(pCrystal)
-			colorCrystal:setColor(29)
-			colorCrystal:updateCrystal(29)
+			colorCrystal:setColor(newcolor)
+			colorCrystal:updateCrystal(newcolor)
 		end
 	end
 
